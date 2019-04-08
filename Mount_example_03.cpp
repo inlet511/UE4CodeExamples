@@ -30,6 +30,7 @@
          }
          else UE_LOG(LogTemp, Warning, TEXT("Pak folder verified: %s"), *FullPakFolder);
  
+        //只要PlatformFilePak经过初始化，则OnMountPak一定是绑定了函数的
          if (FCoreDelegates::OnMountPak.IsBound())
          {
              // Print files in pak

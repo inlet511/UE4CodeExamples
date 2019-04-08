@@ -25,5 +25,4 @@ public:
 
     UFUNCTION(BlueprintCallable,Category="MountPak")
 	void MountPak();
-
 };

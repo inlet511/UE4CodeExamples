@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+
 #include "PakMount.generated.h"
 
 UCLASS()
@@ -25,4 +26,14 @@ public:
 
     UFUNCTION(BlueprintCallable,Category="MountPak")
 	void MountPak();
+
+
+    //pak文件中的文件路径列表
+    TArray<FSoftObjectPath> ObjectPaths;
+    
+    class UMyGameInstance* MyGI;
+
+    //加载回调函数，创建子组件
+    UFUNCTION()
+    void CreateAllChildren();
 };

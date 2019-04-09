@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PakMount.h"
-
+#include "MyGameInstance.h"
 #include "HAL/PlatformFilemanager.h"
 #include "IPlatformFilePak.h"
 // Sets default values
@@ -15,6 +15,7 @@ APakMount::APakMount()
 void APakMount::BeginPlay()
 {
 	Super::BeginPlay();
+    MyGI = Cast<UMyGameInstance>(GetGameInstance());
 }
 
 // Called every frame
@@ -45,33 +46,42 @@ void APakMount::MountPak()
 	FPlatformFileManager::Get().SetPlatformFile(*PakPlatformFile);
 
 
-	const FString pakFilename = TEXT("D:\\ExamplePak.pak");
+	const FString PakFileFullName = TEXT("D:\\ExamplePak.pak");
+
+    //测试用MountPoint
+    FString MountPoint = TEXT("EGFolder");
 
 
-	TSharedPtr<IFileHandle> PakHandle = MakeShareable(InnerPlatform.OpenRead(*pakFilename));
+	TSharedPtr<IFileHandle> PakHandle = MakeShareable(InnerPlatform.OpenRead(*PakFileFullName));
 	if (!PakHandle.IsValid())
 		return;
 
 	//创建FPakFile对象,同样使用相应平台的PlatformFile初始化
-	//第二个参数是pak文件名称
+	//第二个参数是pak文件的完整路径+名称
 	//第三个参数是是否有符号？
-	FPakFile* Pak = new FPakFile(&InnerPlatform, *pakFilename, false);
+	FPakFile* Pak = new FPakFile(&InnerPlatform, *PakFileFullName, false);
 
 
 	if (Pak->IsValid())
 	{
+
+        UE_LOG(LogTemp, Log, TEXT("MountPoint:Raw %s"), *MountPoint);
+        FPaths::MakePathRelativeTo(MountPoint, *FPaths::EngineContentDir());
+        UE_LOG(LogTemp, Log, TEXT("MountPoint:Relative to ProjectContentDir: %s"), *MountPoint);
+        MountPoint = FString("/Game/" + MountPoint);
 		//具体Mount方法可以参考函数 FPakPlatformFile::Mount
 		//但是其中有大量多余内容(例如版本编号处理),可以调用其中最核心的部分SetMountPoint
-		Pak->SetMountPoint(*FPaths::EngineContentDir());
+		Pak->SetMountPoint(*MountPoint);
 
+        //声明一个继承自FDirectoryVisitor的类，用于遍历所有的内容
 		class Dump : public IPlatformFile::FDirectoryVisitor
 		{
             public:
 			const FString mp_PakName;
 			TArray<FString> Files;
 
-			Dump(const FString& PakfileName) :
-				mp_PakName(PakfileName)
+			Dump(const FString& PakFileFullName ) :
+				mp_PakName(PakFileFullName)
 			{
 			}
 			virtual bool Visit(const TCHAR* FilenameOrDirectory, bool bIsDirectory)
@@ -81,22 +91,38 @@ void APakMount::MountPak()
 			}
 		};
 
-		Dump* Visitor = new Dump(pakFilename);
+		Dump* Visitor = new Dump(PakFileFullName);
 
-
-		if (FCoreDelegates::OnMountPak.Execute(pakFilename, 0, Visitor))
+        //触发MountPak绑定的事件
+		if (FCoreDelegates::OnMountPak.Execute(PakFileFullName, 0, Visitor))
 		{
 			TArray<FString> Files;
 			Pak->FindFilesAtPath(Files, *FPaths::EngineContentDir(), true, false, true);
+
+            for(auto File : Files)
+            {
+                FString Filename, FileExtn;
+                int32 LastSlashIndex;
+                File.FindLastChar(*TEXT("/"), LastSlashIndex);
+                FString FileOnly = File.RightChop(LastSlashIndex + 1); //remove the full size since we want the slash gone too.
+                FileOnly.Split(TEXT("."), &Filename, &FileExtn);
+                UE_LOG(LogTemp, Log, TEXT("File: %s ============ Full Path: %s"), *FileOnly, *File);
+
+                if (FileExtn == TEXT("uasset"))
+                {
+                    File = File.Replace(TEXT("uasset"), *Filename);
+                    ObjectPaths.AddUnique(FSoftObjectPath(File));
+                }
+                
+            }
+
+            MyGI->GetStreamableManager().RequestAsyncLoad(ObjectPaths,FStreamableDelegate::CreateUObject(this,&APakMount::CreateAllChildren));
 		}
 	}
 
+}
 
-	//bool bResult = PakPlatformFile->Mount(*FString(TEXT("D:\\ExamplePak.pak")), PakOrder, *FPaths::EngineContentDir());
-
-	// if (bResult)
-	// {
-	// 	GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, FString::Printf(TEXT("EngineContentDir '%s'"), *FPaths::EngineContentDir()));
-
-	// }
+void APakMount::CreateAllChildren()
+{
+    UE_LOG(LogTemp,Log,TEXT("finished loading assets"));
 }

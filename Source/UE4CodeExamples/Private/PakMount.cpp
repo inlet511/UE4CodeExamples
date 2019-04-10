@@ -36,10 +36,19 @@ void APakMount::MountPak()
 	//这里创建了一个FPakPlatformFile，但是未指定当前使用什么平台去读写这个文件
 	FPakPlatformFile* PakPlatformFile = new FPakPlatformFile();
 
+//测试代码
+    FString rPakFileName = TEXT("SomeFileName");
+    FString StandardFilename(rPakFileName);
+    FPaths::MakeStandardFilename(StandardFilename); 
+    StandardFilename = FPaths::GetPath(StandardFilename);
+
 	//第三步
 	//使用相应平台的PlatformFile去初始化PakPlatformFile
 	//第二个参数是命令行参数，一般都为空
 	PakPlatformFile->Initialize(&InnerPlatform, TEXT(""));
+
+    //防止UnMount时候报错
+    PakPlatformFile->InitializeNewAsyncIO();
 
 	//第四步
 	//再将当前PlatformFile设置为"相应平台下pak文件读写"的模式
@@ -65,10 +74,11 @@ void APakMount::MountPak()
 	if (Pak->IsValid())
 	{
 
-        UE_LOG(LogTemp, Log, TEXT("MountPoint:Raw %s"), *MountPoint);
-        FPaths::MakePathRelativeTo(MountPoint, *FPaths::EngineContentDir());
-        UE_LOG(LogTemp, Log, TEXT("MountPoint:Relative to ProjectContentDir: %s"), *MountPoint);
-        MountPoint = FString("/Game/" + MountPoint);
+        // UE_LOG(LogTemp, Log, TEXT("MountPoint:Raw %s"), *MountPoint);
+        // FPaths::MakePathRelativeTo(MountPoint, *FPaths::EngineContentDir());
+        // UE_LOG(LogTemp, Log, TEXT("MountPoint:Relative to ProjectContentDir: %s"), *MountPoint);
+        // MountPoint = FString("/Game/" + MountPoint);
+
 		//具体Mount方法可以参考函数 FPakPlatformFile::Mount
 		//但是其中有大量多余内容(例如版本编号处理),可以调用其中最核心的部分SetMountPoint
 		Pak->SetMountPoint(*MountPoint);
@@ -97,9 +107,9 @@ void APakMount::MountPak()
 		if (FCoreDelegates::OnMountPak.Execute(PakFileFullName, 0, Visitor))
 		{
 			TArray<FString> Files;
-			Pak->FindFilesAtPath(Files, *FPaths::EngineContentDir(), true, false, true);
+			Pak->FindFilesAtPath(Files, *MountPoint, true, false, true);
 
-            for(auto File : Files)
+			for(auto File : Files)
             {
                 FString Filename, FileExtn;
                 int32 LastSlashIndex;
@@ -111,6 +121,7 @@ void APakMount::MountPak()
                 if (FileExtn == TEXT("uasset"))
                 {
                     File = File.Replace(TEXT("uasset"), *Filename);
+                    File = "/Game/"+ File;
                     ObjectPaths.AddUnique(FSoftObjectPath(File));
                 }
                 

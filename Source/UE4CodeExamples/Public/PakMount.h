@@ -30,6 +30,8 @@ public:
 
     //pak文件中的文件路径列表
     TArray<FSoftObjectPath> ObjectPaths;
+
+	TArray<FSoftObjectPtr> ObjectPtrs;
     
     class UMyGameInstance* MyGI;
 

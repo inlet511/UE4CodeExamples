@@ -4,7 +4,8 @@
 #include "MyGameInstance.h"
 #include "HAL/PlatformFilemanager.h"
 #include "IPlatformFilePak.h"
-// Sets default values
+
+
 APakMount::APakMount()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -113,7 +114,9 @@ void APakMount::MountPak()
                     File = FileOnly.Replace(TEXT("uasset"), *Filename);
 					File = TEXT("/Engine/")+File;
                     ObjectPaths.AddUnique(FSoftObjectPath(File));
-					ObjectPtrs.AddUnique(FSoftObjectPtr(ObjectPaths[ObjectPaths.Num()-1]));
+                    
+                    //将FSoftObjectPath直接转换为TSoftObjectPtr<UObject>并储存
+					ObjectPtrs.AddUnique(TSoftObjectPtr<UObject>(ObjectPaths[ObjectPaths.Num()-1]));
                 }
                 
             }
@@ -126,4 +129,18 @@ void APakMount::MountPak()
 void APakMount::CreateAllChildren()
 {
     UE_LOG(LogTemp,Log,TEXT("finished loading assets"));
+	for (int32 i = 0; i < ObjectPtrs.Num(); ++i)
+	{
+		UStaticMeshComponent* NewComp = NewObject<UStaticMeshComponent>(this);
+		if (!NewComp)
+		{
+			return;
+		}
+		UStaticMesh* staticMesh = Cast<UStaticMesh>(ObjectPtrs[i].Get());
+
+		NewComp->SetStaticMesh(staticMesh);
+		NewComp->AttachToComponent(GetRootComponent(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
+		NewComp->SetRelativeLocation(FVector(0, (i + 1) * 100.0f, 0));
+		NewComp->RegisterComponent();
+	}
 }

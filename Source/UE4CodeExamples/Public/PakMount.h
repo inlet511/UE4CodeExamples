@@ -31,9 +31,9 @@ public:
     //pak文件中的文件路径列表
     TArray<FSoftObjectPath> ObjectPaths;
 
-	TArray<FSoftObjectPtr> ObjectPtrs;
-    
-    class UMyGameInstance* MyGI;
+	TArray<TSoftObjectPtr<UObject>> ObjectPtrs;
+
+	class UMyGameInstance* MyGI;
 
     //加载回调函数，创建子组件
     UFUNCTION()

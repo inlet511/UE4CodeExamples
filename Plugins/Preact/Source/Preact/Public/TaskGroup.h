@@ -7,9 +7,9 @@
 /**
  * 
  */
-class PREACT_API Task
+class PREACT_API TaskGroup
 {
 public:
-	Task();
-	~Task();
+	TaskGroup();
+	~TaskGroup();
 };

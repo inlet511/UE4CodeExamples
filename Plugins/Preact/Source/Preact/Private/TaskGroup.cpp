@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "TaskSequence.h"
+#include "TaskGroup.h"
 
-TaskSequence::TaskSequence()
+TaskGroup::TaskGroup()
 {
 }
 
-TaskSequence::~TaskSequence()
+TaskGroup::~TaskGroup()
 {
 }

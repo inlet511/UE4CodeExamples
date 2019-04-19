@@ -7,6 +7,7 @@
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 #include "LevelEditor.h"
 #include "Misc/MessageDialog.h"
+#include "SImage.h"
 
 static const FName EditorPluginSchemaTabName("EditorPluginSchema");
 
@@ -30,6 +31,7 @@ void FEditorPluginSchemaModule::StartupModule()
 
 	FLevelEditorModule& LevelEditorModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 
+	//Menu 扩展菜单项
 	{
 		TSharedPtr<FExtender> MenuExtender = MakeShareable(new FExtender());
 		MenuExtender->AddMenuExtension("WindowLayout", EExtensionHook::After, PluginCommands, FMenuExtensionDelegate::CreateRaw(this, &FEditorPluginSchemaModule::AddMenuExtension));
@@ -53,11 +55,19 @@ void FEditorPluginSchemaModule::StartupModule()
 		LevelEditorModule.GetMenuExtensibilityManager()->AddExtender(MenuBarExtender);
 	}
 
+	//增加工具栏项
 	{
 		TSharedPtr<FExtender> ToolbarExtender = MakeShareable(new FExtender);
 		ToolbarExtender->AddToolBarExtension("Settings", EExtensionHook::After, PluginCommands, FToolBarExtensionDelegate::CreateRaw(this, &FEditorPluginSchemaModule::AddToolbarExtension));
 
 		LevelEditorModule.GetToolBarExtensibilityManager()->AddExtender(ToolbarExtender);
+	}
+
+	//增加选择物体后右键菜单
+	{
+		auto& AllSelectedObjsExtenderDelegates = LevelEditorModule.GetAllLevelViewportContextMenuExtenders();
+		AllSelectedObjsExtenderDelegates.Add(FLevelEditorModule::FLevelViewportMenuExtender_SelectedActors::CreateRaw(this, &FEditorPluginSchemaModule::SelectedActors));
+		FLevelViewportMenuExtender_SelectedActors = AllSelectedObjsExtenderDelegates.Last().GetHandle();
 	}
 }
 
@@ -154,6 +164,25 @@ void FEditorPluginSchemaModule::SubMenuBar(FMenuBuilder& Builder)
 	Builder.AddMenuEntry(FEditorPluginSchemaCommands::Get().PluginAction);
 	Builder.AddMenuSeparator();
 	Builder.AddMenuEntry(FEditorPluginSchemaCommands::Get().PluginAction);
+	Builder.AddMenuEntry(FEditorPluginSchemaCommands::Get().PluginAction);
+}
+
+TSharedRef<FExtender> FEditorPluginSchemaModule::SelectedActors(const TSharedRef<FUICommandList> MyUICommandList, const TArray<AActor*> AllActors)
+{
+	TSharedRef<FExtender> Extender = MakeShareable(new FExtender);
+	if (AllActors.Num() > 0)
+	{
+		FLevelEditorModule& LevelEditorModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
+		TSharedRef<FUICommandList> LevelCommand = LevelEditorModule.GetGlobalLevelEditorActions();
+
+		Extender->AddMenuExtension("ActorControl", EExtensionHook::After, LevelCommand, FMenuExtensionDelegate::CreateRaw(this, &FEditorPluginSchemaModule::AddMenuExtension));
+
+	}
+	return Extender;
+}
+
+void FEditorPluginSchemaModule::AddContextMenuToSelectedObject(FMenuBuilder& Builder)
+{
 	Builder.AddMenuEntry(FEditorPluginSchemaCommands::Get().PluginAction);
 }
 

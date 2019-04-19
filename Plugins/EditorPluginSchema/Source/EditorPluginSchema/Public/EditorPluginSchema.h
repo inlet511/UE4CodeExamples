@@ -7,6 +7,7 @@
 
 class FToolBarBuilder;
 class FMenuBuilder;
+class FMenuBarBuilder;
 
 class FEditorPluginSchemaModule : public IModuleInterface
 {
@@ -29,12 +30,17 @@ private:
 	void PullDownBar(FMenuBuilder& Builder);
 	void SubMenuBar(FMenuBuilder& Builder);
 
+	TSharedRef<class FExtender> SelectedActors(const TSharedRef<class FUICommandList> MyUICommandList, const TArray<class AActor*> AllActors);
+
+	void AddContextMenuToSelectedObject(FMenuBuilder& Builder);
+
 private:
 	TSharedPtr<class FUICommandList> PluginCommands;
+	FDelegateHandle FLevelViewportMenuExtender_SelectedActors;
 };
 
 class FTestABC
 {
 	public:
-	static TSharedRef<SWidget> MakeWidget(TSharedPtr<class FUICommandList> PluginCommands);
+	static TSharedRef<class SWidget> MakeWidget(TSharedPtr<class FUICommandList> PluginCommands);
 };

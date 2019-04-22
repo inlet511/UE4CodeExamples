@@ -8,6 +8,7 @@
 #include "LevelEditor.h"
 #include "Misc/MessageDialog.h"
 #include "SImage.h"
+#include "BlueprintEditorModule.h"
 
 static const FName EditorPluginSchemaTabName("EditorPluginSchema");
 
@@ -30,6 +31,8 @@ void FEditorPluginSchemaModule::StartupModule()
 	FCanExecuteAction());
 
 	FLevelEditorModule& LevelEditorModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
+
+	
 
 	//Menu 扩展菜单项
 	{
@@ -69,6 +72,18 @@ void FEditorPluginSchemaModule::StartupModule()
 		AllSelectedObjsExtenderDelegates.Add(FLevelEditorModule::FLevelViewportMenuExtender_SelectedActors::CreateRaw(this, &FEditorPluginSchemaModule::SelectedActors));
 		FLevelViewportMenuExtender_SelectedActors = AllSelectedObjsExtenderDelegates.Last().GetHandle();
 	}
+
+	//调用蓝图编辑器
+	FBlueprintEditorModule& BlueprintEditorModule = FModuleManager::LoadModuleChecked<FBlueprintEditorModule>(TEXT("Kismet"));
+
+	//扩展蓝图中的菜单
+	{
+		TSharedPtr<FExtender> MenuBarExtender = MakeShareable(new FExtender());
+		MenuBarExtender->AddMenuBarExtension("Help", EExtensionHook::After, PluginCommands, FMenuBarExtensionDelegate::CreateRaw(this, &FEditorPluginSchemaModule::AddMenuBarExtension));
+
+		BlueprintEditorModule.GetMenuExtensibilityManager()->AddExtender(MenuBarExtender);
+	}
+
 }
 
 void FEditorPluginSchemaModule::ShutdownModule()

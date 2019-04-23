@@ -2,6 +2,8 @@
 #include "Widgets/Images/SImage.h"
 #include "DetailWidgetRow.h"
 #include "DeclarativeSyntaxSupport.h"
+#include "SEditableTextBox.h"
+#include "StructVariable.h"
 
 void FStructVariableDetail::CustomizeHeader(TSharedRef<IPropertyHandle> PropertyHandle, FDetailWidgetRow& HeaderRow, IPropertyTypeCustomizationUtils& CustomizationUtils)
 {
@@ -23,6 +25,15 @@ void FStructVariableDetail::CustomizeHeader(TSharedRef<IPropertyHandle> Property
 void FStructVariableDetail::CustomizeChildren(TSharedRef<IPropertyHandle> PropertyHandle, IDetailChildrenBuilder& ChildBuilder, IPropertyTypeCustomizationUtils& CustomizationUtils)
 {
 	PropertyText = PropertyHandle->GetChildHandle(GET_MEMBER_NAME_CHECKED(FStructVariable, MyText));
+	if (PropertyText && EditableTextBox.IsValid())
+	{
+		FText EventValueStr;
+		PropertyText->GetValue(EventValueStr);
+		if (EditableTextBox.IsValid())
+		{
+			EditableTextBox->SetText(EventValueStr);
+		}
+	}
 }
 
 TSharedRef<IPropertyTypeCustomization> FStructVariableDetail::MakeInstance()
@@ -34,6 +45,8 @@ void FStructVariableDetail::OnPropertyTextCommited(const FText& InText, ETextCom
 {
 	if (PropertyText.IsValid())
 	{
+		FText EventValueStr;
+		PropertyText->GetValue(EventValueStr);
 		PropertyText->SetValue(InText);
 	}
 

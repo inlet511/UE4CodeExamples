@@ -14,7 +14,7 @@ void SCustomWidget::Construct(const FArguments& InArgs)
 
 	ConfigPanel = PropertyModule.CreateDetailView(DetailsViewArgs);
 	//ConfigPanel->SetObject(UCustomObject::StaticClass()->GetDefaultObject(true), true);
-	ConfigPanel->SetObject(CustomObject);
+	ConfigPanel->SetObject(CustomObject.Get());
 
 	ChildSlot
 	[

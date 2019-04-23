@@ -18,4 +18,13 @@ class CUSTOMDETAILPANEL_API UCustomObject : public UObject
 public:
 	UPROPERTY(EditAnywhere, Category = "SampleCategory")
 	FStructVariable SampleStructVariable;
+
+	UPROPERTY(EditAnywhere, Category = "SampleSubCaegory1")
+		float Myfloat;
+
+	UPROPERTY(EditAnywhere, Category = "SampleSubCaegory1")
+		int MyInt;
+
+	UPROPERTY(EditAnywhere, Category = "SampleSubCaegory2")
+		UTexture2D* MyTexture;
 };

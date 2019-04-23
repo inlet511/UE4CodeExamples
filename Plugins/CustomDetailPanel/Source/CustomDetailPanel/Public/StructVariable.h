@@ -9,12 +9,12 @@ struct CUSTOMDETAILPANEL_API FStructVariable
 {
 	GENERATED_USTRUCT_BODY()
 
+public:
 	UPROPERTY(EditAnywhere, Category = "SampleSubCaegory1")
-	float Myfloat;
+		FText MyText;
 
 	UPROPERTY(EditAnywhere, Category = "SampleSubCaegory1")
 	int MyInt;
 
-	UPROPERTY(EditAnywhere, Category = "SampleSubCaegory2")
-	UTexture2D* MyTexture;
+
 };

@@ -16,8 +16,13 @@
 	"Modules": [
 		{
 			"Name": "CustomDetailPanel",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
-		}
+			"Type": "Developer",
+			"LoadingPhase": "PostEngineInit"
+		},
+    {
+      "Name": "ReflectionDataPanel",
+      "Type": "Developer",
+      "LoadingPhase": "PostEngineInit"
+    }
 	]
 }

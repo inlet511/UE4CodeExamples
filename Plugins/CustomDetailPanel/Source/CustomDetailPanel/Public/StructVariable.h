@@ -11,7 +11,7 @@ struct CUSTOMDETAILPANEL_API FStructVariable
 
 public:
 	UPROPERTY(EditAnywhere, Category = "SampleSubCaegory1")
-		FText MyText;
+	FText MyText;
 
 	UPROPERTY(EditAnywhere, Category = "SampleSubCaegory1")
 	int MyInt;

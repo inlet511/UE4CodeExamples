@@ -17,7 +17,7 @@ static const FName ReflectionDataPanelTabName("ReflectionDataPanel");
 
 void FReflectionDataPanelModule::StartupModule()
 {
-	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
+	//出于测试目的，在本模块初始化时构造一个CustomObject实例。
 	CustomObject = NewObject<UCustomObject>();
 	if (CustomObject)
 	{

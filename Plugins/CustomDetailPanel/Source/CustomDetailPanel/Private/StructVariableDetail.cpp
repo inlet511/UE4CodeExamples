@@ -49,5 +49,4 @@ void FStructVariableDetail::OnPropertyTextCommited(const FText& InText, ETextCom
 		PropertyText->GetValue(EventValueStr);
 		PropertyText->SetValue(InText);
 	}
-
 }

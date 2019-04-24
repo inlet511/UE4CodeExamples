@@ -29,5 +29,6 @@ private:
 private:
 	TSharedPtr<class FUICommandList> PluginCommands;
 
+	//出于测试目的，在本模块初始化时需要构造一个CustomObject实例，因此此处需要一个指针。
 	class UCustomObject* CustomObject;
 };

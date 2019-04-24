@@ -3,14 +3,19 @@
 #include "DetailCategoryBuilder.h"
 #include "DetailLayoutBuilder.h"
 #include "DetailWidgetRow.h"
+#include "PropertyCustomizationHelpers.h"
+#include "SImage.h"
 
 #define LOCTEXT_NAMESPACE "MyTestDetailCustomization"
 void FMyTestDetailCustomization::CustomizeDetails(IDetailLayoutBuilder& DetailBuilder)
 {
-	//创建新的分类
+	//Create New Category
 	IDetailCategoryBuilder& CategoryBuilder = DetailBuilder.EditCategory(TEXT("CustomizeDetails"));
 
-	//分类下增加一行
+	TSharedPtr<IPropertyHandle> MyFloatHandle = DetailBuilder.GetProperty("Myfloat");
+
+	//DetailBuilder.AddPropertyToCategory(MyFloatHandle);
+	//Add a new row under category
 	CategoryBuilder.AddCustomRow(LOCTEXT("MMM", "Hello World"))
 
 	//形式1：作为整体
@@ -19,18 +24,38 @@ void FMyTestDetailCustomization::CustomizeDetails(IDetailLayoutBuilder& DetailBu
 	// .Text(LOCTEXT("TTTT", "SampleText"))];
 
 	//形式2：分为左右两部分
-	.NameContent()
+	//.NameContent()
+	//[
+	//	SNew(STextBlock)
+	//		.Text(LOCTEXT("Extra info", "Custom row header name"))
+	//		.Font(IDetailLayoutBuilder::GetDetailFont())
+	//]
+	//.ValueContent()
+	//.MinDesiredWidth(500)
+	//[
+	//	SNew(STextBlock)
+	//		.Text(LOCTEXT("Extra info", "Custom row content"))
+	//		.Font(IDetailLayoutBuilder::GetDetailFont())
+	//];
+
+	//Custom content
+	.WholeRowContent()
 	[
-		SNew(STextBlock)
-			.Text(LOCTEXT("Extra info", "Custom row header name"))
-			.Font(IDetailLayoutBuilder::GetDetailFont())
-	]
-	.ValueContent()
-	.MinDesiredWidth(500)
-	[
-		SNew(STextBlock)
-			.Text(LOCTEXT("Extra info", "Custom row content"))
-			.Font(IDetailLayoutBuilder::GetDetailFont())
+		SNew(SHorizontalBox) 
+		+ SHorizontalBox::Slot()
+		[
+			SNew(SProperty, MyFloatHandle)
+			//.CustomWidget()
+			//[
+			//	 SNew(SImage)
+			//]
+		] 
+		+SHorizontalBox::Slot()
+		[
+			SNew(SProperty, DetailBuilder.GetProperty("MyInt"))
+		]
+		//more goes here
+ 
 	];
 }
 

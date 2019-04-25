@@ -4,7 +4,7 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-class FAssetSlateUIModule : public IModuleInterface
+class FCustomDataAssetModule : public IModuleInterface
 {
 public:
 

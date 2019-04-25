@@ -26,7 +26,8 @@ public class AssetSlateUI : ModuleRules
 			new string[]
 			{
 				"Core",
-                "UMG"
+                "UMG",
+                "CustomDataAsset"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -39,7 +40,8 @@ public class AssetSlateUI : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-                "UnrealEd"
+                "UnrealEd",
+                "AssetTools"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

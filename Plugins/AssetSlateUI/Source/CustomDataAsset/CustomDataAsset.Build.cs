@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class AssetData : ModuleRules
+public class CustomDataAsset : ModuleRules
 {
-	public AssetData(ReadOnlyTargetRules Target) : base(Target)
+	public CustomDataAsset(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		

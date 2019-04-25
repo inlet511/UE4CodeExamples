@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class ASSETSLATEUI_API UCustomAsset : public UObject
+class CUSTOMDATAASSET_API UCustomAsset : public UObject
 {
 	GENERATED_BODY()
 public:

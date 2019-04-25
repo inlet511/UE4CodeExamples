@@ -70,7 +70,7 @@ void FReflectionDataPanelModule::ShutdownModule()
 	if (CustomObject)
 	{
 		CustomObject->ConditionalBeginDestroy();
-		CustomObject = nullptr;
+		//CustomObject = nullptr;
 	}
 }
 

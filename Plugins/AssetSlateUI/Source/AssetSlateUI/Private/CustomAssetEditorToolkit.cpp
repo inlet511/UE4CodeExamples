@@ -1,5 +1,4 @@
 #include "CustomAssetEditorToolkit.h"
-
 #include "Widgets/Docking/SDockTab.h"
 #include "Widgets/Images/SImage.h"
 
@@ -9,15 +8,21 @@ namespace CustomAssetEditor
 {
 static const FName AppId("CustomAssetEditorApp");
 static const FName AssetEditorID("CustomAssetEd");
-}	// namespace CustomAssetEditor
+}
 
 void FCustomAssetEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
 {
 	Super::RegisterTabSpawners(InTabManager);
-	InTabManager->RegisterTabSpawner(CustomAssetEditor::AssetEditorID, FOnSpawnTab::CreateLambda([&](const FSpawnTabArgs& Args) {
-										 return SNew(SDockTab)
-										 [SNew(SImage)];
-									 }));
+	InTabManager->RegisterTabSpawner(
+		CustomAssetEditor::AssetEditorID, 
+		FOnSpawnTab::CreateLambda([&](const FSpawnTabArgs& Args) 
+		{
+			return SNew(SDockTab)
+				[
+					SNew(SImage)
+				];
+		})
+	);
 }
 
 void FCustomAssetEditorToolkit::UnregisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
@@ -48,21 +53,31 @@ FLinearColor FCustomAssetEditorToolkit::GetWorldCentricTabColorScale(void) const
 
 void FCustomAssetEditorToolkit::Initialize(UCustomAsset* InTextAsset, const EToolkitMode::Type InMode, const TSharedPtr<IToolkitHost>& InToolkitHost)
 {
+	//创建Layout,添加一个主要区域，并对它进行划分，向内部加入一个Tab，并指定Tab的名称和类型
+	const TSharedRef<FTabManager::FLayout> StandaloneCustomLayout = 
+		FTabManager::NewLayout("StandaloneCustomLayout_Layout")
+		->AddArea
+		(
+			FTabManager::NewPrimaryArea()
+			->Split
+			(
+				FTabManager::NewStack()
+				->AddTab(CustomAssetEditor::AssetEditorID, ETabState::OpenedTab)
+			)
+		);
+
 	InCustomAsset = InTextAsset;
-	const TSharedRef<FTabManager::FLayout> StandaloneCustomLayout = FTabManager::NewLayout("StandaloneCustomLayout_Layout")
-																	->AddArea(
-																	FTabManager::NewPrimaryArea()
-																	->Split(
-																	FTabManager::NewStack()
-																	->AddTab(CustomAssetEditor::AssetEditorID, ETabState::OpenedTab)));
-	InitAssetEditor(
-	InMode,
-	InToolkitHost,
-	CustomAssetEditor::AppId,
-	StandaloneCustomLayout,
-	true,
-	true,
-	InTextAsset);
+
+	InitAssetEditor
+	(
+		InMode,
+		InToolkitHost,
+		CustomAssetEditor::AppId,
+		StandaloneCustomLayout,
+		true,
+		true,
+		InTextAsset
+	);
 
 	RegenerateMenusAndToolbars();
 }

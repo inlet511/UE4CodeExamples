@@ -8,6 +8,7 @@
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
+#include "SlateMain.h"
 
 static const FName PreactTabName("Preact");
 
@@ -70,17 +71,20 @@ TSharedRef<SDockTab> FPreactModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnT
 		);
 
 	return SNew(SDockTab)
-		.TabRole(ETabRole::NomadTab)
 		[
-			// Put your tab content here!
-			SNew(SBox)
-			.HAlign(HAlign_Center)
-			.VAlign(VAlign_Center)
-			[
-				SNew(STextBlock)
-				.Text(WidgetText)
-			]
+			SAssignNew(MainSlate, SMainSlate)
 		];
+		//.TabRole(ETabRole::NomadTab)
+		//[
+		//	// Put your tab content here!
+		//	SNew(SBox)
+		//	.HAlign(HAlign_Center)
+		//	.VAlign(VAlign_Center)
+		//	[
+		//		SNew(STextBlock)
+		//		.Text(WidgetText)
+		//	]
+		//];
 }
 
 void FPreactModule::PluginButtonClicked()

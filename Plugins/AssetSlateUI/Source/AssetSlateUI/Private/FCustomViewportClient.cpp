@@ -1,8 +1,8 @@
 #include "FCustomViewportClient.h"
-#include "CustomViewportClient.h"
+#include "FCustomViewportClient.h"
 void FCustomViewportClient::Tick(float DeltaSeconds)
 {
-	FCustomViewportClient::Tick(DeltaSeconds);
-	DrawScene.GetWorld()->Tick(LEVELTICK_All, DeltaSeconds);
+
+	//DrawScene.GetWorld()->Tick(LEVELTICK_All, DeltaSeconds);
 }
 

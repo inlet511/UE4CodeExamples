@@ -9,5 +9,5 @@ public:
 public:
 	void Construct(const FArguments& InArgs);
 
-	virtual TSharedRef<FEditorViewportClient> MakeEditorViewportClient() override;
+	/*virtual TSharedRef<FEditorViewportClient> MakeEditorViewportClient() override;*/
 };

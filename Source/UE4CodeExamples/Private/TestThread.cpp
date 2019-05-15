@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TestThread.h"
+#include "TaskGraphInterfaces.h"
 
 TestThread::TestThread()
 {
@@ -16,6 +17,19 @@ uint32 TestThread::Run()
 	if (TestInterface)
 	{
 		TestInterface->DoWork();
+		
+
+		FGraphEventRef Task = FFunctionGraphTask::CreateAndDispatchWhenReady(
+			[&]() {
+				MyTestDelegate.ExecuteIfBound();
+			}, 
+			TStatId(), 
+			nullptr, 
+			ENamedThreads::GameThread
+			);
+
+		//等待任务完成
+		FTaskGraphInterface::Get().WaitUntilTaskCompletes(Task);
 	}
 	return 0;
 }

@@ -7,6 +7,8 @@
 #include "HAL/RunnableThread.h"
 #include "RunableInterface.h"
 
+DECLARE_DELEGATE(FTestDelegate)
+
 /**
  * 
  */
@@ -16,6 +18,8 @@ public:
 	TestThread();
 
 	~TestThread();
+
+	FTestDelegate MyTestDelegate;
 
 	virtual uint32 Run();
 

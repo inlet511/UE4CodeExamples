@@ -20,6 +20,9 @@ public:
 	virtual void BeginPlay() override;
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
+
+	//Ö÷Ïß³Ì
+	void PrintFunc();
 private:
 	IRunableInterface * Interface;
 	TestThread * NewThread;

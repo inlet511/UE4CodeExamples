@@ -1,9 +1,8 @@
 #pragma once
 
 #include "TaskSequence.generated.h"
-#include "Templates/SharedPointer.h"
 
-class Task;
+class UTask;
 
 UCLASS()
 class CONTIGENCYPLAN_API UTaskSequence :public UObject
@@ -21,7 +20,7 @@ public:
 	FString Description;
 		
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSharedPtr<Task> LeadingTask;
+	UTask* LeadingTask;
 
 	//任务序列开始时间(秒)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

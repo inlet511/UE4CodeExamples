@@ -1,6 +1,7 @@
 #include "CustomAssetEditorToolkit.h"
 #include "Widgets/Docking/SDockTab.h"
 #include "Widgets/Images/SImage.h"
+#include "SCustomViewport.h"
 
 #define LOCTEXT_NAMESPACE "CustomAssetEditor"
 
@@ -19,7 +20,8 @@ void FCustomAssetEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager
 		{
 			return SNew(SDockTab)
 				[
-					SNew(SImage)
+					SNew(SCustomViewport)
+					.CustomAsset(InCustomAsset)
 				];
 		})
 	);

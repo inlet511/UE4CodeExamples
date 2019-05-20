@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class AssetSlateUI : ModuleRules
+public class PivotEditor : ModuleRules
 {
-	public AssetSlateUI(ReadOnlyTargetRules Target) : base(Target)
+	public PivotEditor(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
@@ -26,8 +26,6 @@ public class AssetSlateUI : ModuleRules
 			new string[]
 			{
 				"Core",
-                "UMG",
-                "CustomDataAsset"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -40,9 +38,9 @@ public class AssetSlateUI : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-                "UnrealEd",
-                "AssetTools",
-                "ProceduralMeshComponent"
+				"InputCore",
+				"UnrealEd",
+				"LevelEditor",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

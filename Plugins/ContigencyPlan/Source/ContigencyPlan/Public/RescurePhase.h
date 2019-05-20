@@ -2,6 +2,9 @@
 
 #include "RescurePhase.generated.h"
 
+class UTaskSequence;
+
+
 UCLASS()
 class CONTIGENCYPLAN_API URescurePhase :public UObject
 {
@@ -17,5 +20,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString HRStatistics;
 
+	//»ŒŒÒ–Ú¡–
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTaskSequence* TaskSequence;
 
 };

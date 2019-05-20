@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class Preact : ModuleRules
+public class ContigencyPlanEditor : ModuleRules
 {
-	public Preact(ReadOnlyTargetRules Target) : base(Target)
+	public ContigencyPlanEditor(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
@@ -26,7 +26,7 @@ public class Preact : ModuleRules
 			new string[]
 			{
 				"Core",
-				// ... add other public dependencies that you statically link with here ...
+				"ContigencyPlan"
 			}
 			);
 			
@@ -41,7 +41,8 @@ public class Preact : ModuleRules
 				"CoreUObject",
 				"Engine",
 				"Slate",
-				"SlateCore",
+				"SlateCore"
+
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

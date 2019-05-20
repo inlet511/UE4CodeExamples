@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
+#include "Task.h"
 
 class FToolBarBuilder;
 class FMenuBuilder;
 
-class FPreactModule : public IModuleInterface
+class FContigencyPlanEditorModule : public IModuleInterface
 {
 public:
 
@@ -16,7 +17,7 @@ public:
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 	
-	/** This function will be bound to Command (by default it will bring up plugin window) */
+	/** This function will be bound to Command. */
 	void PluginButtonClicked();
 	
 private:
@@ -24,9 +25,6 @@ private:
 	void AddToolbarExtension(FToolBarBuilder& Builder);
 	void AddMenuExtension(FMenuBuilder& Builder);
 
-	TSharedRef<class SDockTab> OnSpawnPluginTab(const class FSpawnTabArgs& SpawnTabArgs);
-
 private:
 	TSharedPtr<class FUICommandList> PluginCommands;
-	TSharedPtr<class SMainSlate> MainSlate;
 };

@@ -5,8 +5,7 @@
 #include "CoreMinimal.h"
 #include "Styling/SlateStyle.h"
 
-/**  */
-class FPreactStyle
+class FContigencyPlanEditorStyle
 {
 public:
 

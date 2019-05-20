@@ -1,14 +1,15 @@
 // Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
-#include "PreactStyle.h"
-#include "Styling/SlateStyleRegistry.h"
+#include "ContigencyPlanEditorStyle.h"
+#include "ContigencyPlanEditor.h"
 #include "Framework/Application/SlateApplication.h"
+#include "Styling/SlateStyleRegistry.h"
 #include "Slate/SlateGameResources.h"
 #include "Interfaces/IPluginManager.h"
 
-TSharedPtr< FSlateStyleSet > FPreactStyle::StyleInstance = NULL;
+TSharedPtr< FSlateStyleSet > FContigencyPlanEditorStyle::StyleInstance = NULL;
 
-void FPreactStyle::Initialize()
+void FContigencyPlanEditorStyle::Initialize()
 {
 	if (!StyleInstance.IsValid())
 	{
@@ -17,16 +18,16 @@ void FPreactStyle::Initialize()
 	}
 }
 
-void FPreactStyle::Shutdown()
+void FContigencyPlanEditorStyle::Shutdown()
 {
 	FSlateStyleRegistry::UnRegisterSlateStyle(*StyleInstance);
 	ensure(StyleInstance.IsUnique());
 	StyleInstance.Reset();
 }
 
-FName FPreactStyle::GetStyleSetName()
+FName FContigencyPlanEditorStyle::GetStyleSetName()
 {
-	static FName StyleSetName(TEXT("PreactStyle"));
+	static FName StyleSetName(TEXT("ContigencyPlanEditorStyle"));
 	return StyleSetName;
 }
 
@@ -40,12 +41,12 @@ const FVector2D Icon16x16(16.0f, 16.0f);
 const FVector2D Icon20x20(20.0f, 20.0f);
 const FVector2D Icon40x40(40.0f, 40.0f);
 
-TSharedRef< FSlateStyleSet > FPreactStyle::Create()
+TSharedRef< FSlateStyleSet > FContigencyPlanEditorStyle::Create()
 {
-	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet("PreactStyle"));
-	Style->SetContentRoot(IPluginManager::Get().FindPlugin("Preact")->GetBaseDir() / TEXT("Resources"));
+	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet("ContigencyPlanEditorStyle"));
+	Style->SetContentRoot(IPluginManager::Get().FindPlugin("ContigencyPlan")->GetBaseDir() / TEXT("Resources"));
 
-	Style->Set("Preact.OpenPluginWindow", new IMAGE_BRUSH(TEXT("ButtonIcon_40x"), Icon40x40));
+	Style->Set("ContigencyPlanEditor.PluginAction", new IMAGE_BRUSH(TEXT("ButtonIcon_40x"), Icon40x40));
 
 	return Style;
 }
@@ -56,7 +57,7 @@ TSharedRef< FSlateStyleSet > FPreactStyle::Create()
 #undef TTF_FONT
 #undef OTF_FONT
 
-void FPreactStyle::ReloadTextures()
+void FContigencyPlanEditorStyle::ReloadTextures()
 {
 	if (FSlateApplication::IsInitialized())
 	{
@@ -64,7 +65,7 @@ void FPreactStyle::ReloadTextures()
 	}
 }
 
-const ISlateStyle& FPreactStyle::Get()
+const ISlateStyle& FContigencyPlanEditorStyle::Get()
 {
 	return *StyleInstance;
 }

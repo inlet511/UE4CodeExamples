@@ -2,7 +2,7 @@
 #include "CoreMinimal.h"
 #include "Toolkits/AssetEditorToolkit.h"
 
-class FRescurePhaseToolkit : public FAssetEditorToolkit
+class FContigencyPlanEditorToolkit : public FAssetEditorToolkit
 {
 public:
 	virtual void RegisterTabSpawners(const TSharedRef<FTabManager>& TabManager) override;

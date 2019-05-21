@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Sound/SoundCue.h"
 #include "TaskSequence.generated.h"
 
 class UTask;
@@ -15,9 +16,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString TaskSequenceName;
 
-	//TODO-修改为旁白类型
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString Description;
+	USoundCue* DescriptionAudio;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString DescriptionText;
 		
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UTask* LeadingTask;

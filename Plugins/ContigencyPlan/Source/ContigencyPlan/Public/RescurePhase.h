@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "RescurePhase.generated.h"
 
@@ -12,16 +12,16 @@ class CONTIGENCYPLAN_API URescurePhase :public UObject
 
 public:
 
-	//�׶�Ŀ��
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//阶段目标
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,meta = (DisplayName="阶段目标",ToolTip="当前救援阶段的目标描述"))
 	FString PhaseTarget;
 
-	//������Դͳ��
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//人力资源统计
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,meta = (DisplayName="人力统计",ToolTip="当前救援阶段所需要的工种和人数"))
 	FString HRStatistics;
 
-	//��������
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//任务序列
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,meta = (DisplayName="任务序列",ToolTip="当前救援阶段包含的所有任务序列，数组形式"))
 	UTaskSequence* TaskSequence;
 
 };

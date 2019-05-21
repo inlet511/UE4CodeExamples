@@ -2,13 +2,13 @@
 
 #define LOCTEXT_NAMESPACE "TaskEditor"
 
-void FTaskEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& TabManager)
-{
-}
-
-void FTaskEditorToolkit::UnregisterTabSpawners(const TSharedRef<FTabManager>& TabManager)
-{
-}
+//void FTaskEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& TabManager)
+//{
+//}
+//
+//void FTaskEditorToolkit::UnregisterTabSpawners(const TSharedRef<FTabManager>& TabManager)
+//{
+//}
 
 FName FTaskEditorToolkit::GetToolkitFName() const
 {

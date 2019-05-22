@@ -4,12 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Factories/Factory.h"
-
+#include "AssetTypeCategories.h"
 #include "TaskFactory.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class CONTIGENCYPLANEDITOR_API UTaskFactory : public UFactory
 {

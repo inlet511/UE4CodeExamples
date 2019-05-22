@@ -5,7 +5,7 @@
 class UTaskSequence;
 
 
-UCLASS()
+UCLASS(BlueprintType)
 class CONTIGENCYPLAN_API URescurePhase :public UObject
 {
 	GENERATED_BODY()

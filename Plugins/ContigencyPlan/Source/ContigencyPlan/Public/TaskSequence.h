@@ -1,36 +1,36 @@
-#pragma once
+ï»¿#pragma once
 
 #include "Sound/SoundCue.h"
 #include "TaskSequence.generated.h"
 
 class UTask;
 
-UCLASS()
+UCLASS(BlueprintType)
 class CONTIGENCYPLAN_API UTaskSequence :public UObject
 {
 	GENERATED_BODY()
 
 public:
 
-	//ÈÎÎñĞòÁĞÃû³Æ
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//ä»»åŠ¡åºåˆ—åç§°
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FString TaskSequenceName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (DisplayName = "æè¿°éŸ³é¢‘"))
 	USoundCue* DescriptionAudio;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (DisplayName = "æè¿°æ–‡å­—"))
 	FString DescriptionText;
 		
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (DisplayName = "èµ·å§‹ä»»åŠ¡"))
 	UTask* LeadingTask;
 
-	//ÈÎÎñĞòÁĞ¿ªÊ¼Ê±¼ä(Ãë)
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//ä»»åŠ¡åºåˆ—å¼€å§‹æ—¶é—´(ç§’)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (DisplayName = "å¼€å§‹æ—¶é—´"))
 	int32 StartingTime;
 
-	//µ±Ç°ÈÎÎñID
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//å½“å‰ä»»åŠ¡ID
+	UPROPERTY(BlueprintReadWrite)
 	FString CurrentTaskID;
 
 };

@@ -5,9 +5,12 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 #include "Task.h"
+#include "AssetTypeCategories.h"
 
 class FToolBarBuilder;
 class FMenuBuilder;
+
+static EAssetTypeCategories::Type ContigencyCategory;
 
 class FContigencyPlanEditorModule : public IModuleInterface
 {

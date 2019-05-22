@@ -7,6 +7,7 @@
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 
 #include "LevelEditor.h"
+#include "TaskActions.h"
 
 static const FName ContigencyPlanEditorTabName("ContigencyPlanEditor");
 
@@ -20,6 +21,11 @@ void FContigencyPlanEditorModule::StartupModule()
 	FContigencyPlanEditorStyle::ReloadTextures();
 
 	FContigencyPlanEditorCommands::Register();
+
+	IAssetTools& AssetTools = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
+	RegisteredAssetTypeActions.Add(MakeShareable(new FTaskActions()));
+	AssetTools.RegisterAssetTypeActions(RegisteredAssetTypeActions[RegisteredAssetTypeActions.Num() - 1]);
+
 	
 	PluginCommands = MakeShareable(new FUICommandList);
 
@@ -49,6 +55,17 @@ void FContigencyPlanEditorModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+
+	if (AssetToolsModule != nullptr)
+	{
+		IAssetTools& AssetTools = AssetToolsModule->Get();
+		for (auto Action : RegisteredAssetTypeActions)
+		{
+			AssetTools.UnregisterAssetTypeActions(Action);
+		}
+	}
+
+
 	FContigencyPlanEditorStyle::Shutdown();
 
 	FContigencyPlanEditorCommands::Unregister();

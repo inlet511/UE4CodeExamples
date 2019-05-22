@@ -5,7 +5,7 @@
 
 
 
-UCLASS()
+UCLASS(BlueprintType)
 class CONTIGENCYPLAN_API UTask : public UObject
 {
 	GENERATED_BODY()
@@ -38,7 +38,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category = "任务", meta = (DisplayName="汇报文字"))
 	FString ReportText;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category = "任务", meta = (DisplayName="任务目标"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category = "任务", meta = (DisplayName="任务对象", ToolTip = "任务要操作的对象"))
 	FString TaskObject;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "考核", meta = (DisplayName = "开始时间", ToolTip = "单位:秒"))
@@ -47,7 +47,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "考核", meta = (DisplayName = "时间限制", ToolTip = "单位:秒"))
 	int32 TimeLimit;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "考核", meta = (DisplayName = "分值权重", ToolTip = "在整个任务中分数占比的权重值，整数"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "考核", meta = (DisplayName = "分值权重", ToolTip = "考核中该节点占总流程的分值的权重"))
 	int32 ScoreWeight;
 
 	UPROPERTY(BlueprintReadWrite, Transient)

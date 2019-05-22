@@ -5,7 +5,7 @@
 
 class URescurePhase;
 
-UCLASS()
+UCLASS(BlueprintType)
 class CONTIGENCYPLAN_API UContigencyPlan : public UObject
 {
 	GENERATED_BODY()

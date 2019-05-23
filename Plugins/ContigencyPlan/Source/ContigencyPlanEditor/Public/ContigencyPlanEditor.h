@@ -30,4 +30,5 @@ private:
 
 private:
 	TSharedPtr<class FUICommandList> PluginCommands;
+	TArray<TSharedRef<class IAssetTypeActions>> RegisteredAssetTypeActions;
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include "AssetTypeActions_Base.h"
+#include "TaskFactory.h"
 
 
 class  FTaskActions : public FAssetTypeActions_Base

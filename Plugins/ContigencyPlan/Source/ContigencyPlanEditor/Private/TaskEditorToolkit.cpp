@@ -1,5 +1,7 @@
 #include "TaskEditorToolkit.h"
 #include "DeclarativeSyntaxSupport.h"
+#include "SDockTab.h"
+#include "SImage.h"
 
 #define LOCTEXT_NAMESPACE "TaskEditor"
 
@@ -9,10 +11,10 @@ namespace TaskEditor
 	static const FName EditorID("TaskEd");
 }
 
-void FTaskEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& TabManager)
+void FTaskEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
 {
-	Super::RegisterTabSpawners(TabManager);
-	TabManager->RegisterTabSpawner(
+	FAssetEditorToolkit::RegisterTabSpawners(InTabManager);
+	InTabManager->RegisterTabSpawner(
 		TaskEditor::EditorID,
 		FOnSpawnTab::CreateLambda([&](const FSpawnTabArgs& Args)
 	{
@@ -24,10 +26,10 @@ void FTaskEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& TabM
 	);
 }
 
-void FTaskEditorToolkit::UnregisterTabSpawners(const TSharedRef<FTabManager>& TabManager)
+void FTaskEditorToolkit::UnregisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
 {
-	Super::UnregisterTabSpawners(TabManager);
-	TabManager->UnregisterTabSpawner(TaskEditor::EditorID);
+	FAssetEditorToolkit::UnregisterTabSpawners(InTabManager);
+	InTabManager->UnregisterTabSpawner(TaskEditor::EditorID);
 }
 
 FName FTaskEditorToolkit::GetToolkitFName() const

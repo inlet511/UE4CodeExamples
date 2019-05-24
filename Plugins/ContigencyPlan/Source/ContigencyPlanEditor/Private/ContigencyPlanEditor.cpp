@@ -1,6 +1,4 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
-
-#include "ContigencyPlanEditor.h"
+﻿#include "ContigencyPlanEditor.h"
 #include "ContigencyPlanEditorStyle.h"
 #include "ContigencyPlanEditorCommands.h"
 #include "Misc/MessageDialog.h"
@@ -8,8 +6,10 @@
 
 #include "LevelEditor.h"
 #include "TaskActions.h"
+#include "TaskFactory.h"
 
 static const FName ContigencyPlanEditorTabName("ContigencyPlanEditor");
+
 
 #define LOCTEXT_NAMESPACE "FContigencyPlanEditorModule"
 
@@ -22,9 +22,15 @@ void FContigencyPlanEditorModule::StartupModule()
 
 	FContigencyPlanEditorCommands::Register();
 
+
+
+	//注册AssetTypeAction
 	IAssetTools& AssetTools = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
+	ContigencyCategory = AssetTools.RegisterAdvancedAssetCategory(FName(TEXT("ContigencyCategory")), LOCTEXT("ContigencyCategory", "ContigencyCategory"));
 	RegisteredAssetTypeActions.Add(MakeShareable(new FTaskActions()));
 	AssetTools.RegisterAssetTypeActions(RegisteredAssetTypeActions[RegisteredAssetTypeActions.Num() - 1]);
+
+
 
 	
 	PluginCommands = MakeShareable(new FUICommandList);

@@ -7,6 +7,7 @@
 #include "AssetTypeCategories.h"
 #include "TaskFactory.generated.h"
 
+static EAssetTypeCategories::Type ContigencyCategory;
 
 UCLASS()
 class CONTIGENCYPLANEDITOR_API UTaskFactory : public UFactory

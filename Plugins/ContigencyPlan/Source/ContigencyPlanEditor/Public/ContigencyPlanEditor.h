@@ -10,8 +10,6 @@
 class FToolBarBuilder;
 class FMenuBuilder;
 
-static EAssetTypeCategories::Type ContigencyCategory;
-
 class FContigencyPlanEditorModule : public IModuleInterface
 {
 public:
@@ -23,6 +21,7 @@ public:
 	/** This function will be bound to Command. */
 	void PluginButtonClicked();
 	
+
 private:
 
 	void AddToolbarExtension(FToolBarBuilder& Builder);

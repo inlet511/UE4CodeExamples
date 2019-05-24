@@ -4,6 +4,7 @@
 #include "ContigencyPlanEditor.h"
 #include "Widgets/Images/SImage.h"
 #include "Widgets/DeclarativeSyntaxSupport.h"
+#include "TaskFactory.h"
 
 #define LOCTEXT_NAMESPACE "TaskActions"
 

@@ -1,0 +1,88 @@
+#include "TaskEditorToolkit.h"
+#include "DeclarativeSyntaxSupport.h"
+#include "SDockTab.h"
+#include "SImage.h"
+#include "TaskEditorSlate.h"
+
+#define LOCTEXT_NAMESPACE "TaskEditor"
+
+namespace TaskEditor
+{
+	static const FName AppId("TaskEditorApp");
+	static const FName SidePanelID("SidePanelEd");
+}
+
+void FTaskEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
+{
+	FAssetEditorToolkit::RegisterTabSpawners(InTabManager);
+
+
+	//×¢²á±ßÀ¸Tab
+	InTabManager->RegisterTabSpawner(
+	TaskEditor::SidePanelID,
+	FOnSpawnTab::CreateLambda([&](const FSpawnTabArgs& Args) {
+		return SNew(SDockTab)
+		[
+			SNew(STaskEditorSlate)
+			.Task(EditingTask)
+		];
+	}));
+}
+
+void FTaskEditorToolkit::UnregisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
+{
+	FAssetEditorToolkit::UnregisterTabSpawners(InTabManager);
+	InTabManager->UnregisterTabSpawner(TaskEditor::SidePanelID);
+}
+
+FName FTaskEditorToolkit::GetToolkitFName() const
+{
+	return FName("TaskEditor");
+}
+
+FText FTaskEditorToolkit::GetBaseToolkitName() const
+{
+	return LOCTEXT("AppLabel", "Task Editor");
+}
+
+FString FTaskEditorToolkit::GetWorldCentricTabPrefix() const
+{
+	return LOCTEXT("WorldCentricTabPrefix", "TaskAsset").ToString();
+}
+
+FLinearColor FTaskEditorToolkit::GetWorldCentricTabColorScale(void) const
+{
+	return FLinearColor(0.3f, 0.2f, 0.5f, 0.5f);
+}
+
+void FTaskEditorToolkit::Initialize(
+	UTask* InTaskAsset, 
+	const EToolkitMode::Type InMode, 
+	const TSharedPtr<IToolkitHost>& InToolkitHost)
+{
+	EditingTask = InTaskAsset;
+	const TSharedRef<FTabManager::FLayout> StandaloneCustomLayout =
+		FTabManager::NewLayout("StandaloneTaskLayout_Layout")
+		->AddArea
+		(
+			FTabManager::NewPrimaryArea()
+			->Split
+			(
+				FTabManager::NewStack()
+				->AddTab(TaskEditor::SidePanelID, ETabState::OpenedTab)
+			)
+		);
+	InitAssetEditor
+	(
+		InMode,
+		InToolkitHost,
+		TaskEditor::AppId,
+		StandaloneCustomLayout,
+		true,
+		true,
+		InTaskAsset
+	);
+	RegenerateMenusAndToolbars();
+}
+
+#undef LOCTEXT_NAMESPACE

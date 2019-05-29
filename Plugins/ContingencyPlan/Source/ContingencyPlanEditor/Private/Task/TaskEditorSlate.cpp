@@ -14,6 +14,8 @@ void STaskEditorSlate::Construct(const FArguments& InArgs)
 
 	//´´½¨DetailView
 	FDetailsViewArgs DetailsViewArgs; 
+	DetailsViewArgs.bShowScrollBar = true;
+	DetailsViewArgs.NameAreaSettings = FDetailsViewArgs::ENameAreaSettings::HideNameArea;
 	DetailView = PropertyModule.CreateDetailView(DetailsViewArgs);
 	DetailView->SetObject(Task,true);
 

@@ -2,6 +2,7 @@
 #include "DeclarativeSyntaxSupport.h"
 #include "SDockTab.h"
 #include "SImage.h"
+#include "Widgets/Layout/SScrollBox.h"
 #include "TaskEditorSlate.h"
 
 #define LOCTEXT_NAMESPACE "TaskEditor"
@@ -9,7 +10,7 @@
 namespace TaskEditor
 {
 	static const FName AppId("TaskEditorApp");
-	static const FName SidePanelID("SidePanelEd");
+	static const FName MainInfoID("MainPanel");
 }
 
 void FTaskEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
@@ -17,14 +18,18 @@ void FTaskEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& InTa
 	FAssetEditorToolkit::RegisterTabSpawners(InTabManager);
 
 
-	//×¢²á±ßÀ¸Tab
+	//×¢²áTab
 	InTabManager->RegisterTabSpawner(
-	TaskEditor::SidePanelID,
+	TaskEditor::MainInfoID,
 	FOnSpawnTab::CreateLambda([&](const FSpawnTabArgs& Args) {
 		return SNew(SDockTab)
 		[
-			SNew(STaskEditorSlate)
-			.Task(EditingTask)
+			SNew(SScrollBox)
+			+ SScrollBox::Slot()
+			[
+				SNew(STaskEditorSlate)
+					.Task(EditingTask)
+			]
 		];
 	}));
 }
@@ -32,7 +37,7 @@ void FTaskEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& InTa
 void FTaskEditorToolkit::UnregisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
 {
 	FAssetEditorToolkit::UnregisterTabSpawners(InTabManager);
-	InTabManager->UnregisterTabSpawner(TaskEditor::SidePanelID);
+	InTabManager->UnregisterTabSpawner(TaskEditor::MainInfoID);
 }
 
 FName FTaskEditorToolkit::GetToolkitFName() const
@@ -69,7 +74,7 @@ void FTaskEditorToolkit::Initialize(
 			->Split
 			(
 				FTabManager::NewStack()
-				->AddTab(TaskEditor::SidePanelID, ETabState::OpenedTab)
+				->AddTab(TaskEditor::MainInfoID, ETabState::OpenedTab)
 			)
 		);
 	InitAssetEditor

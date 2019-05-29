@@ -1,5 +1,4 @@
 #include "TaskActions.h"
-
 #include "ContingencyPlanEditor.h"
 #include "ContingencyPlanEditorStyle.h"
 #include "Task.h"

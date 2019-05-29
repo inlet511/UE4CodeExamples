@@ -2,10 +2,10 @@
 #include "AssetTypeActions_Base.h"
 
 
-class  FTaskActions : public FAssetTypeActions_Base
+class  FRescurePhaseActions : public FAssetTypeActions_Base
 {
 public:
-	virtual void OpenAssetEditor(const TArray<UObject*>& InObjects, TSharedPtr<class IToolkitHost> EditWithinLevelEditor = TSharedPtr<IToolkitHost>()) override;
+	//virtual void OpenAssetEditor(const TArray<UObject*>& InObjects, TSharedPtr<class IToolkitHost> EditWithinLevelEditor = TSharedPtr<IToolkitHost>()) override;
 	virtual TSharedPtr<class SWidget> GetThumbnailOverlay(const FAssetData& AssetData) const override;
 	virtual FText GetName() const override;
 	virtual UClass* GetSupportedClass() const;

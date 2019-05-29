@@ -3,9 +3,14 @@
 #include "ContingencyPlanEditorCommands.h"
 #include "Misc/MessageDialog.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
-
 #include "LevelEditor.h"
+
 #include "TaskActions.h"
+#include "TaskSequenceActions.h"
+#include "ContingencyPlanActions.h"
+#include "RescurePhaseActions.h"
+#include "ScenarioActions.h"
+
 #include "TaskFactory.h"
 
 static const FName ContingencyPlanEditorTabName("ContingencyPlanEditor");
@@ -26,9 +31,30 @@ void FContingencyPlanEditorModule::StartupModule()
 
 	//注册AssetTypeAction
 	IAssetTools& AssetTools = FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
+
+	//注册自定义分类
 	ContingencyCategory = AssetTools.RegisterAdvancedAssetCategory(FName(TEXT("ContingencyCategory")), LOCTEXT("ContingencyCategory", "ContingencyCategory"));
-	RegisteredAssetTypeActions.Add(MakeShareable(new FTaskActions()));
-	AssetTools.RegisterAssetTypeActions(RegisteredAssetTypeActions[RegisteredAssetTypeActions.Num() - 1]);
+
+	//注册Task
+	auto TaskActionIdx = RegisteredAssetTypeActions.Add(MakeShareable(new FTaskActions()));
+	AssetTools.RegisterAssetTypeActions(RegisteredAssetTypeActions[TaskActionIdx]);
+
+	//注册TaskSequence
+	auto TaskSequenceIdx = RegisteredAssetTypeActions.Add(MakeShareable(new FTaskSequenceActions()));
+	AssetTools.RegisterAssetTypeActions(RegisteredAssetTypeActions[TaskSequenceIdx]);
+
+	//注册RescurePhase
+	auto RescurePhaseIdx = RegisteredAssetTypeActions.Add(MakeShareable(new FRescurePhaseActions()));
+	AssetTools.RegisterAssetTypeActions(RegisteredAssetTypeActions[RescurePhaseIdx]);
+
+	//注册ContingencyPlan
+	auto ContingencyPlanIdx = RegisteredAssetTypeActions.Add(MakeShareable(new FContingencyPlanActions()));
+	AssetTools.RegisterAssetTypeActions(RegisteredAssetTypeActions[ContingencyPlanIdx]);
+
+	//注册Scenario
+	auto ScenarioIdx = RegisteredAssetTypeActions.Add(MakeShareable(new FScenarioActions()));
+	AssetTools.RegisterAssetTypeActions(RegisteredAssetTypeActions[ScenarioIdx]);
+
 
 
 

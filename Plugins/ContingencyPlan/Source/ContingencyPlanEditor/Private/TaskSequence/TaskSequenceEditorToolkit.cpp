@@ -50,7 +50,7 @@ FText FTaskSequenceEditorToolkit::GetBaseToolkitName() const
 
 FString FTaskSequenceEditorToolkit::GetWorldCentricTabPrefix() const
 {
-	return LOCTEXT("WorldCentricTabPrefix", "TaskSequence").ToString();
+	return LOCTEXT("WorldCentricTabPrefix", "ttttaskSequence").ToString();
 }
 
 FLinearColor FTaskSequenceEditorToolkit::GetWorldCentricTabColorScale(void) const

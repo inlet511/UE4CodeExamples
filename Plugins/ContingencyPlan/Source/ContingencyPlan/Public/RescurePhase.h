@@ -22,6 +22,6 @@ public:
 
 	//任务序列
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,meta = (DisplayName="任务序列",ToolTip="当前救援阶段包含的所有任务序列，数组形式"))
-	UTaskSequence* TaskSequence;
+	TArray<UTaskSequence*> TaskSequence;
 
 };

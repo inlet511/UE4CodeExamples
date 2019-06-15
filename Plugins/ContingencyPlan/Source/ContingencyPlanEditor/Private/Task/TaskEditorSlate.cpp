@@ -1,8 +1,8 @@
 #include "TaskEditorSlate.h"
-#include "SBox.h"
-#include "SBorder.h"
-#include "SBoxPanel.h"
-#include "ModuleManager.h"
+#include "Widgets/Layout/SBox.h"
+#include "Widgets/Layout/SBorder.h"
+#include "Widgets/SBoxPanel.h"
+#include "Modules/ModuleManager.h"
 #include "PropertyEditorModule.h"
 
 void STaskEditorSlate::Construct(const FArguments& InArgs)

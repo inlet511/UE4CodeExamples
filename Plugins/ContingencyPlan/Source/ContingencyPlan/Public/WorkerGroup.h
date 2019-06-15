@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "ObjectMacros.h"
+#include "UObject/ObjectMacros.h"
 
 UENUM(BlueprintType)
 enum WorkerGroup

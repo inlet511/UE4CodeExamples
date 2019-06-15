@@ -27,14 +27,14 @@ public:
 
 	virtual bool ShouldTickIfViewportsOnly() const override;
 
-	void DrawRuler(FVector Start, FVector End, FString Text);
+	void DrawRuler();
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FVector Start;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FVector End;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	FString Text;
+	UTextRenderComponent TextComp;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	bool StartConfirmed = false;
 };

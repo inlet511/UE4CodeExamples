@@ -1,6 +1,6 @@
 #include "TaskSequenceEditorToolkit.h"
-#include "SDockTab.h"
-#include "SImage.h"
+#include "Widgets/Docking/SDockTab.h"
+#include "Widgets/Images/SImage.h"
 #include "Widgets/Layout/SScrollBox.h"
 #include "TaskSequenceEditorSlate.h"
 

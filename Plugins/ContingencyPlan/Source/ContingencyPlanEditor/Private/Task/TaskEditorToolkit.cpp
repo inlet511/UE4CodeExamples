@@ -1,7 +1,7 @@
 #include "TaskEditorToolkit.h"
-#include "DeclarativeSyntaxSupport.h"
-#include "SDockTab.h"
-#include "SImage.h"
+#include "Widgets/DeclarativeSyntaxSupport.h"
+#include "Widgets/Docking/SDockTab.h"
+#include "Widgets/Images/SImage.h"
 #include "Widgets/Layout/SScrollBox.h"
 #include "TaskEditorSlate.h"
 

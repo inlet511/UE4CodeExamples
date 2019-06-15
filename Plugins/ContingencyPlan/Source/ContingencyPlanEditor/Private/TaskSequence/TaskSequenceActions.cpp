@@ -6,7 +6,6 @@
 #include "TaskSequenceFactory.h"
 #include "Widgets/DeclarativeSyntaxSupport.h"
 #include "Widgets/Images/SImage.h"
-#include "Text.h"
 #include "TaskFactory.h"
 
 #define LOCTEXT_NAMESPACE "TaskSequenceActions"

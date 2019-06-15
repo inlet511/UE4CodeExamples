@@ -16,9 +16,11 @@ public:
 	// FEdMode interface
 	virtual void Enter() override;
 	virtual void Exit() override;
-	//virtual void Tick(FEditorViewportClient* ViewportClient, float DeltaTime) override;
-	//virtual void Render(const FSceneView* View, FViewport* Viewport, FPrimitiveDrawInterface* PDI) override;
+	virtual void Tick(FEditorViewportClient* ViewportClient, float DeltaTime) override;
+	virtual void Render(const FSceneView* View, FViewport* Viewport, FPrimitiveDrawInterface* PDI) override;
 	//virtual void ActorSelectionChangeNotify() override;
+	virtual bool CapturedMouseMove(FEditorViewportClient* InViewportClient, FViewport* InViewport, int32 InMouseX, int32 InMouseY) override;
+
 	bool UsesToolkits() const override;
 	// End of FEdMode interface
 };

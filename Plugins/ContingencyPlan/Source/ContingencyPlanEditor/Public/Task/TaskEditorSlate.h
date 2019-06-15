@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SCompoundWidget.h"
+#include "Widgets/SCompoundWidget.h"
 #include "IDetailsView.h"
 
 class STaskEditorSlate : public SCompoundWidget

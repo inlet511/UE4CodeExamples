@@ -4,21 +4,36 @@ using UnrealBuildTool;
 
 public class ContingencyPlanEditor : ModuleRules
 {
+    
 	public ContingencyPlanEditor(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		
-		PublicIncludePaths.AddRange(
+
+        PublicIncludePaths.Add(ModuleDirectory);
+        PublicIncludePaths.AddRange(
 			new string[] {
-				// ... add public include paths required here ...
-			}
+
+            }
 			);
 				
 		
 		PrivateIncludePaths.AddRange(
 			new string[] {
 				// ... add other private include paths required here ...
-			}
+                "ContingencyPlanEditor/Public",
+                "ContingencyPlanEditor/Public/ContingencyPlan",
+                "ContingencyPlanEditor/Public/RescurePhase",
+                "ContingencyPlanEditor/Public/Scenario",
+                "ContingencyPlanEditor/Public/Task",
+                "ContingencyPlanEditor/Public/TaskSequence",
+
+                "ContingencyPlanEditor/Private",
+                "ContingencyPlanEditor/Private/ContingencyPlan",
+                "ContingencyPlanEditor/Private/RescurePhase",
+                "ContingencyPlanEditor/Private/Scenario",
+                "ContingencyPlanEditor/Private/Task",
+                "ContingencyPlanEditor/Private/TaskSequence"
+            }
 			);
 			
 		

@@ -26,7 +26,7 @@ void ARulerTool::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	DrawRuler(Start, End, Text);
+
 
 }
 
@@ -35,7 +35,7 @@ bool ARulerTool::ShouldTickIfViewportsOnly() const
 	return true;
 }
 
-void ARulerTool::DrawRuler(FVector Start, FVector End, FString Text)
+void ARulerTool::DrawRuler()
 {
 	auto World = GetWorld();
 	FColor DebugColor(0, 255, 0, 255);
@@ -45,7 +45,7 @@ void ARulerTool::DrawRuler(FVector Start, FVector End, FString Text)
 	{	
 		DrawDebugBox(World, End, Extend, DebugColor);
 		DrawDebugLine(World, Start, End, DebugColor);
-		//DrawDebugString(World, , Text, 0,DebugColor);
+		
 	}
 }
 

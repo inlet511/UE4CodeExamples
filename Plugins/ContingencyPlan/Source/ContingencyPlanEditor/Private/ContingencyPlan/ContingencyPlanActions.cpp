@@ -1,14 +1,10 @@
 #include "ContingencyPlanActions.h"
-
+#include "ContingencyPlan.h"
 #include "ContingencyPlanEditor.h"
 #include "ContingencyPlanEditorStyle.h"
-#include "ContingencyPlan.h"
-//#include "TaskEditorToolkit.h"
 #include "TaskFactory.h"
-#include "ContingencyPlan.h"
 #include "Widgets/DeclarativeSyntaxSupport.h"
 #include "Widgets/Images/SImage.h"
-#include "Text.h"
 
 #define LOCTEXT_NAMESPACE "ContingencyPlanActions"
 //

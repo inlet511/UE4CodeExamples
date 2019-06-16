@@ -11,11 +11,11 @@ class CONTINGENCYPLAN_API UContingencyPlan : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName="预案名称"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ContingencyPlan", meta = (DisplayName="预案名称"))
 	FText PlanName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,meta = (DisplayName="救援阶段"))
-	TArray<URescurePhase*> RescurePhases;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RescurePhase" ,meta = (DisplayName = "救援阶段"))
+    TArray<URescurePhase*> RescurePhases;
 };
 
 #undef LOCTEXT_NAMESPACE

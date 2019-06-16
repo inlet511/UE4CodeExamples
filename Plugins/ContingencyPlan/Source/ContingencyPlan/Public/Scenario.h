@@ -7,9 +7,9 @@ class CONTINGENCYPLAN_API UScenario :public UObject
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (DisplayName = "场景名称"))
-		FText ScenarioName;
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ContingencyPlan" ,meta = (DisplayName = "场景名称"))
+    FText ScenarioName;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "应急预案"))
-		UContingencyPlan* ContingencyPlan;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ContingencyPlan" ,meta = (DisplayName = "应急预案"))
+    UContingencyPlan* ContingencyPlan;
 };

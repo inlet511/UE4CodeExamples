@@ -13,15 +13,15 @@ class CONTINGENCYPLAN_API URescurePhase :public UObject
 public:
 
 	//阶段目标
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,meta = (DisplayName="阶段目标",ToolTip="当前救援阶段的目标描述"))
-	FString PhaseTarget;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ContingencyPlan" ,meta = (DisplayName = "阶段目标", ToolTip = "当前救援阶段的目标描述"))
+    FString PhaseTarget;
 
-	//人力资源统计
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,meta = (DisplayName="人力统计",ToolTip="当前救援阶段所需要的工种和人数"))
-	FString HRStatistics;
+    //人力资源统计
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ContingencyPlan" ,meta = (DisplayName = "人力统计", ToolTip = "当前救援阶段所需要的工种和人数"))
+    FString HRStatistics;
 
-	//任务序列
-	UPROPERTY(EditAnywhere, BlueprintReadWrite,meta = (DisplayName="任务序列",ToolTip="当前救援阶段包含的所有任务序列，数组形式"))
-	TArray<UTaskSequence*> TaskSequence;
+    //任务序列
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ContingencyPlan" ,meta = (DisplayName = "任务序列", ToolTip = "当前救援阶段包含的所有任务序列，数组形式"))
+    TArray<UTaskSequence*> TaskSequence;
 
 };

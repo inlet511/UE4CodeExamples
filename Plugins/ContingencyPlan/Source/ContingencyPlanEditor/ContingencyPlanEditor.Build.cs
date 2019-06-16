@@ -9,7 +9,7 @@ public class ContingencyPlanEditor : ModuleRules
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicIncludePaths.Add(ModuleDirectory);
+        //PublicIncludePaths.Add(ModuleDirectory);
         PublicIncludePaths.AddRange(
 			new string[] {
 
@@ -40,11 +40,14 @@ public class ContingencyPlanEditor : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
-				"ContingencyPlan"
+				"Core"
 			}
 			);
 			
+        if(Target.Type == TargetRules.TargetType.Editor)
+        {
+            PublicDependencyModuleNames.Add("ContingencyPlan");
+        }
 		
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
@@ -57,7 +60,8 @@ public class ContingencyPlanEditor : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-                "PropertyEditor"
+                "PropertyEditor",
+                "ContingencyPlan"
 
 				// ... add private dependencies that you statically link with here ...	
 			}

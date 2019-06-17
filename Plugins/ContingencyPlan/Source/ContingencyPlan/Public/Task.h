@@ -48,6 +48,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "考核", meta = (DisplayName = "分值权重", ToolTip = "考核中该节点占总流程的分值的权重"))
 	int32 ScoreWeight;
 
-        UPROPERTY(BlueprintReadWrite, Transient, Category = "ContingencyPlan")
-        bool bCompleted;
+    UPROPERTY(BlueprintReadWrite, Transient, Category = "ContingencyPlan")
+    bool bCompleted;
 };

@@ -49,6 +49,9 @@ TSharedRef< FSlateStyleSet > FContingencyPlanEditorStyle::Create()
 
 	Style->Set("ContingencyPlanEditor.PluginAction", new IMAGE_BRUSH(TEXT("ButtonIcon_40x"), Icon40x40));
 	Style->Set("ContingencyPlanEditor.TaskIcon", new IMAGE_BRUSH(TEXT("TaskIcon_512"), Icon512x512));
+	Style->Set("ContingencyPlanEditor.TaskSequenceIcon", new IMAGE_BRUSH(TEXT("TaskSequenceIcon_512x"), Icon512x512));
+	Style->Set("ContingencyPlanEditor.RescurePhaseIcon", new IMAGE_BRUSH(TEXT("RescurePhaseIcon_512x"), Icon512x512));
+	Style->Set("ContingencyPlanEditor.ContingencyPlanIcon", new IMAGE_BRUSH(TEXT("ContingencyPlanIcon_512x"), Icon512x512));
 
 	return Style;
 }

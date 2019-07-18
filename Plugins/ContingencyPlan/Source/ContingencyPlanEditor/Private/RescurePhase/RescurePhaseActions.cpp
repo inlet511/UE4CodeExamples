@@ -27,7 +27,7 @@
 
 TSharedPtr<class SWidget> FRescurePhaseActions::GetThumbnailOverlay(const FAssetData& AssetData) const
 {
-	auto IconStyle = FContingencyPlanEditorStyle::Get().GetBrush("ContingencyPlanEditor.TaskIcon");
+	auto IconStyle = FContingencyPlanEditorStyle::Get().GetBrush("ContingencyPlanEditor.RescurePhaseIcon");
 	return SNew(SImage)
 	.Image(IconStyle);
 }
@@ -44,7 +44,7 @@ UClass* FRescurePhaseActions::GetSupportedClass() const
 
 FColor FRescurePhaseActions::GetTypeColor() const
 {
-	return FColor::Purple;
+	return FColor(211, 84, 0);
 }
 
 uint32 FRescurePhaseActions::GetCategories()

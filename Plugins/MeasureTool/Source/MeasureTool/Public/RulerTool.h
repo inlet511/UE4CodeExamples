@@ -6,35 +6,22 @@
 #include "GameFramework/Actor.h"
 #include "Components/TextRenderComponent.h"
 #include "Components/StaticMeshComponent.h"
-#include "RulerTool.generated.h"
+#include "EditorViewportClient.h"
 
-UCLASS(Blueprintable,BlueprintType)
-class MEASURETOOL_API ARulerTool : public AActor
+class MEASURETOOL_API RulerTool
 {
-	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ARulerTool();
+	RulerTool();
+	virtual ~RulerTool();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
 public:	
+	static RulerTool* Get();
+	virtual void Render(const FSceneView* View, FViewport* Viewport, FPrimitiveDrawInterface* PDI) ;
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(FEditorViewportClient* ViewportClient, float DeltaTime) ;
+	void ShowAllActors();
 
-	virtual bool ShouldTickIfViewportsOnly() const override;
-
-	void DrawRuler();
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	FVector Start;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	FVector End;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	UTextRenderComponent TextComp;
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	bool StartConfirmed = false;
 };

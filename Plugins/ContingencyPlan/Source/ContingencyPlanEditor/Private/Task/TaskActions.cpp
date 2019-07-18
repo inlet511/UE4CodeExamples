@@ -42,7 +42,7 @@ UClass* FTaskActions::GetSupportedClass() const
 
 FColor FTaskActions::GetTypeColor() const
 {
-	return FColor::Purple;
+	return FColor(243, 156, 18);
 }
 
 uint32 FTaskActions::GetCategories()

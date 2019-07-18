@@ -26,7 +26,7 @@ void FTaskSequenceActions::OpenAssetEditor(const TArray<UObject*>& InObjects, TS
 
 TSharedPtr<class SWidget> FTaskSequenceActions::GetThumbnailOverlay(const FAssetData& AssetData) const
 {
-	auto IconStyle = FContingencyPlanEditorStyle::Get().GetBrush("ContingencyPlanEditor.TaskIcon");
+	auto IconStyle = FContingencyPlanEditorStyle::Get().GetBrush("ContingencyPlanEditor.TaskSequenceIcon");
 	return SNew(SImage)
 	.Image(IconStyle);
 }
@@ -43,7 +43,7 @@ UClass* FTaskSequenceActions::GetSupportedClass() const
 
 FColor FTaskSequenceActions::GetTypeColor() const
 {
-	return FColor::Purple;
+	return FColor(230, 126, 34);
 }
 
 uint32 FTaskSequenceActions::GetCategories()

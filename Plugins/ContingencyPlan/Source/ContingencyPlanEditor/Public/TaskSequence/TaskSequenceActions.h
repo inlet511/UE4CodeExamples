@@ -10,4 +10,8 @@ public:
 	virtual UClass* GetSupportedClass() const;
 	virtual FColor GetTypeColor() const;
 	virtual uint32 GetCategories();
+	virtual FText GetDisplayNameFromAssetData(const FAssetData& AssetData) const override
+	{
+		return FText::GetEmpty();
+	}
 };

@@ -37,7 +37,13 @@ public:
 	FString ReportText;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly,Category = "任务", meta = (DisplayName="任务对象", ToolTip = "任务要操作的对象"))
-	FString TaskObject;
+	TArray<FString> TaskObject;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "任务", meta = (DisplayName = "任务类型", ToolTip = "任务属于的类型"))
+	TArray<FString> TaskType;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "任务", meta = (DisplayName = "任务地点", ToolTip = "任务目标处于的位置"))
+	TArray<FVector> TargetLocation;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "考核", meta = (DisplayName = "开始时间", ToolTip = "单位:秒"))
 	FString StartTime;

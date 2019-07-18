@@ -17,8 +17,8 @@ public:
     FString PhaseTarget;
 
     //人力资源统计
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ContingencyPlan" ,meta = (DisplayName = "人力统计", ToolTip = "当前救援阶段所需要的工种和人数"))
-    FString HRStatistics;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ContingencyPlan", meta = (DisplayName = "人力统计", ToolTip = "当前救援阶段所需要的工种和人数"))
+	TArray<FString> HRStatistics;
 
     //任务序列
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ContingencyPlan" ,meta = (DisplayName = "任务序列", ToolTip = "当前救援阶段包含的所有任务序列，数组形式"))

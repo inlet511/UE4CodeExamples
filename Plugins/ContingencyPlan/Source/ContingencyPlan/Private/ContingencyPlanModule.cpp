@@ -14,6 +14,6 @@ void FContingencyPlanModule::ShutdownModule()
 	UE_LOG(LogTemp, Warning, TEXT("ContingencyPlan Module End"));
 }
 
-IMPLEMENT_MODULE(FContingencyPlanModule, ContingencyPlanModule)
+IMPLEMENT_MODULE(FContingencyPlanModule, ContingencyPlan)
 
 #undef LOCTEXT_NAMESPACE

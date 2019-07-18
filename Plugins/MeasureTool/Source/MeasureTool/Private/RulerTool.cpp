@@ -1,52 +1,63 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "RulerTool.h"
-#include "Components/BoxComponent.h"
-#include "Components/StaticMeshComponent.h"
 #include "DrawDebugHelpers.h"
 #include "SharedPointer.h"
+#include "Editor/EditorEngine.h"
+#include "EngineUtils.h"
+#include "Editor.h"
+
+
 
 // Sets default values
-ARulerTool::ARulerTool()
+RulerTool::RulerTool()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+
 
 }
 
-// Called when the game starts or when spawned
-void ARulerTool::BeginPlay()
+RulerTool::~RulerTool()
 {
-	Super::BeginPlay();
-	
+
+}
+
+
+RulerTool* RulerTool::Get()
+{
+	static RulerTool* CurrentRulerTool = nullptr;
+	static bool bInit = false;
+	if (!bInit)
+	{
+		bInit = true;
+		CurrentRulerTool = new RulerTool();
+	}
+	return CurrentRulerTool;
+}
+
+void RulerTool::Render(const FSceneView* View, FViewport* Viewport, FPrimitiveDrawInterface* PDI)
+{
+
 }
 
 // Called every frame
-void ARulerTool::Tick(float DeltaTime)
+void RulerTool::Tick(FEditorViewportClient* ViewportClient, float DeltaTime)
 {
-	Super::Tick(DeltaTime);
 
 
 
 }
 
-bool ARulerTool::ShouldTickIfViewportsOnly() const
+void RulerTool::ShowAllActors()
 {
-	return true;
-}
-
-void ARulerTool::DrawRuler()
-{
-	auto World = GetWorld();
-	FColor DebugColor(0, 255, 0, 255);
-	FVector Extend(1.0f);
-	DrawDebugBox(World, Start, Extend, DebugColor,false,0.2f);
-	if (StartConfirmed)
-	{	
-		DrawDebugBox(World, End, Extend, DebugColor);
-		DrawDebugLine(World, Start, End, DebugColor);
-		
+	for (TActorIterator<AActor> Iter(GEditor->GetEditorWorldContext().World()); Iter; ++Iter)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("%s"),*(Iter->GetActorLabel()));
+		TArray<UStaticMeshComponent*> StaticComps;
+		Iter->GetComponents<UStaticMeshComponent>(StaticComps);
+		for (auto comp : StaticComps)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *(comp->GetFName().ToString()));
+		}
 	}
 }
-
 

@@ -20,7 +20,7 @@ public:
     USoundCue* DescriptionAudio;
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ContingencyPlan" ,meta = (DisplayName = "描述文字"))
-    FString DescriptionText;
+    FText DescriptionText;
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ContingencyPlan" ,meta = (DisplayName = "起始任务"))
     UTask* LeadingTask;

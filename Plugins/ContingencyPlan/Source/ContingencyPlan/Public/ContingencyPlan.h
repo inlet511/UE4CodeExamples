@@ -14,6 +14,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ContingencyPlan", meta = (DisplayName="预案名称"))
 	FText PlanName;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ContingencyPlan", meta = (DisplayName = "预案描述"))
+	FText PlanDescription;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RescurePhase" ,meta = (DisplayName = "救援阶段"))
     TArray<URescurePhase*> RescurePhases;
 };

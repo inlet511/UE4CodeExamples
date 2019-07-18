@@ -13,5 +13,3 @@ public:
         return true;
     }
 };
-
-IMPLEMENT_MODULE(FContingencyPlanModule, ContingencyPlan);

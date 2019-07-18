@@ -4,6 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "EdMode.h"
+#include "RulerTool.h"
+
+enum class EMeasureMode : uint8
+{
+	RULER,
+	ANGLEMETER
+};
+
 
 class FMeasureToolEdMode : public FEdMode
 {
@@ -13,7 +21,11 @@ public:
 	FMeasureToolEdMode();
 	virtual ~FMeasureToolEdMode();
 
+	//当前使用尺子还是量角器
+	EMeasureMode CurrentMeasureMode = EMeasureMode::RULER;
+
 	// FEdMode interface
+	virtual void Initialize() override;
 	virtual void Enter() override;
 	virtual void Exit() override;
 	virtual void Tick(FEditorViewportClient* ViewportClient, float DeltaTime) override;
@@ -23,4 +35,6 @@ public:
 
 	bool UsesToolkits() const override;
 	// End of FEdMode interface
+
+	RulerTool* Ruler;
 };

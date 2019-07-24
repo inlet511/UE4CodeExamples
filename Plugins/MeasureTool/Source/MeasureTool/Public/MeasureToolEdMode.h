@@ -1,4 +1,4 @@
-// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
+ï»¿// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
@@ -12,17 +12,50 @@ enum class EMeasureMode : uint8
 	ANGLEMETER
 };
 
+class MEASURETOOL_API FMeasure
+{
+public:
+	FVector StartLocation;
+	FVector EndLocation;
+	FName Name;
+
+	void SetMeasureName(const FText& Text) { Name = FName(*Text.ToString()); }
+	FText GetMeasureName() { return FText::FromName(Name); }
+
+	FMeasure() :
+		StartLocation(FVector(0)),
+		EndLocation(FVector(0)),
+		Name("")
+	{	};
+
+	FMeasure(FVector _StartLocation, FVector _EndLocation, FName _Name = ""):
+		StartLocation(_StartLocation),
+		EndLocation(_EndLocation),
+		Name(_Name)
+	{	};
+
+	~FMeasure()
+	{
+		Name = "";
+	};
+};
+
+
 
 class FMeasureToolEdMode : public FEdMode
 {
+	struct FPaintRay
+	{
+		FVector CameraLocation;
+		FVector RayStart;
+		FVector RayDirection;
+	};
+
 public:
 	const static FEditorModeID EM_MeasureToolEdModeId;
 public:
 	FMeasureToolEdMode();
 	virtual ~FMeasureToolEdMode();
-
-	//µ±Ç°Ê¹ÓÃ³ß×Ó»¹ÊÇÁ¿½ÇÆ÷
-	EMeasureMode CurrentMeasureMode = EMeasureMode::RULER;
 
 	// FEdMode interface
 	virtual void Initialize() override;
@@ -30,11 +63,24 @@ public:
 	virtual void Exit() override;
 	virtual void Tick(FEditorViewportClient* ViewportClient, float DeltaTime) override;
 	virtual void Render(const FSceneView* View, FViewport* Viewport, FPrimitiveDrawInterface* PDI) override;
-	//virtual void ActorSelectionChangeNotify() override;
 	virtual bool CapturedMouseMove(FEditorViewportClient* InViewportClient, FViewport* InViewport, int32 InMouseX, int32 InMouseY) override;
-
-	bool UsesToolkits() const override;
+	virtual bool HandleClick(FEditorViewportClient* InViewportClient, HHitProxy* HitProxy, const FViewportClick& Click) override;
+	virtual bool UsesToolkits() const override;
+	virtual void DrawHUD(FEditorViewportClient* ViewportClient, FViewport* Viewport, const FSceneView* View, FCanvas* Canvas) override;
 	// End of FEdMode interface
+	
+	EMeasureMode CurrentMeasureMode = EMeasureMode::RULER;
+	void RefreshAllMeshComponents();
+	void RetrieveMouseRay(const FSceneView* View, FViewport* Viewport, FPrimitiveDrawInterface* PDI, TArray<FPaintRay>& OutPaintRays);
+	void RenderAllMeasures(const FSceneView* View, FViewport* Viewport, FPrimitiveDrawInterface* PDI);
 
 	RulerTool* Ruler;
+	TArray< FMeasure> Measures;
+
+private: 
+	TArray<UStaticMeshComponent*> AllMeshComponents;
+	bool bIsMeasuring = false;
+	bool HitSuccess = false;
+	FHitResult BestHit;
+	FVector BestLocation;
 };

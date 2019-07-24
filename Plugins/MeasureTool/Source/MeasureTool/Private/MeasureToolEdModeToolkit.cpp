@@ -15,6 +15,7 @@ FMeasureToolEdModeToolkit::FMeasureToolEdModeToolkit()
 
 void FMeasureToolEdModeToolkit::Init(const TSharedPtr<IToolkitHost>& InitToolkitHost)
 {
+	/*
 	struct Locals
 	{
 		static bool IsWidgetEnabled()
@@ -54,7 +55,8 @@ void FMeasureToolEdModeToolkit::Init(const TSharedPtr<IToolkitHost>& InitToolkit
 				.OnClicked_Static(&Locals::OnButtonClick, InOffset);
 		}
 	};
-
+	*/
+	/*
 	const float Factor = 256.0f;
 
 	SAssignNew(ToolkitWidget, SBorder)
@@ -101,8 +103,8 @@ void FMeasureToolEdModeToolkit::Init(const TSharedPtr<IToolkitHost>& InitToolkit
 					Locals::MakeButton(LOCTEXT("DownButtonLabel", "Down"), FVector(0, 0, -Factor))
 				]
 
-		];
-		
+		];*/
+	
 	FModeToolkit::Init(InitToolkitHost);
 }
 

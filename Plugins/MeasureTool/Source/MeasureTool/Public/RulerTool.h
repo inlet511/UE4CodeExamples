@@ -22,6 +22,4 @@ public:
 	virtual void Render(const FSceneView* View, FViewport* Viewport, FPrimitiveDrawInterface* PDI) ;
 	// Called every frame
 	virtual void Tick(FEditorViewportClient* ViewportClient, float DeltaTime) ;
-	void ShowAllActors();
-
 };

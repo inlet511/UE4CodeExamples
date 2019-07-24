@@ -3,9 +3,6 @@
 #include "RulerTool.h"
 #include "DrawDebugHelpers.h"
 #include "SharedPointer.h"
-#include "Editor/EditorEngine.h"
-#include "EngineUtils.h"
-#include "Editor.h"
 
 
 
@@ -45,19 +42,5 @@ void RulerTool::Tick(FEditorViewportClient* ViewportClient, float DeltaTime)
 
 
 
-}
-
-void RulerTool::ShowAllActors()
-{
-	for (TActorIterator<AActor> Iter(GEditor->GetEditorWorldContext().World()); Iter; ++Iter)
-	{
-		//UE_LOG(LogTemp, Warning, TEXT("%s"),*(Iter->GetActorLabel()));
-		TArray<UStaticMeshComponent*> StaticComps;
-		Iter->GetComponents<UStaticMeshComponent>(StaticComps);
-		for (auto comp : StaticComps)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *(comp->GetFName().ToString()));
-		}
-	}
 }
 

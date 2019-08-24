@@ -4,52 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "EdMode.h"
-#include "RulerTool.h"
-
-enum class EMeasureMode : uint8
-{
-	RULER,
-	ANGLEMETER
-};
-
-class MEASURETOOL_API FMeasure
-{
-public:
-	FVector StartLocation;
-	FVector EndLocation;
-	FName Name;
-
-	void SetMeasureName(const FText& Text) { Name = FName(*Text.ToString()); }
-	FText GetMeasureName() { return FText::FromName(Name); }
-
-	FMeasure() :
-		StartLocation(FVector(0)),
-		EndLocation(FVector(0)),
-		Name("")
-	{	};
-
-	FMeasure(FVector _StartLocation, FVector _EndLocation, FName _Name = ""):
-		StartLocation(_StartLocation),
-		EndLocation(_EndLocation),
-		Name(_Name)
-	{	};
-
-	~FMeasure()
-	{
-		Name = "";
-	};
-};
-
+#include "PointRulerTool.h"
+#include "ObjectRulerTool.h"
 
 
 class FMeasureToolEdMode : public FEdMode
 {
-	struct FPaintRay
-	{
-		FVector CameraLocation;
-		FVector RayStart;
-		FVector RayDirection;
-	};
 
 public:
 	const static FEditorModeID EM_MeasureToolEdModeId;
@@ -63,24 +23,21 @@ public:
 	virtual void Exit() override;
 	virtual void Tick(FEditorViewportClient* ViewportClient, float DeltaTime) override;
 	virtual void Render(const FSceneView* View, FViewport* Viewport, FPrimitiveDrawInterface* PDI) override;
-	virtual bool CapturedMouseMove(FEditorViewportClient* InViewportClient, FViewport* InViewport, int32 InMouseX, int32 InMouseY) override;
-	virtual bool HandleClick(FEditorViewportClient* InViewportClient, HHitProxy* HitProxy, const FViewportClick& Click) override;
 	virtual bool UsesToolkits() const override;
 	virtual void DrawHUD(FEditorViewportClient* ViewportClient, FViewport* Viewport, const FSceneView* View, FCanvas* Canvas) override;
-	// End of FEdMode interface
-	
-	EMeasureMode CurrentMeasureMode = EMeasureMode::RULER;
-	void RefreshAllMeshComponents();
-	void RetrieveMouseRay(const FSceneView* View, FViewport* Viewport, FPrimitiveDrawInterface* PDI, TArray<FPaintRay>& OutPaintRays);
-	void RenderAllMeasures(const FSceneView* View, FViewport* Viewport, FPrimitiveDrawInterface* PDI);
+	virtual bool HandleClick(FEditorViewportClient* InViewportClient, HHitProxy* HitProxy, const FViewportClick& Click) override;
+	// End of FEdMode interface	
 
-	RulerTool* Ruler;
-	TArray< FMeasure> Measures;
+
 
 private: 
-	TArray<UStaticMeshComponent*> AllMeshComponents;
-	bool bIsMeasuring = false;
-	bool HitSuccess = false;
-	FHitResult BestHit;
-	FVector BestLocation;
+	enum EMeasureTool CurrentMeasureMode;
+
+public:
+	//SubTools
+	TSharedPtr<FPointRulerTool> PointRuler;
+	TSharedPtr<FObjectRulerTool> ObjectRuler;
+
+	void SetCurrentMeasureMode(EMeasureTool InMeasureMode);
+	EMeasureTool GetCurrentMeasureMode();
 };

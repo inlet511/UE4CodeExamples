@@ -7,6 +7,8 @@
 #include "EditorViewportClient.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "PointRulerTool.h"
+#include "ObjectRulerTool.h"
+#include "AnnotationTool.h"
 
 
 
@@ -26,8 +28,9 @@ void FMeasureToolEdMode::Initialize()
 {
 	PointRuler = MakeShareable(new FPointRulerTool());
 	ObjectRuler = MakeShareable(new FObjectRulerTool());
+	AnnotationTool = MakeShareable(new FAnnotationTool());
 
-	CurrentMeasureMode = EMeasureTool::OBJECT_RULER_TOOL;
+	CurrentMeasureMode = EMeasureTool::POINT_RULER_TOOL;
 }
 
 void FMeasureToolEdMode::Enter()
@@ -66,6 +69,8 @@ void FMeasureToolEdMode::Tick(FEditorViewportClient* ViewportClient, float Delta
 	case EMeasureTool::OBJECT_RULER_TOOL:
 
 		break;
+	case EMeasureTool::ANNOTATION_TOOL:
+		break;
 	default:
 		break;
 	}
@@ -83,6 +88,8 @@ void FMeasureToolEdMode::Render(const FSceneView* View, FViewport* Viewport, FPr
 	case EMeasureTool::OBJECT_RULER_TOOL:
 
 		break;
+	case EMeasureTool::ANNOTATION_TOOL:
+		break;
 	default:
 		break;
 	}
@@ -90,6 +97,7 @@ void FMeasureToolEdMode::Render(const FSceneView* View, FViewport* Viewport, FPr
 	//切换工具不影响测量线的显示
 	PointRuler->RenderAllMeasures(View, Viewport, PDI);
 	ObjectRuler->RenderAllMeasures(View, Viewport, PDI);
+	AnnotationTool->RenderAllAnnotations(View, Viewport, PDI);
 }
 
 
@@ -105,6 +113,7 @@ void FMeasureToolEdMode::DrawHUD(FEditorViewportClient* ViewportClient, FViewpor
 	//切换工具不影响文字的显示
 	PointRuler->DrawText(ViewportClient, Viewport, View, Canvas);
 	ObjectRuler->DrawText(ViewportClient, Viewport, View, Canvas);
+	AnnotationTool->DrawText(ViewportClient, Viewport, View, Canvas);
 }
 
 bool FMeasureToolEdMode::HandleClick(FEditorViewportClient* InViewportClient, HHitProxy* HitProxy, const FViewportClick& Click)
@@ -117,7 +126,7 @@ bool FMeasureToolEdMode::HandleClick(FEditorViewportClient* InViewportClient, HH
 
 	case EMeasureTool::OBJECT_RULER_TOOL:
 		return FEdMode::HandleClick(InViewportClient, HitProxy, Click);
-
+	case EMeasureTool::ANNOTATION_TOOL:		
 	default:
 		return FEdMode::HandleClick(InViewportClient, HitProxy, Click);
 	}

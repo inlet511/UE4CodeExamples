@@ -30,11 +30,6 @@ private:
 	TSharedPtr<SWidget> ToolkitWidget;
 
 
-	FSlateColorBrush brush1 = FSlateColorBrush(FLinearColor(0.14f,0.06f,0.06f,1.0f));
-	FSlateColorBrush brush2 = FSlateColorBrush(FLinearColor(0.06f, 0.12f, 0.14f, 1.0f));
-	FSlateColorBrush brush3 = FSlateColorBrush(FLinearColor(0.06f, 0.14f, 0.07f, 1.0f));
-	FSlateColorBrush brush4 = FSlateColorBrush(FLinearColor(1.0f, 1.0f, 1.0f, 1.0f));
-
 public:
 
 	//缓存当前EditorMode
@@ -43,5 +38,14 @@ public:
 	TSharedPtr<SEditableTextBox> AnnotationInput;
 	FReply AddMeasure();
 	FReply SetCurrentMeasureTool(EMeasureTool InMeasureTool);
+	FReply AddAnnotation();
+
+	//是否是当前的工具
 	EVisibility IsCurrentTool(EMeasureTool InMeasureTool) const;
+
+	//上方工具栏按钮的激活状态
+	bool ToolButtonActive(EMeasureTool InMeasureTool) const;
+
+	//是否选择了N个对象
+	bool SelectedNActors(int32 n) const;
 };

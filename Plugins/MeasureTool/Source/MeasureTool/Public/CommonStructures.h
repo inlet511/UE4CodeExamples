@@ -7,7 +7,8 @@
 enum class EMeasureTool : uint8
 {
 	POINT_RULER_TOOL,
-	OBJECT_RULER_TOOL
+	OBJECT_RULER_TOOL,
+	ANNOTATION_TOOL
 };
 
 
@@ -41,6 +42,7 @@ public:
 
 };
 
+
 USTRUCT()
 struct FMeasureRay
 {
@@ -54,4 +56,17 @@ public:
 
 	UPROPERTY()
 	FVector RayDirection;
+};
+
+UCLASS()
+class MEASURETOOL_API UAnnotation : public UObject
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY()
+		FVector LineStartPos;
+	UPROPERTY()
+		FVector ShowTextPos;
+	UPROPERTY()
+		FText AnnotationContent;
 };

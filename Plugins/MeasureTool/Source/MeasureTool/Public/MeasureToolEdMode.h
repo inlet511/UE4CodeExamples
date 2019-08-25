@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "EdMode.h"
-#include "PointRulerTool.h"
-#include "ObjectRulerTool.h"
+#include "CommonStructures.h"
+
 
 
 class FMeasureToolEdMode : public FEdMode
@@ -35,8 +35,9 @@ private:
 
 public:
 	//SubTools
-	TSharedPtr<FPointRulerTool> PointRuler;
-	TSharedPtr<FObjectRulerTool> ObjectRuler;
+	TSharedPtr<class FPointRulerTool> PointRuler;
+	TSharedPtr<class FObjectRulerTool> ObjectRuler;
+	TSharedPtr<class FAnnotationTool> AnnotationTool;
 
 	void SetCurrentMeasureMode(EMeasureTool InMeasureMode);
 	EMeasureTool GetCurrentMeasureMode();

@@ -19,10 +19,10 @@ public:
 	virtual void RegisterCommands() override;
 
 public:
-	TSharedPtr< FUICommandInfo > OpenNIOSHWindow;
-	TSharedPtr< FUICommandInfo> OpenREBAWindow;
-	TSharedPtr< FUICommandInfo> OpenRULAWindow;
-	TSharedPtr< FUICommandInfo> OpenWISHAWindow;
-	TSharedPtr< FUICommandInfo> OpenSnookWindow;
+	TSharedPtr<FUICommandInfo> OpenNIOSHWindow;
+	TSharedPtr<FUICommandInfo> OpenREBAWindow;
+	TSharedPtr<FUICommandInfo> OpenRULAWindow;
+	TSharedPtr<FUICommandInfo> OpenWISHAWindow;
+	TSharedPtr<FUICommandInfo> OpenSnookWindow;
 
 };

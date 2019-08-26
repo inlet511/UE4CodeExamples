@@ -19,15 +19,15 @@ public:
 	virtual void ShutdownModule() override;
 	
 	/** This function will be bound to Command. */
-	void PluginButtonClicked();
+	//void PluginButtonClicked();
 	
 
 private:
 
-	void AddToolbarExtension(FToolBarBuilder& Builder);
-	void AddMenuExtension(FMenuBuilder& Builder);
+	//void AddToolbarExtension(FToolBarBuilder& Builder);
+	//void AddMenuExtension(FMenuBuilder& Builder);
 
 private:
-	TSharedPtr<class FUICommandList> PluginCommands;
+	//TSharedPtr<class FUICommandList> PluginCommands;
 	TArray<TSharedRef<class IAssetTypeActions>> RegisteredAssetTypeActions;
 };

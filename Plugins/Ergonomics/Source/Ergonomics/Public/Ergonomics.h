@@ -24,8 +24,14 @@ private:
 	void AddToolbarExtension(FToolBarBuilder& Builder);
 	void AddMenuExtension(FMenuBuilder& Builder);
 
-	TSharedRef<class SDockTab> OnSpawnPluginTab(const class FSpawnTabArgs& SpawnTabArgs);
+	TSharedRef<class SDockTab> OnSpawnTab_NIOSH(const class FSpawnTabArgs& SpawnTabArgs);
+	TSharedRef<class SDockTab> OnSpawnTab_REBA(const class FSpawnTabArgs& SpawnTabArgs);
+	TSharedRef<class SDockTab> OnSpawnTab_RULA(const class FSpawnTabArgs& SpawnTabArgs);
+	TSharedRef<class SDockTab> OnSpawnTab_WISHA(const class FSpawnTabArgs& SpawnTabArgs);
+	TSharedRef<class SDockTab> OnSpawnTab_Snook(const class FSpawnTabArgs& SpawnTabArgs);
 
-private:
 	TSharedPtr<class FUICommandList> PluginCommands;
+
+	//生成人机工效工具栏
+	static TSharedRef<class SWidget> GenerateErgonomicsToolBarMenu(TSharedRef<class FUICommandList> InCommandList);
 };

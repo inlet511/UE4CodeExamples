@@ -22,10 +22,10 @@ void FContingencyPlanEditorModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
 	
-	FContingencyPlanEditorStyle::Initialize();
-	FContingencyPlanEditorStyle::ReloadTextures();
+	//FContingencyPlanEditorStyle::Initialize();
+	//FContingencyPlanEditorStyle::ReloadTextures();
 
-	FContingencyPlanEditorCommands::Register();
+	//FContingencyPlanEditorCommands::Register();
 
 
 
@@ -59,28 +59,28 @@ void FContingencyPlanEditorModule::StartupModule()
 
 
 	
-	PluginCommands = MakeShareable(new FUICommandList);
+	//PluginCommands = MakeShareable(new FUICommandList);
 
-	PluginCommands->MapAction(
-		FContingencyPlanEditorCommands::Get().PluginAction,
-		FExecuteAction::CreateRaw(this, &FContingencyPlanEditorModule::PluginButtonClicked),
-		FCanExecuteAction());
+	//PluginCommands->MapAction(
+	//	FContingencyPlanEditorCommands::Get().PluginAction,
+	//	FExecuteAction::CreateRaw(this, &FContingencyPlanEditorModule::PluginButtonClicked),
+	//	FCanExecuteAction());
 		
-	FLevelEditorModule& LevelEditorModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
-	
-	{
-		TSharedPtr<FExtender> MenuExtender = MakeShareable(new FExtender());
-		MenuExtender->AddMenuExtension("WindowLayout", EExtensionHook::After, PluginCommands, FMenuExtensionDelegate::CreateRaw(this, &FContingencyPlanEditorModule::AddMenuExtension));
+	//FLevelEditorModule& LevelEditorModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
+	//
+	//{
+	//	TSharedPtr<FExtender> MenuExtender = MakeShareable(new FExtender());
+	//	MenuExtender->AddMenuExtension("WindowLayout", EExtensionHook::After, PluginCommands, FMenuExtensionDelegate::CreateRaw(this, &FContingencyPlanEditorModule::AddMenuExtension));
 
-		LevelEditorModule.GetMenuExtensibilityManager()->AddExtender(MenuExtender);
-	}
+	//	LevelEditorModule.GetMenuExtensibilityManager()->AddExtender(MenuExtender);
+	//}
 	
-	{
-		TSharedPtr<FExtender> ToolbarExtender = MakeShareable(new FExtender);
-		ToolbarExtender->AddToolBarExtension("Settings", EExtensionHook::After, PluginCommands, FToolBarExtensionDelegate::CreateRaw(this, &FContingencyPlanEditorModule::AddToolbarExtension));
-		
-		LevelEditorModule.GetToolBarExtensibilityManager()->AddExtender(ToolbarExtender);
-	}
+	//{
+	//	TSharedPtr<FExtender> ToolbarExtender = MakeShareable(new FExtender);
+	//	ToolbarExtender->AddToolBarExtension("Settings", EExtensionHook::After, PluginCommands, FToolBarExtensionDelegate::CreateRaw(this, &FContingencyPlanEditorModule::AddToolbarExtension));
+	//	
+	//	LevelEditorModule.GetToolBarExtensibilityManager()->AddExtender(ToolbarExtender);
+	//}
 }
 
 void FContingencyPlanEditorModule::ShutdownModule()
@@ -98,30 +98,30 @@ void FContingencyPlanEditorModule::ShutdownModule()
 	}
 
 
-	FContingencyPlanEditorStyle::Shutdown();
+	//FContingencyPlanEditorStyle::Shutdown();
 
-	FContingencyPlanEditorCommands::Unregister();
+	//FContingencyPlanEditorCommands::Unregister();
 }
 
-void FContingencyPlanEditorModule::PluginButtonClicked()
-{
-	FText DialogText = FText::Format(
-							LOCTEXT("PluginButtonDialogText", "Add code to {0} in {1} to override this button's actions"),
-							FText::FromString(TEXT("FContingencyPlanEditorModule::PluginButtonClicked()")),
-							FText::FromString(TEXT("ContingencyPlanEditor.cpp"))
-					   );
-	FMessageDialog::Open(EAppMsgType::Ok, DialogText);
-}
+//void FContingencyPlanEditorModule::PluginButtonClicked()
+//{
+//	FText DialogText = FText::Format(
+//							LOCTEXT("PluginButtonDialogText", "Add code to {0} in {1} to override this button's actions"),
+//							FText::FromString(TEXT("FContingencyPlanEditorModule::PluginButtonClicked()")),
+//							FText::FromString(TEXT("ContingencyPlanEditor.cpp"))
+//					   );
+//	FMessageDialog::Open(EAppMsgType::Ok, DialogText);
+//}
 
-void FContingencyPlanEditorModule::AddMenuExtension(FMenuBuilder& Builder)
-{
-	Builder.AddMenuEntry(FContingencyPlanEditorCommands::Get().PluginAction);
-}
-
-void FContingencyPlanEditorModule::AddToolbarExtension(FToolBarBuilder& Builder)
-{
-	Builder.AddToolBarButton(FContingencyPlanEditorCommands::Get().PluginAction);
-}
+//void FContingencyPlanEditorModule::AddMenuExtension(FMenuBuilder& Builder)
+//{
+//	Builder.AddMenuEntry(FContingencyPlanEditorCommands::Get().PluginAction);
+//}
+//
+//void FContingencyPlanEditorModule::AddToolbarExtension(FToolBarBuilder& Builder)
+//{
+//	Builder.AddToolBarButton(FContingencyPlanEditorCommands::Get().PluginAction);
+//}
 
 #undef LOCTEXT_NAMESPACE
 	

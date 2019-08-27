@@ -14,13 +14,24 @@
 #include "SWISHAWidget.h"
 #include "SSnookWidget.h"
 
-static const FName NOISHTabName("NOISH");
+static const FName NIOSHTabName("NOISH");
 static const FName REBATabName("REBA");
 static const FName RULATabName("RULA");
 static const FName WISHATabName("WISHA");
 static const FName SnookTabName("Snook");
 
 #define LOCTEXT_NAMESPACE "FErgonomicsModule"
+
+#define MAPACTION(Algorithm) \
+PluginCommands->MapAction( \
+	FErgonomicsCommands::Get().Open##Algorithm##Window,\
+		FExecuteAction::CreateRaw(this, &FErgonomicsModule::PluginButtonClicked, ##Algorithm##TabName),\
+		FCanExecuteAction());
+
+#define REGISTER_TAB_SPAWNER(Algorithm) \
+FGlobalTabmanager::Get()->RegisterNomadTabSpawner(Algorithm##TabName, FOnSpawnTab::CreateRaw(this, &FErgonomicsModule::OnSpawnTab_##Algorithm##)) \
+		.SetDisplayName(LOCTEXT("##Algorithm##TabNameTabTitle", "##Algorithm##")) \
+		.SetMenuType(ETabSpawnerMenuType::Hidden);
 
 void FErgonomicsModule::StartupModule()
 {
@@ -33,30 +44,12 @@ void FErgonomicsModule::StartupModule()
 	
 	PluginCommands = MakeShareable(new FUICommandList);
 
-	PluginCommands->MapAction(
-		FErgonomicsCommands::Get().OpenNIOSHWindow,
-		FExecuteAction::CreateRaw(this, &FErgonomicsModule::PluginButtonClicked, NOISHTabName),
-		FCanExecuteAction());
+	MAPACTION(NIOSH)
+	MAPACTION(REBA)
+	MAPACTION(RULA)
+	MAPACTION(WISHA)
+	MAPACTION(Snook)
 
-	PluginCommands->MapAction(
-		FErgonomicsCommands::Get().OpenREBAWindow,
-		FExecuteAction::CreateRaw(this, &FErgonomicsModule::PluginButtonClicked, REBATabName),
-		FCanExecuteAction());
-
-	PluginCommands->MapAction(
-		FErgonomicsCommands::Get().OpenRULAWindow,
-		FExecuteAction::CreateRaw(this, &FErgonomicsModule::PluginButtonClicked, RULATabName),
-		FCanExecuteAction());
-
-	PluginCommands->MapAction(
-		FErgonomicsCommands::Get().OpenWISHAWindow,
-		FExecuteAction::CreateRaw(this, &FErgonomicsModule::PluginButtonClicked, WISHATabName),
-		FCanExecuteAction());
-
-	PluginCommands->MapAction(
-		FErgonomicsCommands::Get().OpenSnookWindow,
-		FExecuteAction::CreateRaw(this, &FErgonomicsModule::PluginButtonClicked, SnookTabName),
-		FCanExecuteAction());
 		
 	FLevelEditorModule& LevelEditorModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 	
@@ -69,21 +62,11 @@ void FErgonomicsModule::StartupModule()
 		LevelEditorModule.GetToolBarExtensibilityManager()->AddExtender(ToolbarExtender);
 	}
 	
-	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(NOISHTabName, FOnSpawnTab::CreateRaw(this, &FErgonomicsModule::OnSpawnTab_NIOSH))
-		.SetDisplayName(LOCTEXT("NOISHTabNameTabTitle", "NOISH"))
-		.SetMenuType(ETabSpawnerMenuType::Hidden);
-	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(REBATabName, FOnSpawnTab::CreateRaw(this, &FErgonomicsModule::OnSpawnTab_REBA))
-		.SetDisplayName(LOCTEXT("REBATabTitle", "REBA"))
-		.SetMenuType(ETabSpawnerMenuType::Hidden);
-	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(RULATabName, FOnSpawnTab::CreateRaw(this, &FErgonomicsModule::OnSpawnTab_RULA))
-		.SetDisplayName(LOCTEXT("RULATabTitle", "RULA"))
-		.SetMenuType(ETabSpawnerMenuType::Hidden);
-	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(WISHATabName, FOnSpawnTab::CreateRaw(this, &FErgonomicsModule::OnSpawnTab_WISHA))
-		.SetDisplayName(LOCTEXT("WISHATabTitle", "WISHA"))
-		.SetMenuType(ETabSpawnerMenuType::Hidden);
-	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(SnookTabName, FOnSpawnTab::CreateRaw(this, &FErgonomicsModule::OnSpawnTab_Snook))
-		.SetDisplayName(LOCTEXT("SnookTabTitle", "Snook"))
-		.SetMenuType(ETabSpawnerMenuType::Hidden);
+	REGISTER_TAB_SPAWNER(NIOSH)
+	REGISTER_TAB_SPAWNER(REBA)
+	REGISTER_TAB_SPAWNER(RULA)
+	REGISTER_TAB_SPAWNER(WISHA)
+	REGISTER_TAB_SPAWNER(Snook)
 }
 
 void FErgonomicsModule::ShutdownModule()
@@ -94,7 +77,7 @@ void FErgonomicsModule::ShutdownModule()
 
 	FErgonomicsCommands::Unregister();
 
-	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(NOISHTabName);
+	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(NIOSHTabName);
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(REBATabName);
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(RULATabName);
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(WISHATabName);
@@ -105,7 +88,7 @@ TSharedRef<SDockTab> FErgonomicsModule::OnSpawnTab_NIOSH(const FSpawnTabArgs& Sp
 {
 	return SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
-		.Label(LOCTEXT("NOISHTabTitle", "NOISH"))
+		.Label(LOCTEXT("NIOSHTabTitle", "NIOSH"))
 		[
 			SNew(SBox)
 			.HAlign(HAlign_Fill)
@@ -137,8 +120,8 @@ TSharedRef<class SDockTab> FErgonomicsModule::OnSpawnTab_RULA(const class FSpawn
 		.TabRole(ETabRole::NomadTab)
 		[
 			SNew(SBox)
-			.HAlign(HAlign_Center)
-			.VAlign(VAlign_Center)
+			.HAlign(HAlign_Fill)
+			.VAlign(HAlign_Fill)
 			[
 				SNew(SRULAWidget)
 
@@ -152,8 +135,8 @@ TSharedRef<class SDockTab> FErgonomicsModule::OnSpawnTab_WISHA(const class FSpaw
 		.TabRole(ETabRole::NomadTab)
 		[
 			SNew(SBox)
-			.HAlign(HAlign_Center)
-			.VAlign(VAlign_Center)
+			.HAlign(HAlign_Fill)
+			.VAlign(HAlign_Fill)
 			[
 				SNew(SWISHAWidget)
 			]
@@ -167,8 +150,8 @@ TSharedRef<class SDockTab> FErgonomicsModule::OnSpawnTab_Snook(const class FSpaw
 		[
 
 			SNew(SBox)
-			.HAlign(HAlign_Center)
-			.VAlign(VAlign_Center)
+			.HAlign(HAlign_Fill)
+			.VAlign(HAlign_Fill)
 			[
 				SNew(SSnookWidget)
 			]

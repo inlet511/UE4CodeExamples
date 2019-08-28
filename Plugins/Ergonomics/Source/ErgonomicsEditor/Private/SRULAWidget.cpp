@@ -22,7 +22,9 @@ void SRULAWidget::Construct(const FArguments& InArgs)
 		.FillColumn(0, 1.0f)
 		.FillColumn(1, 5.0f)
 
-		+ SGridPanel::Slot(0, 0).HAlign(HAlign_Center).Padding(5)
+		+ SGridPanel::Slot(0, 0)
+		.HAlign(HAlign_Center)
+		.Padding(5)
 		.ColumnSpan(2)
 		[
 			SNew(STextBlock)
@@ -30,7 +32,7 @@ void SRULAWidget::Construct(const FArguments& InArgs)
 		]
 
 	// Column 1
-	+ SGridPanel::Slot(0, 1).ColumnSpan(2).Padding(5)
+	+ SGridPanel::Slot(0, 1).HAlign(HAlign_Center).ColumnSpan(2).Padding(5)
 		[
 			SNew(SHorizontalBox)
 
@@ -38,21 +40,13 @@ void SRULAWidget::Construct(const FArguments& InArgs)
 			[
 				SNew(SBox)
 				.WidthOverride(200.0f)
-			[
-				SNew(SButton).ContentPadding(20)
-				.Text(LOCTEXT("CapturePose", "捕获姿态"))
-				]
-			]
-		+ SHorizontalBox::Slot().AutoWidth().HAlign(HAlign_Center)
-			[
-				SNew(SBox)
-				.WidthOverride(200.0f)
 				[
-					SNew(SButton).ContentPadding(20)
-					.Text(LOCTEXT("ClearPose", "清除姿态"))
+					SNew(SButton).ContentPadding(20).HAlign(HAlign_Center)
+					.Text(LOCTEXT("CapturePose", "捕获姿态"))
 				]
 			]
-		+ SHorizontalBox::Slot().AutoWidth().HAlign(HAlign_Left)
+
+		+ SHorizontalBox::Slot().AutoWidth().HAlign(HAlign_Left).Padding(10,0)
 			[
 				SNew(SBox)
 				.WidthOverride(100.0f)
@@ -98,6 +92,8 @@ void SRULAWidget::Construct(const FArguments& InArgs)
 		.ColumnSpan(2)
 		[
 			SNew(SButton)
+			.ContentPadding(20)
+			.OnClicked(this,&SRULAWidget::Evaluate)
 			.Text(LOCTEXT("Evaluation", "评估"))
 		]
 	+ SGridPanel::Slot(0, 9).HAlign(HAlign_Center).Padding(5)
@@ -206,4 +202,10 @@ void SRULAWidget::Construct(const FArguments& InArgs)
 
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
+FReply SRULAWidget::Evaluate()
+{
+	return FReply::Handled();
+}
+
 #undef LOCTEXT_NAMESPACE

@@ -4,14 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Framework/Commands/Commands.h"
-#include "ErgonomicsStyle.h"
+#include "ErgonomicsEditorStyle.h"
 
-class FErgonomicsCommands : public TCommands<FErgonomicsCommands>
+class FErgonomicsEditorCommands : public TCommands<FErgonomicsEditorCommands>
 {
 public:
-
-	FErgonomicsCommands()
-		: TCommands<FErgonomicsCommands>(TEXT("Ergonomics"), NSLOCTEXT("Contexts", "Ergonomics", "Ergonomics Plugin"), NAME_None, FErgonomicsStyle::GetStyleSetName())
+	FErgonomicsEditorCommands() :
+		TCommands<FErgonomicsEditorCommands>(TEXT("Ergonomics"), NSLOCTEXT("Contexts", "Ergonomics", "Ergonomics Plugin"), NAME_None, FErgonomicsEditorStyle::GetStyleSetName())
 	{
 	}
 

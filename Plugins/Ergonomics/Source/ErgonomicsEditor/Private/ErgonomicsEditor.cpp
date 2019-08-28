@@ -1,18 +1,25 @@
 ﻿// Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
-#include "Ergonomics.h"
-#include "ErgonomicsStyle.h"
-#include "ErgonomicsCommands.h"
-#include "LevelEditor.h"
+#include "ErgonomicsEditor.h"
+#include "ErgonomicsEditorCommands.h"
+#include "ErgonomicsEditorStyle.h"
+#include "Framework/MultiBox/MultiBoxBuilder.h"
 #include "Widgets/Docking/SDockTab.h"
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
-#include "Framework/MultiBox/MultiBoxBuilder.h"
+#include "LevelEditor.h"
 #include "SNIOSHWidget.h"
 #include "SREBAWidget.h"
 #include "SRULAWidget.h"
-#include "SWISHAWidget.h"
 #include "SSnookWidget.h"
+#include "SWISHAWidget.h"
+
+#include "NIOSH.h"
+#include "WISHA.h"
+#include "REBA.h"
+#include "RULA.h"
+#include "Snook.h"
+
 
 static const FName NIOSHTabName("NOISH");
 static const FName REBATabName("REBA");
@@ -20,28 +27,32 @@ static const FName RULATabName("RULA");
 static const FName WISHATabName("WISHA");
 static const FName SnookTabName("Snook");
 
-#define LOCTEXT_NAMESPACE "FErgonomicsModule"
+#define LOCTEXT_NAMESPACE "FErgonomicsEditorModule"
 
 #define MAPACTION(Algorithm) \
 PluginCommands->MapAction( \
-	FErgonomicsCommands::Get().Open##Algorithm##Window,\
-		FExecuteAction::CreateRaw(this, &FErgonomicsModule::PluginButtonClicked, ##Algorithm##TabName),\
+	FErgonomicsEditorCommands::Get().Open##Algorithm##Window,\
+		FExecuteAction::CreateRaw(this, &FErgonomicsEditorModule::PluginButtonClicked, ##Algorithm##TabName),\
 		FCanExecuteAction());
 
 #define REGISTER_TAB_SPAWNER(Algorithm) \
-FGlobalTabmanager::Get()->RegisterNomadTabSpawner(Algorithm##TabName, FOnSpawnTab::CreateRaw(this, &FErgonomicsModule::OnSpawnTab_##Algorithm##)) \
-		.SetDisplayName(LOCTEXT("##Algorithm##TabNameTabTitle", "##Algorithm##")) \
+FGlobalTabmanager::Get()->RegisterNomadTabSpawner(Algorithm##TabName, FOnSpawnTab::CreateRaw(this, &FErgonomicsEditorModule::OnSpawnTab_##Algorithm##)) \
+		.SetDisplayName(LOCTEXT(#Algorithm"TabNameTabTitle", #Algorithm)) \
 		.SetMenuType(ETabSpawnerMenuType::Hidden);
 
-void FErgonomicsModule::StartupModule()
+void FErgonomicsEditorModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
-	
-	FErgonomicsStyle::Initialize();
-	FErgonomicsStyle::ReloadTextures();
 
-	FErgonomicsCommands::Register();
-	
+	FErgonomicsEditorStyle::Initialize();
+	FErgonomicsEditorStyle::ReloadTextures();
+
+	FErgonomicsEditorCommands::Register();
+
+	//初始化算法对象
+	InitAlgorithmObject();
+
+
 	PluginCommands = MakeShareable(new FUICommandList);
 
 	MAPACTION(NIOSH)
@@ -57,7 +68,7 @@ void FErgonomicsModule::StartupModule()
 	//添加ToolBar
 	{
 		TSharedPtr<FExtender> ToolbarExtender = MakeShareable(new FExtender);
-		ToolbarExtender->AddToolBarExtension("Settings", EExtensionHook::After, PluginCommands, FToolBarExtensionDelegate::CreateRaw(this, &FErgonomicsModule::AddToolbarExtension));
+		ToolbarExtender->AddToolBarExtension("Settings", EExtensionHook::After, PluginCommands, FToolBarExtensionDelegate::CreateRaw(this, &FErgonomicsEditorModule::AddToolbarExtension));
 		
 		LevelEditorModule.GetToolBarExtensibilityManager()->AddExtender(ToolbarExtender);
 	}
@@ -69,13 +80,13 @@ void FErgonomicsModule::StartupModule()
 	REGISTER_TAB_SPAWNER(Snook)
 }
 
-void FErgonomicsModule::ShutdownModule()
+void FErgonomicsEditorModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
-	FErgonomicsStyle::Shutdown();
+	FErgonomicsEditorStyle::Shutdown();
 
-	FErgonomicsCommands::Unregister();
+	FErgonomicsEditorCommands::Unregister();
 
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(NIOSHTabName);
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(REBATabName);
@@ -84,7 +95,7 @@ void FErgonomicsModule::ShutdownModule()
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(SnookTabName);
 }
 
-TSharedRef<SDockTab> FErgonomicsModule::OnSpawnTab_NIOSH(const FSpawnTabArgs& SpawnTabArgs)
+TSharedRef<SDockTab> FErgonomicsEditorModule::OnSpawnTab_NIOSH(const FSpawnTabArgs& SpawnTabArgs)
 {
 	return SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
@@ -100,7 +111,7 @@ TSharedRef<SDockTab> FErgonomicsModule::OnSpawnTab_NIOSH(const FSpawnTabArgs& Sp
 }
 
 
-TSharedRef<class SDockTab> FErgonomicsModule::OnSpawnTab_REBA(const class FSpawnTabArgs& SpawnTabArgs)
+TSharedRef<class SDockTab> FErgonomicsEditorModule::OnSpawnTab_REBA(const class FSpawnTabArgs& SpawnTabArgs)
 {
 	return SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
@@ -114,14 +125,14 @@ TSharedRef<class SDockTab> FErgonomicsModule::OnSpawnTab_REBA(const class FSpawn
 		];
 }
 
-TSharedRef<class SDockTab> FErgonomicsModule::OnSpawnTab_RULA(const class FSpawnTabArgs& SpawnTabArgs)
+TSharedRef<class SDockTab> FErgonomicsEditorModule::OnSpawnTab_RULA(const class FSpawnTabArgs& SpawnTabArgs)
 {
 	return SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
 		[
 			SNew(SBox)
 			.HAlign(HAlign_Fill)
-			.VAlign(HAlign_Fill)
+			.VAlign(VAlign_Fill)
 			[
 				SNew(SRULAWidget)
 
@@ -129,21 +140,21 @@ TSharedRef<class SDockTab> FErgonomicsModule::OnSpawnTab_RULA(const class FSpawn
 		];
 }
 
-TSharedRef<class SDockTab> FErgonomicsModule::OnSpawnTab_WISHA(const class FSpawnTabArgs& SpawnTabArgs)
+TSharedRef<class SDockTab> FErgonomicsEditorModule::OnSpawnTab_WISHA(const class FSpawnTabArgs& SpawnTabArgs)
 {
 	return SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
 		[
 			SNew(SBox)
 			.HAlign(HAlign_Fill)
-			.VAlign(HAlign_Fill)
+			.VAlign(VAlign_Fill)
 			[
 				SNew(SWISHAWidget)
 			]
 		];
 }
 
-TSharedRef<class SDockTab> FErgonomicsModule::OnSpawnTab_Snook(const class FSpawnTabArgs& SpawnTabArgs)
+TSharedRef<class SDockTab> FErgonomicsEditorModule::OnSpawnTab_Snook(const class FSpawnTabArgs& SpawnTabArgs)
 {
 	return SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
@@ -151,28 +162,37 @@ TSharedRef<class SDockTab> FErgonomicsModule::OnSpawnTab_Snook(const class FSpaw
 
 			SNew(SBox)
 			.HAlign(HAlign_Fill)
-			.VAlign(HAlign_Fill)
+			.VAlign(VAlign_Fill)
 			[
 				SNew(SSnookWidget)
 			]
 		];
 }
 
-void FErgonomicsModule::PluginButtonClicked(const FName TabName)
+void FErgonomicsEditorModule::PluginButtonClicked(const FName TabName)
 {
 	FGlobalTabmanager::Get()->InvokeTab(TabName);
 }
 
-void FErgonomicsModule::AddMenuExtension(FMenuBuilder& Builder)
+void FErgonomicsEditorModule::InitAlgorithmObject()
 {
-	Builder.AddMenuEntry(FErgonomicsCommands::Get().OpenNIOSHWindow);
+	EditingNIOSH = MakeShareable(new NIOSH());
+	EditingREBA = MakeShareable(new REBA());
+	EditingRULA = MakeShareable(new RULA());
+	EidtingWISHA = MakeShareable(new WISHA());
+	EditingSnook = MakeShareable(new Snook());
 }
 
-void FErgonomicsModule::AddToolbarExtension(FToolBarBuilder& Builder)
+void FErgonomicsEditorModule::AddMenuExtension(FMenuBuilder& Builder)
+{
+	Builder.AddMenuEntry(FErgonomicsEditorCommands::Get().OpenNIOSHWindow);
+}
+
+void FErgonomicsEditorModule::AddToolbarExtension(FToolBarBuilder& Builder)
 {
 	Builder.AddComboButton(
 		FUIAction(),
-		FOnGetContent::CreateStatic(&FErgonomicsModule::GenerateErgonomicsToolBarMenu,PluginCommands.ToSharedRef()),
+		FOnGetContent::CreateStatic(&FErgonomicsEditorModule::GenerateErgonomicsToolBarMenu,PluginCommands.ToSharedRef()),
 		LOCTEXT("ErgonomicsLabel", "人机工效分析"),
 		LOCTEXT("ErgonomicsTipsLabel", "人机工效分析工具集"),
 		FSlateIcon(),
@@ -180,19 +200,18 @@ void FErgonomicsModule::AddToolbarExtension(FToolBarBuilder& Builder)
 	);
 }
 
-TSharedRef<SWidget> FErgonomicsModule::GenerateErgonomicsToolBarMenu(TSharedRef<class FUICommandList> InCommandList)
+TSharedRef<SWidget> FErgonomicsEditorModule::GenerateErgonomicsToolBarMenu(TSharedRef<class FUICommandList> InCommandList)
 {
 	const bool bShouldCloseWindowAfterMenuSelection = true;
 	FMenuBuilder MenuBuilder(bShouldCloseWindowAfterMenuSelection, InCommandList);
 
 	MenuBuilder.BeginSection(NAME_None, LOCTEXT("AlgorithmLabel", "人机工效算法"));
 	{
-		MenuBuilder.AddMenuEntry(FErgonomicsCommands::Get().OpenNIOSHWindow);
-		MenuBuilder.AddMenuEntry(FErgonomicsCommands::Get().OpenREBAWindow);
-		MenuBuilder.AddMenuEntry(FErgonomicsCommands::Get().OpenRULAWindow);
-		MenuBuilder.AddMenuEntry(FErgonomicsCommands::Get().OpenWISHAWindow);
-		MenuBuilder.AddMenuEntry(FErgonomicsCommands::Get().OpenSnookWindow);
-
+		MenuBuilder.AddMenuEntry(FErgonomicsEditorCommands::Get().OpenNIOSHWindow);
+		MenuBuilder.AddMenuEntry(FErgonomicsEditorCommands::Get().OpenREBAWindow);
+		MenuBuilder.AddMenuEntry(FErgonomicsEditorCommands::Get().OpenRULAWindow);
+		MenuBuilder.AddMenuEntry(FErgonomicsEditorCommands::Get().OpenWISHAWindow);
+		MenuBuilder.AddMenuEntry(FErgonomicsEditorCommands::Get().OpenSnookWindow);
 	}
 	MenuBuilder.EndSection();
 	return MenuBuilder.MakeWidget();
@@ -200,5 +219,5 @@ TSharedRef<SWidget> FErgonomicsModule::GenerateErgonomicsToolBarMenu(TSharedRef<
 
 
 #undef LOCTEXT_NAMESPACE
-	
-IMPLEMENT_MODULE(FErgonomicsModule, Ergonomics)
+
+IMPLEMENT_MODULE(FErgonomicsEditorModule, ErgonomicsEditor)

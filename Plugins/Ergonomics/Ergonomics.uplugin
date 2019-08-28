@@ -14,8 +14,13 @@
 	"IsBetaVersion": false,
 	"Installed": false,
 	"Modules": [
+        {
+			"Name": "ErgonomicsCore",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
 		{
-			"Name": "Ergonomics",
+			"Name": "ErgonomicsEditor",
 			"Type": "Editor",
 			"LoadingPhase": "Default"
 		}

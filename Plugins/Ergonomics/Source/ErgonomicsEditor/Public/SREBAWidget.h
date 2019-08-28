@@ -8,10 +8,10 @@
 /**
  * 
  */
-class ERGONOMICS_API SRULAWidget : public SCompoundWidget
+class ERGONOMICSEDITOR_API SREBAWidget : public SCompoundWidget
 {
 public:
-	SLATE_BEGIN_ARGS(SRULAWidget)
+	SLATE_BEGIN_ARGS(SREBAWidget)
 	{}
 	SLATE_END_ARGS()
 

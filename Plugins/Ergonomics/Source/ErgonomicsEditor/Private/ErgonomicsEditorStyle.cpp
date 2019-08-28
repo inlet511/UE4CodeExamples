@@ -1,14 +1,15 @@
 // Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
-#include "ErgonomicsStyle.h"
-#include "Styling/SlateStyleRegistry.h"
+#include "ErgonomicsEditorStyle.h"
+
 #include "Framework/Application/SlateApplication.h"
-#include "Slate/SlateGameResources.h"
 #include "Interfaces/IPluginManager.h"
+#include "Slate/SlateGameResources.h"
+#include "Styling/SlateStyleRegistry.h"
 
-TSharedPtr< FSlateStyleSet > FErgonomicsStyle::StyleInstance = NULL;
+TSharedPtr<FSlateStyleSet> FErgonomicsEditorStyle::StyleInstance = NULL;
 
-void FErgonomicsStyle::Initialize()
+void FErgonomicsEditorStyle::Initialize()
 {
 	if (!StyleInstance.IsValid())
 	{
@@ -17,16 +18,16 @@ void FErgonomicsStyle::Initialize()
 	}
 }
 
-void FErgonomicsStyle::Shutdown()
+void FErgonomicsEditorStyle::Shutdown()
 {
 	FSlateStyleRegistry::UnRegisterSlateStyle(*StyleInstance);
 	ensure(StyleInstance.IsUnique());
 	StyleInstance.Reset();
 }
 
-FName FErgonomicsStyle::GetStyleSetName()
+FName FErgonomicsEditorStyle::GetStyleSetName()
 {
-	static FName StyleSetName(TEXT("ErgonomicsStyle"));
+	static FName StyleSetName(TEXT("ErgonomicsEditorStyle"));
 	return StyleSetName;
 }
 
@@ -40,9 +41,9 @@ const FVector2D Icon16x16(16.0f, 16.0f);
 const FVector2D Icon20x20(20.0f, 20.0f);
 const FVector2D Icon40x40(40.0f, 40.0f);
 
-TSharedRef< FSlateStyleSet > FErgonomicsStyle::Create()
+TSharedRef<FSlateStyleSet> FErgonomicsEditorStyle::Create()
 {
-	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet("ErgonomicsStyle"));
+	TSharedRef<FSlateStyleSet> Style = MakeShareable(new FSlateStyleSet("ErgonomicsEditorStyle"));
 	Style->SetContentRoot(IPluginManager::Get().FindPlugin("Ergonomics")->GetBaseDir() / TEXT("Resources"));
 
 	Style->Set("Ergonomics.OpenPluginWindow", new IMAGE_BRUSH(TEXT("ButtonIcon_40x"), Icon40x40));
@@ -56,7 +57,7 @@ TSharedRef< FSlateStyleSet > FErgonomicsStyle::Create()
 #undef TTF_FONT
 #undef OTF_FONT
 
-void FErgonomicsStyle::ReloadTextures()
+void FErgonomicsEditorStyle::ReloadTextures()
 {
 	if (FSlateApplication::IsInitialized())
 	{
@@ -64,7 +65,7 @@ void FErgonomicsStyle::ReloadTextures()
 	}
 }
 
-const ISlateStyle& FErgonomicsStyle::Get()
+const ISlateStyle& FErgonomicsEditorStyle::Get()
 {
 	return *StyleInstance;
 }

@@ -8,10 +8,10 @@
 /**
  * 
  */
-class ERGONOMICS_API SSnookWidget : public SCompoundWidget
+class ERGONOMICSEDITOR_API SNIOSHWidget : public SCompoundWidget
 {
 public:
-	SLATE_BEGIN_ARGS(SSnookWidget)
+	SLATE_BEGIN_ARGS(SNIOSHWidget)
 	{}
 	SLATE_END_ARGS()
 

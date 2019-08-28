@@ -1,10 +1,10 @@
 // Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
-#include "ErgonomicsCommands.h"
+#include "ErgonomicsEditorCommands.h"
 
-#define LOCTEXT_NAMESPACE "FErgonomicsModule"
+#define LOCTEXT_NAMESPACE "FErgonomicsEditorCommands"
 
-void FErgonomicsCommands::RegisterCommands()
+void FErgonomicsEditorCommands::RegisterCommands()
 {
 	UI_COMMAND(OpenNIOSHWindow, "NIOSH", "Bring up NIOSH window", EUserInterfaceActionType::Button, FInputGesture());
 	UI_COMMAND(OpenREBAWindow, "REBA", "Bring up REBA window", EUserInterfaceActionType::Button, FInputGesture());

@@ -8,13 +8,17 @@
 /**
  * 
  */
-class ERGONOMICS_API SWISHAWidget : public SCompoundWidget
+class ERGONOMICSEDITOR_API SRULAWidget : public SCompoundWidget
 {
 public:
-	SLATE_BEGIN_ARGS(SWISHAWidget)
+	SLATE_BEGIN_ARGS(SRULAWidget)
 	{}
 	SLATE_END_ARGS()
 
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
+
+private:
+	FReply CapturePose();
+	FReply Evaluate();
 };

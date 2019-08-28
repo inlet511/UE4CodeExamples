@@ -8,7 +8,7 @@
 class FToolBarBuilder;
 class FMenuBuilder;
 
-class FErgonomicsModule : public IModuleInterface
+class FErgonomicsEditorModule : public IModuleInterface
 {
 public:
 
@@ -18,6 +18,17 @@ public:
 	
 	/** This function will be bound to Command (by default it will bring up plugin window) */
 	void PluginButtonClicked(const FName TabName);
+
+
+	//å½“å‰ç¼–è¾‘å™¨ä¸­åœ¨ç¼–è¾‘çš„å‡ ç§ç®—æ³•å¯¹è±¡
+	TSharedPtr<class NIOSH> EditingNIOSH;
+	TSharedPtr<class REBA>  EditingREBA;
+	TSharedPtr<class RULA>  EditingRULA;
+	TSharedPtr<class WISHA> EidtingWISHA;
+	TSharedPtr<class Snook> EditingSnook;
+
+	//åˆå§‹åŒ–ç®—æ³•å¯¹è±¡
+	void InitAlgorithmObject();
 	
 private:
 
@@ -32,6 +43,5 @@ private:
 
 	TSharedPtr<class FUICommandList> PluginCommands;
 
-	//Éú³ÉÈË»ú¹¤Ğ§¹¤¾ßÀ¸
 	static TSharedRef<class SWidget> GenerateErgonomicsToolBarMenu(TSharedRef<class FUICommandList> InCommandList);
 };

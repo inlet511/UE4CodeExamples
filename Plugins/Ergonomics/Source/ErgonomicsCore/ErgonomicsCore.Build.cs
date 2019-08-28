@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class Ergonomics : ModuleRules
+public class ErgonomicsCore : ModuleRules
 {
-	public Ergonomics(ReadOnlyTargetRules Target) : base(Target)
+	public ErgonomicsCore(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
@@ -36,12 +36,8 @@ public class Ergonomics : ModuleRules
 			{
 				"Projects",
 				"InputCore",
-				"UnrealEd",
-				"LevelEditor",
 				"CoreUObject",
 				"Engine",
-				"Slate",
-				"SlateCore",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

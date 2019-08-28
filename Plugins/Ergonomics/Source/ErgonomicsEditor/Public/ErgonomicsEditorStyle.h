@@ -6,7 +6,7 @@
 #include "Styling/SlateStyle.h"
 
 /**  */
-class FErgonomicsStyle
+class FErgonomicsEditorStyle
 {
 public:
 

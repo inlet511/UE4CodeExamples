@@ -45,35 +45,6 @@ void SWISHAWidget::Construct(const FArguments& InArgs)
 		+ SGridPanel::Slot(0, 1).ColumnSpan(2).HAlign(HAlign_Center).Padding(5)
 		[
 			SNew(SSpacer)
-			//SNew(SHorizontalBox)
-
-			//+ SHorizontalBox::Slot()
-			//.AutoWidth()
-			//.HAlign(HAlign_Center)
-			//[
-			//	SNew(SBox)
-			//	.WidthOverride(200.0f)
-			//	[
-			//		SNew(SButton)
-			//		.ContentPadding(20)
-			//		.HAlign(HAlign_Center)
-			//		.Text(LOCTEXT("CapturePose", "捕获姿态"))
-			//	]
-			//]
-
-			//+ SHorizontalBox::Slot().AutoWidth()
-			//	.HAlign(HAlign_Left)
-			//	.Padding(20,0)
-			//[
-			//	SNew(SBox)
-			//	.WidthOverride(100.0f)
-			//	.HAlign(HAlign_Left)
-			//	.VAlign(VAlign_Center)
-			//	[
-			//		SNew(STextBlock)
-			//		.Text(LOCTEXT("CaptureStatus", "未捕获"))
-			//	]
-			//]
 		]
 
 		+ SGridPanel::Slot(0, 2).HAlign(HAlign_Right).Padding(5)
@@ -139,8 +110,7 @@ void SWISHAWidget::Construct(const FArguments& InArgs)
 		[
 			SNew(SBox).WidthOverride(400.0f)
 			[
-				SAssignNew(ActualWeightTB,SEditableTextBox)
-				.OnTextCommitted(this,&SWISHAWidget::HandleActualWeightCommit)
+				SAssignNew(ActualWeight,SEditableTextBox)
 			]
 		]
 
@@ -226,7 +196,7 @@ void SWISHAWidget::Construct(const FArguments& InArgs)
 
 		+ SGridPanel::Slot(1, 10).HAlign(HAlign_Left).Padding(5)
 		[
-			SNew(STextBlock)
+			SAssignNew(RI,STextBlock)
 			.Text(LOCTEXT("RI_Value", "2.0"))
 		]
 	];
@@ -449,10 +419,7 @@ void SWISHAWidget::HandleTwistChanged(TSharedPtr<FString> Item,ESelectInfo::Type
 	}
 }
 
-void SWISHAWidget::HandleActualWeightCommit(const FText& InText, ETextCommit::Type InCommitType)
-{
 
-}
 
 FReply SWISHAWidget::Evaluate()
 {

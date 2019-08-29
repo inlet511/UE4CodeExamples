@@ -73,10 +73,8 @@ void SREBAWidget::HandleCouplingChanged(TSharedPtr<FString> Item, ESelectInfo::T
 	}
 }
 
-FReply SREBAWidget::Evaluate()
-{
-	return FReply::Handled();
-}
+
+
 
 void SREBAWidget::Construct(const FArguments& InArgs)
 {
@@ -105,29 +103,13 @@ void SREBAWidget::Construct(const FArguments& InArgs)
 		// Column 1
 		+ SGridPanel::Slot(0, 1).ColumnSpan(2).Padding(5).HAlign(HAlign_Center)
 		[
-			SNew(SHorizontalBox)
-
-			+SHorizontalBox::Slot().AutoWidth().HAlign(HAlign_Center)
-				[
-					SNew(SBox)
-					.WidthOverride(200.0f)
-					[
-						SNew(SButton).ContentPadding(20)
-						.Text(LOCTEXT("CapturePose", "捕获姿态"))
-					]
-				]	
-
-			+ SHorizontalBox::Slot().AutoWidth().HAlign(HAlign_Left)
-				[
-					SNew(SBox)
-					.WidthOverride(100.0f)
-					.HAlign(HAlign_Left)
-					.VAlign(VAlign_Center)					
-					[
-						SNew(STextBlock)
-						.Text(LOCTEXT("CaptureStatus", "未捕获"))
-					]
-				]
+			SNew(SBox).HAlign(HAlign_Center)
+			.WidthOverride(200.0f)
+			[
+				SNew(SButton).ContentPadding(20).HAlign(HAlign_Center)
+				.OnClicked(this,&SREBAWidget::Capture)
+				.Text(LOCTEXT("CapturePose", "捕获姿态"))
+			]
 		]
 		+ SGridPanel::Slot(0, 2).HAlign(HAlign_Right).Padding(5)
 			[
@@ -153,6 +135,8 @@ void SREBAWidget::Construct(const FArguments& InArgs)
 			.ColumnSpan(2)
 			[
 				SNew(SButton)
+				.ContentPadding(20)
+				.OnClicked(this,&SREBAWidget::Evaluate)
 				.Text(LOCTEXT("Evaluation", "评估"))
 			]
 		+ SGridPanel::Slot(0, 7).HAlign(HAlign_Center).Padding(5)
@@ -178,12 +162,12 @@ void SREBAWidget::Construct(const FArguments& InArgs)
 			[
 				SNew(SBox).WidthOverride(300.0f)
 				[					
-					SNew(SEditableTextBox)
+					SAssignNew(Weight,SEditableTextBox)
 				]
 			]
 		+ SGridPanel::Slot(1, 3).Padding(5)
 			[
-				SNew(SCheckBox)
+				SAssignNew(ShockForce,SCheckBox)
 				[
 					SNew(STextBlock)
 					.Text(LOCTEXT("ShockForceCheckbox", "是否存在冲击力，快速积聚力或突然用力"))
@@ -206,42 +190,53 @@ void SREBAWidget::Construct(const FArguments& InArgs)
 				SNew(SVerticalBox)
 				+ SVerticalBox::Slot().Padding(0, 0, 0, 10)
 				[
-					SNew(SCheckBox)
+					SAssignNew(ActivityScore1,SCheckBox)
 					[
 						SNew(STextBlock)
 						.Text(LOCTEXT("ActiveScore1", "是否有身体部位静止超过一分钟"))
 					]
 				]
 				+ SVerticalBox::Slot().Padding(0, 0, 0, 10)
+				[
+					SAssignNew(ActivityScore2,SCheckBox)
 					[
-						SNew(SCheckBox)
-						[
-							SNew(STextBlock)
-							.Text(LOCTEXT("ActiveScore2", "是否有重复的范围动作（超过4次/分钟）"))
-						]
+						SNew(STextBlock)
+						.Text(LOCTEXT("ActiveScore2", "是否有重复的范围动作（超过4次/分钟）"))
 					]
+				]
 				+ SVerticalBox::Slot().Padding(0)
+				[
+					SAssignNew(ActivityScore2,SCheckBox)
 					[
-						SNew(SCheckBox)
-						[
-							SNew(STextBlock)
-							.Text(LOCTEXT("ActiveScore3", "是否有会导致姿势大范围变化的动作"))
-						]
+						SNew(STextBlock)
+						.Text(LOCTEXT("ActiveScore3", "是否有会导致姿势大范围变化的动作"))
 					]
+				]
 			]
 		+ SGridPanel::Slot(1, 8).HAlign(HAlign_Left).Padding(5)
 			[
-				SNew(STextBlock)
+				SAssignNew(RI,STextBlock)
 				.Text(LOCTEXT("RI_Value", "2.0"))
 			]
 		+ SGridPanel::Slot(1, 9).HAlign(HAlign_Left).Padding(5)
 			[
-				SNew(STextBlock)
+				SAssignNew(REBAScore,STextBlock)
 				.Text(LOCTEXT("REBAScore_Value", "9.00"))
 			]
 
 	];
-
 }
+
+FReply SREBAWidget::Capture()
+{
+	return FReply::Handled();
+}
+
+
+FReply SREBAWidget::Evaluate()
+{
+	return FReply::Handled();
+}
+
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 #undef LOCTEXT_NAMESPACE

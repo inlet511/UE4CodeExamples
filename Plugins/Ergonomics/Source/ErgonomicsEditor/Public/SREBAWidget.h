@@ -19,6 +19,20 @@ public:
 	void Construct(const FArguments& InArgs);
 
 	TSharedPtr<class REBA> EditingREBA;
+
+	//输入控件
+	TSharedPtr<SEditableTextBox> Weight;
+	TSharedPtr<SCheckBox> ShockForce;
+	TSharedPtr<SCheckBox> ActivityScore1;
+	TSharedPtr<SCheckBox> ActivityScore2;
+	TSharedPtr<SCheckBox> ActivityScore3;
+
+	//输出控件
+	TSharedPtr<STextBlock> RI;
+	TSharedPtr<STextBlock> REBAScore;
+
+
+
 	//UI下拉菜单选项
 	TArray<TSharedPtr<FString>> CouplingList;
 
@@ -30,5 +44,6 @@ public:
 	FText GetCurrentCouplingText() const;
 	void HandleCouplingChanged(TSharedPtr<FString> Item, ESelectInfo::Type SelectInfo);
 
+	FReply Capture();
 	FReply Evaluate();
 };

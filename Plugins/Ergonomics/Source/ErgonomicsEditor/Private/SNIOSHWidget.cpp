@@ -83,7 +83,8 @@ void SNIOSHWidget::Construct(const FArguments& InArgs)
 					]
 				+ SGridPanel::Slot(0, 8).HAlign(HAlign_Center).ColumnSpan(3).Padding(5,20,5,5)
 					[
-						SNew(SButton).ContentPadding(5)
+						SNew(SButton).ContentPadding(20)
+						.OnClicked(this,&SNIOSHWidget::Evaluate)
 						.Text(LOCTEXT("Evaluation", "评估"))
 					]
 				+SGridPanel::Slot(0,9)
@@ -137,20 +138,22 @@ void SNIOSHWidget::Construct(const FArguments& InArgs)
 				+SGridPanel::Slot(1, 1).HAlign(HAlign_Center).Padding(5)
 					[
 						SNew(SButton)
+						.ContentPadding(20).HAlign(HAlign_Center)
+						.OnClicked(this,&SNIOSHWidget::CaptureStart)
 						.Text(LOCTEXT("CaptureStart", "捕获起点姿态"))
 					]
 
 				+ SGridPanel::Slot(1, 2).Padding(5)
 					[
-						SNew(SEditableTextBox)
+						SAssignNew(HorizontalPos_Start,SEditableTextBox)
 					]
 				+ SGridPanel::Slot(1, 3).Padding(5)
 					[
-						SNew(SEditableTextBox)
+						SAssignNew(VerticalPos_Start,SEditableTextBox)
 					]
 				+ SGridPanel::Slot(1, 4).Padding(5)
 					[
-						SNew(SEditableTextBox)
+						SAssignNew(Asymmetric_Start,SEditableTextBox)
 					]
 
 				+ SGridPanel::Slot(1, 5).Padding(5).ColumnSpan(2)
@@ -193,42 +196,42 @@ void SNIOSHWidget::Construct(const FArguments& InArgs)
 					]
 				+ SGridPanel::Slot(1, 10).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(RI_Start,STextBlock)
 						.Text(LOCTEXT("RI_Start", "0.0"))
 					]
 				+ SGridPanel::Slot(1, 11).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(RWL_Start,STextBlock)
 						.Text(LOCTEXT("RWL_Start", "0.0"))
 					]
 				+ SGridPanel::Slot(1, 12).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(HM_Start,STextBlock)
 						.Text(LOCTEXT("HM_Start", "0.0"))
 					]
 				+ SGridPanel::Slot(1, 13).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(VM_Start,STextBlock)
 						.Text(LOCTEXT("VM_Start", "0.0"))
 					]
 				+ SGridPanel::Slot(1, 14).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(DM_Start,STextBlock)
 						.Text(LOCTEXT("DM_Start", "0.0"))
 					]
 				+ SGridPanel::Slot(1, 15).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(AM_Start,STextBlock)
 						.Text(LOCTEXT("AM_Start", "0.0"))
 					]
 				+ SGridPanel::Slot(1, 16).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(CM_Start,STextBlock)
 						.Text(LOCTEXT("CM_Start", "0.0"))
 					]
 				+ SGridPanel::Slot(1, 17).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(FM_Start,STextBlock)
 						.Text(LOCTEXT("FM_Start", "0.0"))
 					]
 
@@ -236,19 +239,21 @@ void SNIOSHWidget::Construct(const FArguments& InArgs)
 				+ SGridPanel::Slot(2, 1).HAlign(HAlign_Center).Padding(5)
 					[
 						SNew(SButton)
+						.ContentPadding(20).HAlign(HAlign_Center)
+						.OnClicked(this,&SNIOSHWidget::CaptureEnd)
 						.Text(LOCTEXT("CaptureEnd", "捕获终点姿态"))
 					]
 				+ SGridPanel::Slot(2, 2).HAlign(HAlign_Fill).Padding(5)
 					[
-						SNew(SEditableTextBox)
+						SAssignNew(HorizontalPos_End,SEditableTextBox)
 					]
 				+ SGridPanel::Slot(2, 3).HAlign(HAlign_Fill).Padding(5)
 					[
-						SNew(SEditableTextBox)
+						SAssignNew(VerticalPos_End,SEditableTextBox)
 					]
 				+ SGridPanel::Slot(2, 4).HAlign(HAlign_Fill).Padding(5)
 					[
-						SNew(SEditableTextBox)
+						SAssignNew(Asymmetric_End,SEditableTextBox)
 					]
 				+ SGridPanel::Slot(2, 6).HAlign(HAlign_Left).Padding(5)
 					[
@@ -262,49 +267,49 @@ void SNIOSHWidget::Construct(const FArguments& InArgs)
 					]
 				+ SGridPanel::Slot(2, 10).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(RI_End,STextBlock)
 						.Text(LOCTEXT("RI_End", "0.0"))
 					]
 				+ SGridPanel::Slot(2, 11).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(RWL_End,STextBlock)
 						.Text(LOCTEXT("RWL_End", "0.0"))
 					]
 				+ SGridPanel::Slot(2, 12).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(HM_End,STextBlock)
 						.Text(LOCTEXT("HM_End", "0.0"))
 					]
 				+ SGridPanel::Slot(2, 13).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(VM_End,STextBlock)
 						.Text(LOCTEXT("VM_End", "0.0"))
 					]
 				+ SGridPanel::Slot(2, 14).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(DM_End,STextBlock)
 						.Text(LOCTEXT("DM_End", "0.0"))
 					]
 				+ SGridPanel::Slot(2, 15).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(AM_End,STextBlock)
 						.Text(LOCTEXT("AM_End", "0.0"))
 					]
 				+ SGridPanel::Slot(2, 16).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(CM_End,STextBlock)
 						.Text(LOCTEXT("CM_End", "0.0"))
 					]
 				+ SGridPanel::Slot(2, 17).HAlign(HAlign_Center).Padding(5)
 					[
-						SNew(STextBlock)
+						SAssignNew(FM_End,STextBlock)
 						.Text(LOCTEXT("FM_End", "0.0"))
 					]
 			
 		];
 
 }
-END_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
 
 TSharedRef<class SWidget> SNIOSHWidget::GenerateDropDownItem(TSharedPtr<FString> InItem)
 {
@@ -341,6 +346,7 @@ void SNIOSHWidget::InitializeDropDownLists()
 	DurationList.Add(MakeShareable(new FString(TEXT("2~8小时"))));
 
 }
+
 
 
 FText SNIOSHWidget::GetCurrentCouplingText() const
@@ -450,4 +456,21 @@ void SNIOSHWidget::HandleFrequencyChanged(TSharedPtr<FString> Item, ESelectInfo:
 	}
 }
 
+
+FReply SNIOSHWidget::CaptureStart()
+{
+	return FReply::Handled();
+}
+
+FReply SNIOSHWidget::CaptureEnd()
+{
+	return FReply::Handled();
+}
+
+FReply SNIOSHWidget::Evaluate()
+{
+	return FReply::Handled();
+}
+
+END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 #undef LOCTEXT_NAMESPACE

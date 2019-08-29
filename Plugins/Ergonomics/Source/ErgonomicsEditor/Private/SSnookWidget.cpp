@@ -158,29 +158,24 @@ void SSnookWidget::Construct(const FArguments& InArgs)
 			]
 		]
 
-	// 扭曲下拉菜单
+
 	+ SGridPanel::Slot(1, 5).Padding(5).HAlign(HAlign_Left)
 		[
 			SNew(SBox).WidthOverride(400.0f)
 			[
 				SAssignNew(ActualWeight,SEditableTextBox)
-				.OnTextCommitted(this, &SSnookWidget::HandleActualWeightCommit)
 			]
 		]
 
 	+ SGridPanel::Slot(1, 8).HAlign(HAlign_Left).Padding(5)
 		[
-			SNew(STextBlock)
+			SAssignNew(RI,STextBlock)
 			.Text(LOCTEXT("RI_Value", "2.0"))
 		]
 	];
 
 }
 
-void SSnookWidget::HandleActualWeightCommit(const FText& InText, ETextCommit::Type InCommitType)
-{
-	
-}
 
 void SSnookWidget::InitializeDropDownLists()
 {

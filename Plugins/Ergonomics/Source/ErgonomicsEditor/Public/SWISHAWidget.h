@@ -30,11 +30,14 @@ public:
 	TArray<TSharedPtr<FString>> FrequencyList;
 	TArray<TSharedPtr<FString>> DurationList;
 	TArray<TSharedPtr<FString>> TwistingList;
+	
 
-	//实际重量
-	TSharedPtr<SEditableTextBox> ActualWeightTB;	
-	//实际重量提交响应函数
-	void HandleActualWeightCommit(const FText& InText, ETextCommit::Type InCommitType);
+
+	//输入控件
+	TSharedPtr<SEditableTextBox> ActualWeight;
+
+	//输出控件
+	TSharedPtr<STextBlock> RI;
 
 private:
 	void InitializeDropDownLists();

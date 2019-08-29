@@ -23,6 +23,33 @@ public:
 	TArray<TSharedPtr<FString>> FrequencyList;
 	TArray<TSharedPtr<FString>> DurationList;
 
+	//  ‰»Î
+	TSharedPtr<SEditableTextBox> HorizontalPos_Start;
+	TSharedPtr<SEditableTextBox> HorizontalPos_End;
+	TSharedPtr<SEditableTextBox> VerticalPos_Start;
+	TSharedPtr<SEditableTextBox> VerticalPos_End;
+	TSharedPtr<SEditableTextBox> Asymmetric_Start;
+	TSharedPtr<SEditableTextBox> Asymmetric_End;
+
+	// ‰≥ˆ
+	TSharedPtr<STextBlock> RI_Start;
+	TSharedPtr<STextBlock> RI_End;
+	TSharedPtr<STextBlock> RWL_Start;
+	TSharedPtr<STextBlock> RWL_End;
+	TSharedPtr<STextBlock> HM_Start;
+	TSharedPtr<STextBlock> HM_End;
+	TSharedPtr<STextBlock> VM_Start;
+	TSharedPtr<STextBlock> VM_End;
+	TSharedPtr<STextBlock> DM_Start;
+	TSharedPtr<STextBlock> DM_End;
+	TSharedPtr<STextBlock> AM_Start;
+	TSharedPtr<STextBlock> AM_End;
+	TSharedPtr<STextBlock> CM_Start;
+	TSharedPtr<STextBlock> CM_End;
+	TSharedPtr<STextBlock> FM_Start;
+	TSharedPtr<STextBlock> FM_End;
+
+
 	TSharedRef<class SWidget> GenerateDropDownItem(TSharedPtr<FString> InItem);
 
 	FText GetCurrentCouplingText() const;
@@ -35,4 +62,8 @@ public:
 	void HandleFrequencyChanged(TSharedPtr<FString> Item, ESelectInfo::Type SelectInfo);
 
 	void InitializeDropDownLists();
+
+	FReply CaptureStart();
+	FReply CaptureEnd();
+	FReply Evaluate();
 };

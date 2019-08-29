@@ -18,7 +18,19 @@ public:
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
 
-private:
+	TSharedPtr<class RULA> EditingRULA;
+
+	//输入控件
+	TSharedPtr<SCheckBox> LowerArmAdjust;
+	TSharedPtr<SCheckBox> ArmBend1;
+	TSharedPtr<SCheckBox> ArmBend2;
+	TSharedPtr<SCheckBox> WristMuscle;
+	TSharedPtr<SCheckBox> TrunkMuscle;
+
+	//输出控件
+	TSharedPtr<STextBlock> RI;
+	TSharedPtr<STextBlock> RULAScore;
+
 	FReply CapturePose();
 	FReply Evaluate();
 
@@ -27,4 +39,10 @@ private:
 
 	void InitializeDropDownLists();
 	TSharedRef<class SWidget> GenerateDropDownItem(TSharedPtr<FString> InItem);
+
+	FText GetCurrentWraistLoadText() const;
+	void HandleWraistLoadChanged(TSharedPtr<FString> Item,ESelectInfo::Type SelectInfo);
+
+	FText GetCurrentTrunkLoadText() const;
+	void HandleTrunkLoadChanged(TSharedPtr<FString> Item,ESelectInfo::Type SelectInfo);
 };

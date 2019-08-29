@@ -20,14 +20,18 @@ public:
 
 	TSharedPtr<class Snook> EditingSnook;
 
+	//输入控件
+	TSharedPtr<SEditableTextBox> ActualWeight;
+
+	//输出控件
+	TSharedPtr<STextBlock> RI;
+
+
 	//UI下拉菜单选项
 	TArray<TSharedPtr<FString>> LiftOverPointList;
 	TArray<TSharedPtr<FString>> FrequencyList;
 	TArray<TSharedPtr<FString>> HorizontalDistanceList;
 	TArray<TSharedPtr<FString>> LiftDistanceList;
-
-	TSharedPtr<class SEditableTextBox> ActualWeight;
-	void HandleActualWeightCommit(const FText& InText, ETextCommit::Type InCommitType);
 
 	void InitializeDropDownLists();
 	TSharedRef<class SWidget> GenerateDropDownItem(TSharedPtr<FString> InItem);

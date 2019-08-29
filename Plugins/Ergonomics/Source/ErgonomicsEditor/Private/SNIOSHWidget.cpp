@@ -11,27 +11,39 @@
 #include "Widgets/SBoxPanel.h"
 #include "SCheckBox.h"
 #include "Widgets/Layout/SScrollBox.h"
+#include "SComboBox.h"
+#include "Modules/ModuleManager.h"
+#include "NIOSH.h"
+#include "ErgonomicsEditor.h"
+#include "SWISHAWidget.h"
 
 #define LOCTEXT_NAMESPACE "SNIOSHWidget"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 void SNIOSHWidget::Construct(const FArguments& InArgs)
 {
+
+	//获取当前正在编辑的算法对象
+	auto ErgonomicsEditorModule = FModuleManager::LoadModuleChecked<FErgonomicsEditorModule>("ErgonomicsEditor");
+	this->EditingNIOSH = ErgonomicsEditorModule.EditingNIOSH;
+
+	//初始化下拉菜单
+	InitializeDropDownLists();
+
 	ChildSlot
-		[
-		
+		[		
 
-					SNew(SGridPanel)
-					.FillColumn(0, 0.2f)
-					.FillColumn(1, 0.4f)
-					.FillColumn(2, 0.4f)
+				SNew(SGridPanel)
+				.FillColumn(0, 0.2f)
+				.FillColumn(1, 0.4f)
+				.FillColumn(2, 0.4f)
 
-					+ SGridPanel::Slot(0, 0).HAlign(HAlign_Center).Padding(5)
-					.ColumnSpan(3)
-					[
-						SNew(STextBlock)
-						.Text(LOCTEXT("TitleLabel", "NIOSH搬举方程"))
-					]
+				+ SGridPanel::Slot(0, 0).HAlign(HAlign_Center).Padding(5)
+				.ColumnSpan(3)
+				[
+					SNew(STextBlock)
+					.Text(LOCTEXT("TitleLabel", "NIOSH搬举方程"))
+				]
 
 
 				// Column 1
@@ -143,63 +155,36 @@ void SNIOSHWidget::Construct(const FArguments& InArgs)
 
 				+ SGridPanel::Slot(1, 5).Padding(5).ColumnSpan(2)
 					[
-						SNew(SVerticalBox)
-						+SVerticalBox::Slot().Padding(0,0,0,10)
-							[
-								SNew(SCheckBox)
-								[
-									SNew(STextBlock)
-									.Text(LOCTEXT("Coupling1", "具有舒适的把手，或可以轻松地握住物体"))
-								]
-							]
-						+ SVerticalBox::Slot().Padding(0, 0, 0, 10)
-							[
-								SNew(SCheckBox)
-								[
-									SNew(STextBlock)
-									.Text(LOCTEXT("Coupling2", "具有普通把手，或手可以握住物体。"))
-								]
-							]
-						+ SVerticalBox::Slot().Padding(0)
-							[
-								SNew(SCheckBox)
-								[
-									SNew(STextBlock)
-									.Text(LOCTEXT("Coupling3", "没有把手，或握住物体困难。"))
-								]
-							]
+						SNew(SComboBox<TSharedPtr<FString>>)
+						.OptionsSource(&CouplingList)
+						.OnGenerateWidget(this, &SNIOSHWidget::GenerateDropDownItem)
+						.OnSelectionChanged(this, &SNIOSHWidget::HandleCouplingChanged)
+						[
+							SNew(STextBlock)
+							.Text(this, &SNIOSHWidget::GetCurrentCouplingText)
+						]
 					]
 				+ SGridPanel::Slot(1, 6).Padding(5)
 					[
-						SNew(SEditableTextBox)
+						SNew(SComboBox<TSharedPtr<FString>>)
+						.OptionsSource(&FrequencyList)
+						.OnGenerateWidget(this, &SNIOSHWidget::GenerateDropDownItem)
+						.OnSelectionChanged(this, &SNIOSHWidget::HandleFrequencyChanged)
+						[
+							SNew(STextBlock)
+							.Text(this, &SNIOSHWidget::GetCurrentFrequencyText)
+						]
 					]
 				+ SGridPanel::Slot(1, 7).Padding(5).ColumnSpan(2)
 					[
-						SNew(SHorizontalBox)
-						+SHorizontalBox::Slot().HAlign(HAlign_Left).Padding(10,0)
-							[
-								SNew(SCheckBox)
-								[
-									SNew(STextBlock)
-									.Text(LOCTEXT("DurationCheckBox1", "1小时"))
-								]
-							]
-						+ SHorizontalBox::Slot().HAlign(HAlign_Left).Padding(10, 0)
-							[
-								SNew(SCheckBox)
-								[
-									SNew(STextBlock)
-									.Text(LOCTEXT("DurationCheckBox2", "1-2小时"))
-								]
-							]
-						+ SHorizontalBox::Slot().HAlign(HAlign_Left).Padding(10, 0)
-							[
-								SNew(SCheckBox)
-								[
-									SNew(STextBlock)
-									.Text(LOCTEXT("DurationCheckBox3", "2-8小时"))
-								]
-							]
+						SNew(SComboBox<TSharedPtr<FString>>)
+						.OptionsSource(&DurationList)
+						.OnGenerateWidget(this, &SNIOSHWidget::GenerateDropDownItem)
+						.OnSelectionChanged(this, &SNIOSHWidget::HandleDurationChanged)
+						[
+							SNew(STextBlock)
+							.Text(this, &SNIOSHWidget::GetCurrentDurationText)
+						]
 					]
 				+ SGridPanel::Slot(1, 9).HAlign(HAlign_Center).Padding(5)
 					[
@@ -320,5 +305,149 @@ void SNIOSHWidget::Construct(const FArguments& InArgs)
 
 }
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
+TSharedRef<class SWidget> SNIOSHWidget::GenerateDropDownItem(TSharedPtr<FString> InItem)
+{
+	FText ItemAsText = FText::FromString(*InItem);
+	return
+		SNew(SBox)
+		.Padding(10)
+		.WidthOverride(400)
+		[
+			SNew(STextBlock)
+			.Text(ItemAsText)
+			.ToolTipText(ItemAsText)
+		];
+}
+
+void SNIOSHWidget::InitializeDropDownLists()
+{
+	CouplingList.Empty();
+	CouplingList.Add(MakeShareable(new FString(TEXT("良好"))));
+	CouplingList.Add(MakeShareable(new FString(TEXT("一般"))));
+	CouplingList.Add(MakeShareable(new FString(TEXT("较差"))));
+
+
+	FrequencyList.Empty();
+	FrequencyList.Add(MakeShareable(new FString(TEXT("等于或低于0.2"))));
+	FrequencyList.Add(MakeShareable(new FString(TEXT("等于0.5"))));
+	FrequencyList.Add(MakeShareable(new FString(TEXT("等于1"))));
+	FrequencyList.Add(MakeShareable(new FString(TEXT("等于2"))));
+	FrequencyList.Add(MakeShareable(new FString(TEXT("等于3"))));
+
+	DurationList.Empty();
+	DurationList.Add(MakeShareable(new FString(TEXT("1小时"))));
+	DurationList.Add(MakeShareable(new FString(TEXT("1~2小时"))));
+	DurationList.Add(MakeShareable(new FString(TEXT("2~8小时"))));
+
+}
+
+
+FText SNIOSHWidget::GetCurrentCouplingText() const
+{
+	switch (EditingNIOSH->Coupling)
+	{
+	case ECoupling_NIOSH::Good:
+		return FText::FromString(TEXT("良好"));
+	case ECoupling_NIOSH::Fair:
+		return FText::FromString(TEXT("一般"));
+	case ECoupling_NIOSH::Poor:
+		return FText::FromString(TEXT("较差"));
+	default:
+		return FText::FromString(TEXT("Null"));
+	}
+}
+
+void SNIOSHWidget::HandleCouplingChanged(TSharedPtr<FString> Item, ESelectInfo::Type SelectInfo)
+{
+	if (*Item == TEXT("良好"))
+	{
+		EditingNIOSH->Coupling = ECoupling_NIOSH::Good;
+	}
+	else if (*Item == TEXT("一般"))
+	{
+		EditingNIOSH->Coupling = ECoupling_NIOSH::Fair;
+	}
+	else if (*Item == TEXT("较差"))
+	{
+		EditingNIOSH->Coupling = ECoupling_NIOSH::Poor;
+	}
+
+}
+
+
+FText SNIOSHWidget::GetCurrentDurationText() const
+{
+	switch (EditingNIOSH->Duration)
+	{
+		case EDuration_NIOSH::Low:
+			return FText::FromString(TEXT("1小时"));
+		case EDuration_NIOSH::Medium:
+			return FText::FromString(TEXT("1~2小时"));
+		case EDuration_NIOSH::High:
+			return FText::FromString(TEXT("2~8小时"));
+		default:
+			return FText::FromString(TEXT("Null"));
+	}
+}
+
+void SNIOSHWidget::HandleDurationChanged(TSharedPtr<FString> Item, ESelectInfo::Type SelectInfo)
+{
+	if (*Item == TEXT("1小时"))
+	{
+		EditingNIOSH->Duration = EDuration_NIOSH::Low;
+	}
+	else if (*Item == TEXT("1~2小时"))
+	{
+		EditingNIOSH->Duration = EDuration_NIOSH::Medium;
+	}
+	else if (*Item == TEXT("2~8小时"))
+	{
+		EditingNIOSH->Duration = EDuration_NIOSH::High;
+	}
+}
+
+FText SNIOSHWidget::GetCurrentFrequencyText() const
+{
+	switch (EditingNIOSH->Frequency)
+	{
+	case EFrequency_NIOSH::Minimum:
+		return FText::FromString(TEXT("等于或低于0.2"));
+	case EFrequency_NIOSH::Low:
+		return FText::FromString(TEXT("等于0.5"));
+	case EFrequency_NIOSH::Medium:
+		return FText::FromString(TEXT("等于1"));
+	case EFrequency_NIOSH::High:
+		return FText::FromString(TEXT("等于2"));
+	case EFrequency_NIOSH::Maximum:
+		return FText::FromString(TEXT("等于3"));
+	default:
+		return FText::FromString(TEXT("Null"));
+	}
+}
+
+void SNIOSHWidget::HandleFrequencyChanged(TSharedPtr<FString> Item, ESelectInfo::Type SelectInfo)
+{
+	if (*Item == TEXT("等于或低于0.2"))
+	{
+		EditingNIOSH->Frequency = EFrequency_NIOSH::Minimum;
+	}
+	else if (*Item == TEXT("等于0.5"))
+	{
+		EditingNIOSH->Frequency = EFrequency_NIOSH::Low;
+	}
+	else if (*Item == TEXT("等于1"))
+	{
+		EditingNIOSH->Frequency = EFrequency_NIOSH::Medium;
+	}
+	else if (*Item == TEXT("等于2"))
+	{
+		EditingNIOSH->Frequency = EFrequency_NIOSH::High;
+	}
+	else if (*Item == TEXT("等于3"))
+	{
+		EditingNIOSH->Frequency = EFrequency_NIOSH::Maximum;
+	}
+}
 
 #undef LOCTEXT_NAMESPACE

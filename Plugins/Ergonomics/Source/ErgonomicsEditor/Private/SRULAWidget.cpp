@@ -201,11 +201,43 @@ void SRULAWidget::Construct(const FArguments& InArgs)
 	];
 
 }
-END_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
+FReply SRULAWidget::CapturePose()
+{
+
+}
+
+
 
 FReply SRULAWidget::Evaluate()
 {
 	return FReply::Handled();
 }
 
+
+
+void SRULAWidget::InitializeDropDownLists()
+{
+	WraistLoadList.Empty();
+	WraistLoadList.Add(MakeShareable(new FString(TEXT(""))));
+	WraistLoadList.Add(MakeShareable(new FString(TEXT(""))));
+	WraistLoadList.Add(MakeShareable(new FString(TEXT(""))));
+	WraistLoadList.Add(MakeShareable(new FString(TEXT(""))));
+}
+
+TSharedRef<class SWidget> SRULAWidget::GenerateDropDownItem(TSharedPtr<FString> InItem)
+{
+	FText ItemAsText = FText::FromString(*InItem);
+	return
+		SNew(SBox)
+		.Padding(10)
+		.WidthOverride(400)
+		[
+			SNew(STextBlock)
+			.Text(ItemAsText)
+		.ToolTipText(ItemAsText)
+		];
+}
+
+END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 #undef LOCTEXT_NAMESPACE

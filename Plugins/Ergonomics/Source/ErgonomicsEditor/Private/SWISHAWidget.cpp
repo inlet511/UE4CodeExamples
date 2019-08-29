@@ -218,7 +218,7 @@ void SWISHAWidget::Construct(const FArguments& InArgs)
 				.OnGenerateWidget(this, &SWISHAWidget::GenerateDropDownItem)
 				.OnSelectionChanged(this,&SWISHAWidget::HandleTwistChanged)
 				[
-					SNew(STextBlock)
+					SNew(STextBlock)					
 					.Text(this,&SWISHAWidget::GetCurrentTwistText)
 				]
 			]
@@ -232,7 +232,7 @@ void SWISHAWidget::Construct(const FArguments& InArgs)
 	];
 
 }
-END_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
 
 void SWISHAWidget::InitializeDropDownLists()
 {
@@ -270,6 +270,7 @@ TSharedRef<SWidget> SWISHAWidget::GenerateDropDownItem(TSharedPtr<FString> InIte
 	FText ItemAsText = FText::FromString(*InItem);
 	return
 		SNew(SBox)
+		.Padding(10)
 		.WidthOverride(400)
 		[
 			SNew(STextBlock)
@@ -427,12 +428,12 @@ FText SWISHAWidget::GetCurrentTwistText() const
 {
 	switch (EditingWISHA->CurrentTwist)
 	{
-	case ETwist::Minor:
-		return FText::FromString(TEXT("小于45度"));
-	case ETwist::Major:
-		return FText::FromString(TEXT("大于等于45度"));	
-	default:
-			return FText::FromString(TEXT("Null"));
+		case ETwist::Minor:
+			return FText::FromString(TEXT("小于45度"));
+		case ETwist::Major:
+			return FText::FromString(TEXT("大于等于45度"));	
+		default:
+				return FText::FromString(TEXT("Null"));
 	}
 }
 
@@ -458,4 +459,5 @@ FReply SWISHAWidget::Evaluate()
 	return FReply::Handled();
 }
 
+END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 #undef LOCTEXT_NAMESPACE

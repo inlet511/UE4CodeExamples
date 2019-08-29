@@ -21,4 +21,10 @@ public:
 private:
 	FReply CapturePose();
 	FReply Evaluate();
+
+	TArray<TSharedPtr<FString>> WraistLoadList;
+	TArray<TSharedPtr<FString>> TrunkLoadList;
+
+	void InitializeDropDownLists();
+	TSharedRef<class SWidget> GenerateDropDownItem(TSharedPtr<FString> InItem);
 };

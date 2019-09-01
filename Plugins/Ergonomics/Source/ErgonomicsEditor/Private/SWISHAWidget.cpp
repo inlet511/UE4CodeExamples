@@ -423,6 +423,7 @@ void SWISHAWidget::HandleTwistChanged(TSharedPtr<FString> Item,ESelectInfo::Type
 
 FReply SWISHAWidget::Evaluate()
 {
+
 	return FReply::Handled();
 }
 

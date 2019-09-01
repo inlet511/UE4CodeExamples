@@ -16,6 +16,8 @@
 #include "NIOSH.h"
 #include "ErgonomicsEditor.h"
 #include "SWISHAWidget.h"
+#include "Engine/Selection.h"
+#include "Editor.h"
 
 #define LOCTEXT_NAMESPACE "SNIOSHWidget"
 
@@ -81,55 +83,60 @@ void SNIOSHWidget::Construct(const FArguments& InArgs)
 						SNew(STextBlock)
 						.Text(LOCTEXT("Duration", "持续时间"))
 					]
-				+ SGridPanel::Slot(0, 8).HAlign(HAlign_Center).ColumnSpan(3).Padding(5,20,5,5)
+				+ SGridPanel::Slot(0, 8).HAlign(HAlign_Right).Padding(5)
+					[
+						SNew(STextBlock)
+						.Text(LOCTEXT("Weight", "物体重量"))
+					]
+				+ SGridPanel::Slot(0, 9).HAlign(HAlign_Center).ColumnSpan(3).Padding(5,20,5,5)
 					[
 						SNew(SButton).ContentPadding(20)
 						.OnClicked(this,&SNIOSHWidget::Evaluate)
 						.Text(LOCTEXT("Evaluation", "评估"))
 					]
-				+SGridPanel::Slot(0,9)
+				+SGridPanel::Slot(0,10)
 					[
 						SNew(SSpacer)
-					]
-				+ SGridPanel::Slot(0, 10).HAlign(HAlign_Right).Padding(5)
-					[
-						SNew(STextBlock)
-						.Text(LOCTEXT("RI", "风险指数(RI)"))
 					]
 				+ SGridPanel::Slot(0, 11).HAlign(HAlign_Right).Padding(5)
 					[
 						SNew(STextBlock)
-						.Text(LOCTEXT("RWL", "建议重量限制(RWL,单位kg)"))
+						.Text(LOCTEXT("RI_Label", "风险指数(RI)"))
 					]
 				+ SGridPanel::Slot(0, 12).HAlign(HAlign_Right).Padding(5)
 					[
 						SNew(STextBlock)
-						.Text(LOCTEXT("HM", "HM"))
+						.Text(LOCTEXT("RWL_Label", "建议重量限制(RWL,单位kg)"))
 					]
 				+ SGridPanel::Slot(0, 13).HAlign(HAlign_Right).Padding(5)
 					[
 						SNew(STextBlock)
-						.Text(LOCTEXT("VM", "VM"))
+						.Text(LOCTEXT("HM_Label", "HM"))
 					]
 				+ SGridPanel::Slot(0, 14).HAlign(HAlign_Right).Padding(5)
 					[
 						SNew(STextBlock)
-						.Text(LOCTEXT("DM", "DM"))
+						.Text(LOCTEXT("VM_Label", "VM")) 
 					]
 				+ SGridPanel::Slot(0, 15).HAlign(HAlign_Right).Padding(5)
 					[
 						SNew(STextBlock)
-						.Text(LOCTEXT("AM", "AM"))
+						.Text(LOCTEXT("DM_Label", "DM"))
 					]
 				+ SGridPanel::Slot(0, 16).HAlign(HAlign_Right).Padding(5)
 					[
 						SNew(STextBlock)
-						.Text(LOCTEXT("CM", "CM"))
+						.Text(LOCTEXT("AM_Label", "AM"))
 					]
 				+ SGridPanel::Slot(0, 17).HAlign(HAlign_Right).Padding(5)
 					[
 						SNew(STextBlock)
-						.Text(LOCTEXT("FM", "FM"))
+						.Text(LOCTEXT("CM_Label", "CM"))
+					]
+				+ SGridPanel::Slot(0, 18).HAlign(HAlign_Right).Padding(5)
+					[
+						SNew(STextBlock)
+						.Text(LOCTEXT("FM_Label", "FM"))
 					]
 
 
@@ -169,14 +176,7 @@ void SNIOSHWidget::Construct(const FArguments& InArgs)
 					]
 				+ SGridPanel::Slot(1, 6).Padding(5)
 					[
-						SNew(SComboBox<TSharedPtr<FString>>)
-						.OptionsSource(&FrequencyList)
-						.OnGenerateWidget(this, &SNIOSHWidget::GenerateDropDownItem)
-						.OnSelectionChanged(this, &SNIOSHWidget::HandleFrequencyChanged)
-						[
-							SNew(STextBlock)
-							.Text(this, &SNIOSHWidget::GetCurrentFrequencyText)
-						]
+						SAssignNew(Frequency_Input, SEditableTextBox)
 					]
 				+ SGridPanel::Slot(1, 7).Padding(5).ColumnSpan(2)
 					[
@@ -189,50 +189,49 @@ void SNIOSHWidget::Construct(const FArguments& InArgs)
 							.Text(this, &SNIOSHWidget::GetCurrentDurationText)
 						]
 					]
-				+ SGridPanel::Slot(1, 9).HAlign(HAlign_Center).Padding(5)
+				+ SGridPanel::Slot(1, 8).Padding(5)
 					[
-						SNew(STextBlock)
-						.Text(LOCTEXT("StartSpot", "起点"))
+						SAssignNew(Weight_Input, SEditableTextBox)
 					]
-				+ SGridPanel::Slot(1, 10).HAlign(HAlign_Center).Padding(5)
+				+ SGridPanel::Slot(1, 11).ColumnSpan(2).HAlign(HAlign_Center).Padding(5)
 					[
-						SAssignNew(RI_Start,STextBlock)
-						.Text(LOCTEXT("RI_Start", "0.0"))
+						SAssignNew(RI,STextBlock)
+						.Text(LOCTEXT("RI", "0.0"))
 					]
-				+ SGridPanel::Slot(1, 11).HAlign(HAlign_Center).Padding(5)
+				+ SGridPanel::Slot(1, 12).ColumnSpan(2).HAlign(HAlign_Center).Padding(5)
 					[
-						SAssignNew(RWL_Start,STextBlock)
-						.Text(LOCTEXT("RWL_Start", "0.0"))
+						SAssignNew(RWL,STextBlock)
+						.Text(LOCTEXT("RWL", "0.0"))
 					]
-				+ SGridPanel::Slot(1, 12).HAlign(HAlign_Center).Padding(5)
+				+ SGridPanel::Slot(1, 13).ColumnSpan(2).HAlign(HAlign_Center).Padding(5)
 					[
-						SAssignNew(HM_Start,STextBlock)
-						.Text(LOCTEXT("HM_Start", "0.0"))
+						SAssignNew(HM,STextBlock)
+						.Text(LOCTEXT("HM", "0.0"))
 					]
-				+ SGridPanel::Slot(1, 13).HAlign(HAlign_Center).Padding(5)
+				+ SGridPanel::Slot(1, 14).ColumnSpan(2).HAlign(HAlign_Center).Padding(5)
 					[
-						SAssignNew(VM_Start,STextBlock)
-						.Text(LOCTEXT("VM_Start", "0.0"))
+						SAssignNew(VM,STextBlock)
+						.Text(LOCTEXT("VM", "0.0"))
 					]
-				+ SGridPanel::Slot(1, 14).HAlign(HAlign_Center).Padding(5)
+				+ SGridPanel::Slot(1, 15).ColumnSpan(2).HAlign(HAlign_Center).Padding(5)
 					[
-						SAssignNew(DM_Start,STextBlock)
-						.Text(LOCTEXT("DM_Start", "0.0"))
+						SAssignNew(DM,STextBlock)
+						.Text(LOCTEXT("DM", "0.0"))
 					]
-				+ SGridPanel::Slot(1, 15).HAlign(HAlign_Center).Padding(5)
+				+ SGridPanel::Slot(1, 16).ColumnSpan(2).HAlign(HAlign_Center).Padding(5)
 					[
-						SAssignNew(AM_Start,STextBlock)
-						.Text(LOCTEXT("AM_Start", "0.0"))
+						SAssignNew(AM,STextBlock)
+						.Text(LOCTEXT("AM", "0.0"))
 					]
-				+ SGridPanel::Slot(1, 16).HAlign(HAlign_Center).Padding(5)
+				+ SGridPanel::Slot(1, 17).ColumnSpan(2).HAlign(HAlign_Center).Padding(5)
 					[
-						SAssignNew(CM_Start,STextBlock)
-						.Text(LOCTEXT("CM_Start", "0.0"))
+						SAssignNew(CM,STextBlock)
+						.Text(LOCTEXT("CM", "0.0"))
 					]
-				+ SGridPanel::Slot(1, 17).HAlign(HAlign_Center).Padding(5)
+				+ SGridPanel::Slot(1, 18).ColumnSpan(2).HAlign(HAlign_Center).Padding(5)
 					[
-						SAssignNew(FM_Start,STextBlock)
-						.Text(LOCTEXT("FM_Start", "0.0"))
+						SAssignNew(FM,STextBlock)
+						.Text(LOCTEXT("FM", "0.0"))
 					]
 
 				// Column 3
@@ -260,51 +259,12 @@ void SNIOSHWidget::Construct(const FArguments& InArgs)
 						SNew(STextBlock)
 						.Text(LOCTEXT("FrequencyUnit", "次/分钟"))
 					]
-				+ SGridPanel::Slot(2, 9).HAlign(HAlign_Center).Padding(5)
+				+ SGridPanel::Slot(2, 8).HAlign(HAlign_Left).Padding(5)
 					[
 						SNew(STextBlock)
-						.Text(LOCTEXT("End", "终点"))
+						.Text(LOCTEXT("WeightUnit", "kg"))
 					]
-				+ SGridPanel::Slot(2, 10).HAlign(HAlign_Center).Padding(5)
-					[
-						SAssignNew(RI_End,STextBlock)
-						.Text(LOCTEXT("RI_End", "0.0"))
-					]
-				+ SGridPanel::Slot(2, 11).HAlign(HAlign_Center).Padding(5)
-					[
-						SAssignNew(RWL_End,STextBlock)
-						.Text(LOCTEXT("RWL_End", "0.0"))
-					]
-				+ SGridPanel::Slot(2, 12).HAlign(HAlign_Center).Padding(5)
-					[
-						SAssignNew(HM_End,STextBlock)
-						.Text(LOCTEXT("HM_End", "0.0"))
-					]
-				+ SGridPanel::Slot(2, 13).HAlign(HAlign_Center).Padding(5)
-					[
-						SAssignNew(VM_End,STextBlock)
-						.Text(LOCTEXT("VM_End", "0.0"))
-					]
-				+ SGridPanel::Slot(2, 14).HAlign(HAlign_Center).Padding(5)
-					[
-						SAssignNew(DM_End,STextBlock)
-						.Text(LOCTEXT("DM_End", "0.0"))
-					]
-				+ SGridPanel::Slot(2, 15).HAlign(HAlign_Center).Padding(5)
-					[
-						SAssignNew(AM_End,STextBlock)
-						.Text(LOCTEXT("AM_End", "0.0"))
-					]
-				+ SGridPanel::Slot(2, 16).HAlign(HAlign_Center).Padding(5)
-					[
-						SAssignNew(CM_End,STextBlock)
-						.Text(LOCTEXT("CM_End", "0.0"))
-					]
-				+ SGridPanel::Slot(2, 17).HAlign(HAlign_Center).Padding(5)
-					[
-						SAssignNew(FM_End,STextBlock)
-						.Text(LOCTEXT("FM_End", "0.0"))
-					]
+
 			
 		];
 
@@ -332,13 +292,6 @@ void SNIOSHWidget::InitializeDropDownLists()
 	CouplingList.Add(MakeShareable(new FString(TEXT("一般"))));
 	CouplingList.Add(MakeShareable(new FString(TEXT("较差"))));
 
-
-	FrequencyList.Empty();
-	FrequencyList.Add(MakeShareable(new FString(TEXT("等于或低于0.2"))));
-	FrequencyList.Add(MakeShareable(new FString(TEXT("等于0.5"))));
-	FrequencyList.Add(MakeShareable(new FString(TEXT("等于1"))));
-	FrequencyList.Add(MakeShareable(new FString(TEXT("等于2"))));
-	FrequencyList.Add(MakeShareable(new FString(TEXT("等于3"))));
 
 	DurationList.Empty();
 	DurationList.Add(MakeShareable(new FString(TEXT("1小时"))));
@@ -413,62 +366,83 @@ void SNIOSHWidget::HandleDurationChanged(TSharedPtr<FString> Item, ESelectInfo::
 	}
 }
 
-FText SNIOSHWidget::GetCurrentFrequencyText() const
-{
-	switch (EditingNIOSH->Frequency)
-	{
-	case EFrequency_NIOSH::Minimum:
-		return FText::FromString(TEXT("等于或低于0.2"));
-	case EFrequency_NIOSH::Low:
-		return FText::FromString(TEXT("等于0.5"));
-	case EFrequency_NIOSH::Medium:
-		return FText::FromString(TEXT("等于1"));
-	case EFrequency_NIOSH::High:
-		return FText::FromString(TEXT("等于2"));
-	case EFrequency_NIOSH::Maximum:
-		return FText::FromString(TEXT("等于3"));
-	default:
-		return FText::FromString(TEXT("Null"));
-	}
-}
 
-void SNIOSHWidget::HandleFrequencyChanged(TSharedPtr<FString> Item, ESelectInfo::Type SelectInfo)
-{
-	if (*Item == TEXT("等于或低于0.2"))
-	{
-		EditingNIOSH->Frequency = EFrequency_NIOSH::Minimum;
-	}
-	else if (*Item == TEXT("等于0.5"))
-	{
-		EditingNIOSH->Frequency = EFrequency_NIOSH::Low;
-	}
-	else if (*Item == TEXT("等于1"))
-	{
-		EditingNIOSH->Frequency = EFrequency_NIOSH::Medium;
-	}
-	else if (*Item == TEXT("等于2"))
-	{
-		EditingNIOSH->Frequency = EFrequency_NIOSH::High;
-	}
-	else if (*Item == TEXT("等于3"))
-	{
-		EditingNIOSH->Frequency = EFrequency_NIOSH::Maximum;
-	}
-}
 
 
 FReply SNIOSHWidget::CaptureStart()
 {
-	return FReply::Handled();
+	USelection* selection = GEditor->GetSelectedActors();
+
+	if (selection->Num() <= 0)
+		return FReply::Unhandled();
+	int32 idx = 0;
+	for (idx = 0; idx < selection->Num()  ; idx++)
+	{
+		UObject * obj = selection->GetSelectedObject(idx);
+		AActor* TargetActor = Cast<AActor>(obj);
+		if (TargetActor)
+		{
+			USkeletalMeshComponent* skeletalMeshComp = TargetActor->FindComponentByClass<USkeletalMeshComponent>();
+			if (skeletalMeshComp)
+			{
+				EditingNIOSH->Skeleton = skeletalMeshComp;
+				EditingNIOSH->SnapshotStartPose();
+
+				HorizontalPos_Start->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->StartHLocation)));
+				VerticalPos_Start->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->StartVLocation)));
+				Asymmetric_Start->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->StartAsymmetryAngle)));
+
+				return FReply::Handled();
+			}
+		}
+	}
+
+	return FReply::Unhandled();
 }
 
 FReply SNIOSHWidget::CaptureEnd()
 {
-	return FReply::Handled();
+	USelection* selection = GEditor->GetSelectedActors();
+
+	if (selection->Num() <= 0)
+		return FReply::Unhandled();
+
+	for (int i = 0; i < selection->Num() ; i++)
+	{
+		UObject * obj = selection->GetSelectedObject(i);
+		AActor* TargetActor = Cast<AActor>(obj);
+		if (TargetActor)
+		{
+			USkeletalMeshComponent* skeletalMeshComp = TargetActor->FindComponentByClass<USkeletalMeshComponent>();
+			if (skeletalMeshComp)
+			{
+				EditingNIOSH->Skeleton = skeletalMeshComp;
+				EditingNIOSH->SnapshotEndPose();
+
+				HorizontalPos_End->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->EndHLocation)));
+				VerticalPos_End->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->EndVLocation)));
+				Asymmetric_End->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->EndAsymmetryAngle)));
+
+				return FReply::Handled();
+			}
+		}
+	}
+
+	return FReply::Unhandled();
 }
 
 FReply SNIOSHWidget::Evaluate()
 {
+	EditingNIOSH->Calculate();
+	
+	RI->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->RI)));
+	RWL->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->RWL)));
+	HM->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->HM)));
+	VM->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->VM)));
+	DM->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->DM)));
+	AM->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->AM)));
+	CM->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->CM)));
+	FM->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->FM)));
 	return FReply::Handled();
 }
 

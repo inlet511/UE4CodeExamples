@@ -13,15 +13,7 @@ enum class ECoupling_NIOSH :uint8
 	Poor
 };
 
-UENUM()
-enum class EFrequency_NIOSH :uint8
-{
-	Minimum, // <= 0.2
-	Low,	// 0.5
-	Medium, // 1
-	High,	// 2
-	Maximum // 3
-};
+
 
 UENUM()
 enum class EDuration_NIOSH :uint8
@@ -41,22 +33,59 @@ public:
 	NIOSH();
 	~NIOSH();
 
-	float OriginHLocation;
-	float DestHLocation;
 
-	float OrginVLocation;
-	float DestVLocation;
+	// Input
+	float StartHLocation;
+	float EndHLocation;
 
-	float OriginAsymmetryAngle;
-	float DestAsymmetryAngle;
+	float StartVLocation;
+	float EndVLocation;
+
+	float StartAsymmetryAngle;
+	float EndAsymmetryAngle;
 
 	ECoupling_NIOSH Coupling;
 
-	EFrequency_NIOSH Frequency;
+	float Frequency;
 
-	float AverageLoad;
+	float ActualLoad;
 
-	float MaximumLoad;
+
 
 	EDuration_NIOSH Duration;
+
+	class USkeletalMeshComponent* Skeleton;
+
+	//Multipliers
+	float HM, VM, AM, DM, FM, CM;
+
+	// Calculate Multipliers
+	float CalcHM(float InH);
+	float CalcVM(float InV);
+	float CalcDM(float InD);
+	float CalcAM(float InA);
+	float CalcFM(float InFrequency);
+	float CalcCM(ECoupling_NIOSH InCoupling);
+
+
+	//Output
+	float RI;
+	float RWL;
+	float LI;
+	float FIRWL;
+	float FILI;
+
+	// Middle Vars
+	FVector StartHandMiddlePoint;
+	FVector EndHandMiddlePoint;
+	
+
+	void SnapshotStartPose();
+	void SnapshotEndPose();
+
+	// 从骨骼位置计算身体转角
+	float CalcAsymmetryAngle();
+
+	void Calculate();
+
 };

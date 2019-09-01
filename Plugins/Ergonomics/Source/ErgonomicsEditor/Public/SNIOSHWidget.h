@@ -20,7 +20,6 @@ public:
 
 	TSharedPtr<class NIOSH> EditingNIOSH;
 	TArray<TSharedPtr<FString>> CouplingList;
-	TArray<TSharedPtr<FString>> FrequencyList;
 	TArray<TSharedPtr<FString>> DurationList;
 
 	//  ‰»Î
@@ -30,24 +29,20 @@ public:
 	TSharedPtr<SEditableTextBox> VerticalPos_End;
 	TSharedPtr<SEditableTextBox> Asymmetric_Start;
 	TSharedPtr<SEditableTextBox> Asymmetric_End;
+	TSharedPtr<SEditableTextBox> Frequency_Input;
+	TSharedPtr<SEditableTextBox> Weight_Input;
+
 
 	// ‰≥ˆ
-	TSharedPtr<STextBlock> RI_Start;
-	TSharedPtr<STextBlock> RI_End;
-	TSharedPtr<STextBlock> RWL_Start;
-	TSharedPtr<STextBlock> RWL_End;
-	TSharedPtr<STextBlock> HM_Start;
-	TSharedPtr<STextBlock> HM_End;
-	TSharedPtr<STextBlock> VM_Start;
-	TSharedPtr<STextBlock> VM_End;
-	TSharedPtr<STextBlock> DM_Start;
-	TSharedPtr<STextBlock> DM_End;
-	TSharedPtr<STextBlock> AM_Start;
-	TSharedPtr<STextBlock> AM_End;
-	TSharedPtr<STextBlock> CM_Start;
-	TSharedPtr<STextBlock> CM_End;
-	TSharedPtr<STextBlock> FM_Start;
-	TSharedPtr<STextBlock> FM_End;
+	TSharedPtr<STextBlock> RI;
+	TSharedPtr<STextBlock> RWL;
+	TSharedPtr<STextBlock> HM;
+	TSharedPtr<STextBlock> VM;
+	TSharedPtr<STextBlock> DM;
+	TSharedPtr<STextBlock> AM;
+	TSharedPtr<STextBlock> CM;
+	TSharedPtr<STextBlock> FM;
+
 
 
 	TSharedRef<class SWidget> GenerateDropDownItem(TSharedPtr<FString> InItem);
@@ -57,9 +52,6 @@ public:
 
 	FText GetCurrentDurationText() const;
 	void HandleDurationChanged(TSharedPtr<FString> Item, ESelectInfo::Type SelectInfo);
-
-	FText GetCurrentFrequencyText() const;
-	void HandleFrequencyChanged(TSharedPtr<FString> Item, ESelectInfo::Type SelectInfo);
 
 	void InitializeDropDownLists();
 

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Widgets/SCompoundWidget.h"
 #include "WISHA.h"
+#include "Components/SkeletalMeshComponent.h"
 
 
 /**
@@ -20,9 +21,9 @@ public:
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
 
+	
 
-
-
+	TSharedPtr<class WISHA> EditingWISHA;
 
 	//UI下拉菜单选项
 	TArray<TSharedPtr<FString>> VerticalHandPosList;
@@ -30,7 +31,6 @@ public:
 	TArray<TSharedPtr<FString>> FrequencyList;
 	TArray<TSharedPtr<FString>> DurationList;
 	TArray<TSharedPtr<FString>> TwistingList;
-	
 
 
 	//输入控件
@@ -60,7 +60,7 @@ private:
 
 
 
-	TSharedPtr<class WISHA> EditingWISHA;
+
 
 	FReply Evaluate();
 };

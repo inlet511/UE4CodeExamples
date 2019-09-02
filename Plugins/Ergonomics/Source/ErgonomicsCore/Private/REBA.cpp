@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "REBA.h"
@@ -7,6 +7,7 @@
 #include "DrawDebugHelpers.h"
 #include "Editor.h"
 #include "TransformVectorized.h"
+#include "Plane.h"
 
 REBA::REBA()
 {
@@ -131,16 +132,15 @@ REBA::~REBA()
 
 void REBA::SnapshotPose()
 {
-	// Table A, Step 1---------------------------
+	// Table A, Step 1 Locate Nect Position ---------------------------
 	FTransform NeckTrans = Skeleton->GetSocketTransform(FName(TEXT("head")), ERelativeTransformSpace::RTS_ParentBoneSpace);
 
-	//ÔÚhead¹ÇÍ·ÖÐ£¬parent spaceÖÐ£¬×óÓÒÒ¡Í·ÓÃRoll±íÊ¾£¬  ×óÓÒBend ÓÃ Pitch ±íÊ¾£¬ Ç°ºóµãÍ·ÓÃYaw±íÊ¾...
+	//åœ¨head bone ä¸­ï¼Œparent spaceä¸­ï¼Œå·¦å³æ‘‡å¤´ç”¨Rollè¡¨ç¤ºï¼Œ  å·¦å³Bend ç”¨ Pitch è¡¨ç¤ºï¼Œ å‰åŽç‚¹å¤´ç”¨Yawè¡¨ç¤º...
 	float NeckRotPitch = NeckTrans.GetRotation().Rotator().Pitch;
 	float NeckRotYaw = NeckTrans.GetRotation().Rotator().Yaw + 15.3f;
 	float NeckRotRoll = NeckTrans.GetRotation().Rotator().Roll;
 
-
-	//UE_LOG(LogTemp, Log, TEXT("NeckRotPitch:%f,Yaw:%f,Roll:%f"),NeckRotPitch,NeckRotYaw,NeckRotRoll);
+	// Step 1a Adjust
 	int16 NeckPositionScore = 0;
 	if(NeckRotYaw>0 && NeckRotYaw<=20)
 		NeckPositionScore+=1;
@@ -154,20 +154,43 @@ void REBA::SnapshotPose()
 
 	NeckPositionScore = FMath::Clamp<int16>(NeckPositionScore, 1, 3);
 
-	// Table A, Step 2---------------------------
-	FVector SpineUp = (Skeleton->GetSocketLocation(FName(TEXT("neck_01"))) - Skeleton->GetSocketLocation(FName(TEXT("pelvis")))).GetSafeNormal();
-	FVector ThighRight = Skeleton->GetSocketLocation(FName(TEXT("thigh_r"))) - Skeleton->GetSocketLocation(FName(TEXT("thigh_l")));
-	FVector ClavicleRight = Skeleton->GetSocketLocation(FName(TEXT("clavicle_r"))) - Skeleton->GetSocketLocation(FName(TEXT("clavicle_l")));
+	// Table A, Step 2 Locate Trunk Position ---------------------------
 
-	FRotator BodyRot = Skeleton->GetSocketRotation(FName(TEXT("pelvis")));
-	FVector PelvisLoc = Skeleton->GetSocketLocation(FName(TEXT("pelvis")));
-	FVector BodyUpVec = (UKismetMathLibrary::GetForwardVector(BodyRot)).GetSafeNormal();
-
+	float TrunkPosScore = 0;
+	AActor* BodyActor = Skeleton->GetOwner();
+	FVector TrunkDir = (Skeleton->GetSocketLocation(FName(TEXT("neck_01"))) - Skeleton->GetSocketLocation(FName(TEXT("pelvis")))).GetSafeNormal();
+	FVector TrunkDirProjected = FVector::VectorPlaneProject(TrunkDir, BodyActor->GetActorRightVector()).GetSafeNormal();
 	
-	float TrunkAngle = ((FMath::Acos(FVector::DotProduct(BodyUpVec,SpineUp))) * (180 / 3.1415926));
+	FVector BodyUpDir = (BodyActor->GetActorUpVector()).GetSafeNormal();	
+	FVector CrossProductResult = FVector::CrossProduct(TrunkDirProjected, BodyUpDir);
 
-	UE_LOG(LogTemp, Log, TEXT("TrunkAngle:%f"), TrunkAngle);
-	DrawDebugDirectionalArrow(GEditor->GetEditorWorldContext().World(), PelvisLoc, PelvisLoc + 200.0f * UKismetMathLibrary::GetForwardVector(BodyRot), 5, FColor(255,0,0), true, 10.0f);
-	DrawDebugDirectionalArrow(GEditor->GetEditorWorldContext().World(), PelvisLoc, PelvisLoc + 200.0f * SpineUp, 5, FColor(0,255,0), true, 10.0f);
+	float Angle = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(TrunkDirProjected, BodyUpDir)));
+	float Sign = FVector::DotProduct(CrossProductResult, BodyActor->GetActorRightVector()) >= 0 ? 1 : -1;
+
+	//æ ¹æ®æ­£å¸¸ç«™å§¿è°ƒæ•´,å¹¶è°ƒæ•´ç¬¦å·
+	float Angle_Adjust = -1.0f * (Angle * Sign - 4.62f);
+	
+
+#if WITH_EDITOR
+	UE_LOG(LogTemp, Log, TEXT("Angle_Adjust:%f"),Angle_Adjust);
+	FVector HeadLoc = Skeleton->GetSocketLocation(FName(TEXT("head")));
+	DrawDebugDirectionalArrow(GEditor->GetEditorWorldContext().World(), HeadLoc, HeadLoc + 100.0f * BodyUpDir, 5, FColor(255,0,0), false, 30.0f);
+	DrawDebugDirectionalArrow(GEditor->GetEditorWorldContext().World(), HeadLoc, HeadLoc + 100.0f * TrunkDirProjected, 5, FColor(0,255,0), false, 30.0f);
+#endif
+
+	if (Angle_Adjust > -3.0f && Angle_Adjust < 3.0f)
+		TrunkPosScore += 1;
+	else if (Angle_Adjust > -20.0f && Angle_Adjust < 20.0f)
+		TrunkPosScore += 2;
+	else if (Angle_Adjust >= 20.0f && Angle_Adjust <= 60.0f)
+		TrunkPosScore += 3;
+	else if (Angle_Adjust <= -20.0f)
+		TrunkPosScore += 3;
+	else if (Angle_Adjust > 60.0f)
+		TrunkPosScore += 4;
+
+	// Step 2a: Adjust
+
+
 
 }

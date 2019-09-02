@@ -69,11 +69,10 @@ public:
 
 
 	//Output
-	float RI;
+
 	float RWL;
-	float LI;
-	float FIRWL;
-	float FILI;
+	float RI;
+
 
 	// Middle Vars
 	FVector StartHandMiddlePoint;

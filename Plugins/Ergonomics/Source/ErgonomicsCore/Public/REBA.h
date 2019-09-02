@@ -155,4 +155,16 @@ public:
 	// Is there action that causes large range changes in posture / unstable base?
 	bool bActivityScoreC;
 
+	class USkeletalMeshComponent* Skeleton;
+
+	void SnapshotPose();
+
+	// Table A, Neck, Trunk Pose, Legs
+	TArray<TArray<TArray<uint16>>> TableA;
+
+	// Table B, UpperArm, LowerArm, Wrist
+	TArray<TArray<TArray<uint16>>> TableB;
+
+	TArray<TArray<uint16>> TableC;
+
 };

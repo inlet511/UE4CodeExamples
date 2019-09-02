@@ -182,10 +182,6 @@ void NIOSH::SnapshotStartPose()
 
 	StartAsymmetryAngle = CalcAsymmetryAngle();
 
-	//FRotator PelvisRot = Skeleton->GetSocketRotation(FName(TEXT("pelvis")));
-	//FRotator SpineRot = Skeleton->GetSocketRotation(FName(TEXT("spine_03")));
-	//UE_LOG(LogTemp, Log, TEXT("PelvisRot:(%f,%f,%f)  SpineRot:(%f,%f,%f)"), PelvisRot.Euler().X, PelvisRot.Euler().Y, PelvisRot.Euler().Z, SpineRot.Euler().X, SpineRot.Euler().Y, SpineRot.Euler().Z);
-	//StartAsymmetryAngle = PelvisRot.Yaw - SpineRot.Yaw;
 }
 
 void NIOSH::SnapshotEndPose()
@@ -242,10 +238,10 @@ void NIOSH::Calculate()
 {
 	HM = CalcHM(StartHLocation);
 	VM = CalcVM(StartHLocation);
-	DM = FMath::Abs(StartHandMiddlePoint.Z - EndHandMiddlePoint.Z);
+	DM = CalcVM(FMath::Abs(StartHandMiddlePoint.Z - EndHandMiddlePoint.Z));
 	AM = CalcAM(FMath::Abs(StartAsymmetryAngle - EndAsymmetryAngle));
 	FM = CalcFM(Frequency);
 	CM = CalcCM(Coupling);
 	RWL = 23.0f * HM * VM * DM * AM * FM * CM;
-	LI = ActualLoad / RWL;
+	RI = ActualLoad / RWL;
 }

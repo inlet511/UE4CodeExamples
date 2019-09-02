@@ -433,6 +433,8 @@ FReply SNIOSHWidget::CaptureEnd()
 
 FReply SNIOSHWidget::Evaluate()
 {
+	EditingNIOSH->ActualLoad = FCString::Atof(*(Weight_Input->GetText()).ToString());
+
 	EditingNIOSH->Calculate();
 	
 	RI->SetText(FText::FromString(FString::SanitizeFloat(EditingNIOSH->RI)));

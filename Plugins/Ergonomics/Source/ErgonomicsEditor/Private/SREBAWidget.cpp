@@ -15,6 +15,8 @@
 #include "REBA.h"
 #include "SComboBox.h"
 #include "ErgonomicsEditor.h"
+#include "Engine/Selection.h"
+#include "Editor.h"
 
 #define LOCTEXT_NAMESPACE "SREBAWidget"
 
@@ -229,7 +231,29 @@ void SREBAWidget::Construct(const FArguments& InArgs)
 
 FReply SREBAWidget::Capture()
 {
-	return FReply::Handled();
+	USelection* selection = GEditor->GetSelectedActors();
+
+	if (selection->Num() <= 0)
+		return FReply::Unhandled();
+	int32 idx = 0;
+	for (idx = 0; idx < selection->Num(); idx++)
+	{
+		UObject * obj = selection->GetSelectedObject(idx);
+		AActor* TargetActor = Cast<AActor>(obj);
+		if (TargetActor)
+		{
+			USkeletalMeshComponent* skeletalMeshComp = TargetActor->FindComponentByClass<USkeletalMeshComponent>();
+			if (skeletalMeshComp)
+			{
+				EditingREBA->Skeleton = skeletalMeshComp;
+				EditingREBA->SnapshotPose();
+
+				return FReply::Handled();
+			}
+		}
+	}
+
+	return FReply::Unhandled();
 }
 
 

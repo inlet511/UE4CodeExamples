@@ -14,6 +14,8 @@
 #include "ErgonomicsEditor.h"
 #include "RULA.h"
 #include "SComboBox.h"
+#include "Editor.h"
+#include "Engine/Selection.h"
 
 #define LOCTEXT_NAMESPACE "SRULAWidget"
 
@@ -194,6 +196,29 @@ void SRULAWidget::Construct(const FArguments& InArgs)
 
 FReply SRULAWidget::CapturePose()
 {
+	USelection* selection = GEditor->GetSelectedActors();
+
+	if (selection->Num() <= 0)
+		return FReply::Unhandled();
+	int32 idx = 0;
+	for (idx = 0; idx < selection->Num(); idx++)
+	{
+		UObject * obj = selection->GetSelectedObject(idx);
+		AActor* TargetActor = Cast<AActor>(obj);
+		if (TargetActor)
+		{
+			USkeletalMeshComponent* skeletalMeshComp = TargetActor->FindComponentByClass<USkeletalMeshComponent>();
+			if (skeletalMeshComp)
+			{
+				EditingRULA->Skeleton = skeletalMeshComp;
+
+				EditingRULA->SnapshotPose();
+
+				return FReply::Handled();
+			}
+		}
+	}
+
 	return FReply::Handled();
 }
 
@@ -201,6 +226,7 @@ FReply SRULAWidget::CapturePose()
 
 FReply SRULAWidget::Evaluate()
 {
+
 	return FReply::Handled();
 }
 

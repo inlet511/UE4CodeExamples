@@ -13,25 +13,25 @@ REBA::REBA()
 {
 
 // Table A
-	TArray<TArray<uint16>> Neck1,Neck2,Neck3;
+	TArray<TArray<int16>> Neck1,Neck2,Neck3;
 
-	TArray<uint16> Trunk11 = { 1,2,3,4 };
-	TArray<uint16> Trunk12 = { 2,3,4,5 };
-	TArray<uint16> Trunk13 = { 2,4,5,6 };
-	TArray<uint16> Trunk14 = { 3,5,6,7 };
-	TArray<uint16> Trunk15 = { 4,6,7,8 };
+	TArray<int16> Trunk11 = { 1,2,3,4 };
+	TArray<int16> Trunk12 = { 2,3,4,5 };
+	TArray<int16> Trunk13 = { 2,4,5,6 };
+	TArray<int16> Trunk14 = { 3,5,6,7 };
+	TArray<int16> Trunk15 = { 4,6,7,8 };
 
-	TArray<uint16> Trunk21 = { 1,2,3,4 };
-	TArray<uint16> Trunk22 = { 3,4,5,6 };
-	TArray<uint16> Trunk23 = { 4,5,6,7 };
-	TArray<uint16> Trunk24 = { 5,6,7,8 };
-	TArray<uint16> Trunk25 = { 6,7,8,9 };
+	TArray<int16> Trunk21 = { 1,2,3,4 };
+	TArray<int16> Trunk22 = { 3,4,5,6 };
+	TArray<int16> Trunk23 = { 4,5,6,7 };
+	TArray<int16> Trunk24 = { 5,6,7,8 };
+	TArray<int16> Trunk25 = { 6,7,8,9 };
 
-	TArray<uint16> Trunk31 = { 3,3,5,6 };
-	TArray<uint16> Trunk32 = { 4,5,6,7 };
-	TArray<uint16> Trunk33 = { 5,6,7,8 };
-	TArray<uint16> Trunk34 = { 6,7,8,9 };
-	TArray<uint16> Trunk35 = { 7,8,9,9 };
+	TArray<int16> Trunk31 = { 3,3,5,6 };
+	TArray<int16> Trunk32 = { 4,5,6,7 };
+	TArray<int16> Trunk33 = { 5,6,7,8 };
+	TArray<int16> Trunk34 = { 6,7,8,9 };
+	TArray<int16> Trunk35 = { 7,8,9,9 };
 
 	Neck1.Add(Trunk11);
 	Neck1.Add(Trunk12);
@@ -56,21 +56,21 @@ REBA::REBA()
 	TableA.Add(Neck3);
 
 //Table B
-	TArray<TArray<uint16>> UpperArm1, UpperArm2, UpperArm3, UpperArm4, UpperArm5, UpperArm6;
+	TArray<TArray<int16>> UpperArm1, UpperArm2, UpperArm3, UpperArm4, UpperArm5, UpperArm6;
 
 
-	TArray<uint16> LowerArm11 = {1,2,2};
-	TArray<uint16> LowerArm12 = {1,2,3};
-	TArray<uint16> LowerArm21 = {1,2,3};
-	TArray<uint16> LowerArm22 = {2,3,4};
-	TArray<uint16> LowerArm31 = {3,4,5};
-	TArray<uint16> LowerArm32 = {4,5,5};
-	TArray<uint16> LowerArm41 = {4,5,5};
-	TArray<uint16> LowerArm42 = {5,6,7};
-	TArray<uint16> LowerArm51 = {6,7,8};
-	TArray<uint16> LowerArm52 = {7,8,8};
-	TArray<uint16> LowerArm61 = {7,8,8};
-	TArray<uint16> LowerArm62 = {8,9,9};
+	TArray<int16> LowerArm11 = {1,2,2};
+	TArray<int16> LowerArm12 = {1,2,3};
+	TArray<int16> LowerArm21 = {1,2,3};
+	TArray<int16> LowerArm22 = {2,3,4};
+	TArray<int16> LowerArm31 = {3,4,5};
+	TArray<int16> LowerArm32 = {4,5,5};
+	TArray<int16> LowerArm41 = {4,5,5};
+	TArray<int16> LowerArm42 = {5,6,7};
+	TArray<int16> LowerArm51 = {6,7,8};
+	TArray<int16> LowerArm52 = {7,8,8};
+	TArray<int16> LowerArm61 = {7,8,8};
+	TArray<int16> LowerArm62 = {8,9,9};
 	
 	UpperArm1.Add(LowerArm11);
 	UpperArm1.Add(LowerArm12);
@@ -98,18 +98,18 @@ REBA::REBA()
 	TableB.Add(UpperArm6);
 
 //Table C
-	TArray<uint16> ScoreA1 = {1,1,1,2,3,3,4,5,6,7,7,7};
-	TArray<uint16> ScoreA2 = {1,2,2,3,4,4,5,6,6,7,7,8};
-	TArray<uint16> ScoreA3 = {2,3,3,3,4,5,6,7,7,8,8,8};
-	TArray<uint16> ScoreA4 = {3,4,4,4,5,6,7,8,8,9,9,9};
-	TArray<uint16> ScoreA5 = {4,4,4,5,6,7,8,8,9,9,9,9};
-	TArray<uint16> ScoreA6 = {6,6,6,7,8,8,9,9,10,10,10,10};
-	TArray<uint16> ScoreA7 = {7,7,7,8,9,9,9,10,10,11,11,11};
-	TArray<uint16> ScoreA8 = {8,8,8,9,10,10,10,10,10,11,11,11};
-	TArray<uint16> ScoreA9 = {9,9,9,10,10,10,11,11,11,12,12,12};
-	TArray<uint16> ScoreA10 = {10,10,10,11,11,11,11,12,12,12,12,12};
-	TArray<uint16> ScoreA11 = {11,11,11,11,12,12,12,12,12,12,12,12};
-	TArray<uint16> ScoreA12 = {12,12,12,12,12,12,12,12,12,12,12,12};
+	TArray<int16> ScoreA1 = {1,1,1,2,3,3,4,5,6,7,7,7};
+	TArray<int16> ScoreA2 = {1,2,2,3,4,4,5,6,6,7,7,8};
+	TArray<int16> ScoreA3 = {2,3,3,3,4,5,6,7,7,8,8,8};
+	TArray<int16> ScoreA4 = {3,4,4,4,5,6,7,8,8,9,9,9};
+	TArray<int16> ScoreA5 = {4,4,4,5,6,7,8,8,9,9,9,9};
+	TArray<int16> ScoreA6 = {6,6,6,7,8,8,9,9,10,10,10,10};
+	TArray<int16> ScoreA7 = {7,7,7,8,9,9,9,10,10,11,11,11};
+	TArray<int16> ScoreA8 = {8,8,8,9,10,10,10,10,10,11,11,11};
+	TArray<int16> ScoreA9 = {9,9,9,10,10,10,11,11,11,12,12,12};
+	TArray<int16> ScoreA10 = {10,10,10,11,11,11,11,12,12,12,12,12};
+	TArray<int16> ScoreA11 = {11,11,11,11,12,12,12,12,12,12,12,12};
+	TArray<int16> ScoreA12 = {12,12,12,12,12,12,12,12,12,12,12,12};
 	
 	TableC.Add(ScoreA1);
 	TableC.Add(ScoreA2);
@@ -275,9 +275,9 @@ void REBA::SnapshotPose()
 	*************************************/
 
 	UE_LOG(LogTemp, Log, TEXT("NeckPositionScore:%d,TrunkPositionScore:%d,LegPositionScore:%d"), NeckPositionScore, TrunkPositionScore, LegPositionScore);
-	NeckPositionScore = FMath::Max<uint16>(1, NeckPositionScore);
-	TrunkPositionScore = FMath::Max<uint16>(1, TrunkPositionScore);
-	LegPositionScore = FMath::Max<uint16>(1, LegPositionScore);
+	NeckPositionScore = FMath::Max<int16>(1, NeckPositionScore);
+	TrunkPositionScore = FMath::Max<int16>(1, TrunkPositionScore);
+	LegPositionScore = FMath::Max<int16>(1, LegPositionScore);
 
 	int16 TableAScore = TableA[NeckPositionScore - 1][TrunkPositionScore - 1][LegPositionScore-1];
 
@@ -361,9 +361,9 @@ void REBA::SnapshotPose()
 	if (FMath::Abs(AverageLowerArmAngle) < 60)
 		LowerArmPositionScore += 2;
 	else if (FMath::Abs(AverageLowerArmAngle) < 100)
-		UpperArmPositionScore += 1;
+		LowerArmPositionScore += 1;
 	else
-		UpperArmPositionScore += 2;
+		LowerArmPositionScore += 2;
 
 	/*************************************
 

@@ -141,6 +141,6 @@ public:
 
 	TArray<TArray<uint16>> TableC;
 
-	
+	void SnapshotPose();
 
 };

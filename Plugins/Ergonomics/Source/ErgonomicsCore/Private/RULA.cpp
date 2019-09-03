@@ -2,91 +2,92 @@
 
 
 #include "RULA.h"
+#include "Components/SkeletalMeshComponent.h"
 
 RULA::RULA()
 {
 
 	//Table A
-	TArray<TArray<TArray<uint16>>> UpperArm1, UpperArm2, UpperArm3, UpperArm4, UpperArm5, UpperArm6;
-	TArray<TArray<uint16>> LowerArm11, LowerArm12, LowerArm13;
-	TArray<TArray<uint16>> LowerArm21, LowerArm22, LowerArm23;
-	TArray<TArray<uint16>> LowerArm31, LowerArm32, LowerArm33;
-	TArray<TArray<uint16>> LowerArm41, LowerArm42, LowerArm43;
-	TArray<TArray<uint16>> LowerArm51, LowerArm52, LowerArm53;
-	TArray<TArray<uint16>> LowerArm61, LowerArm62, LowerArm63;
+	TArray<TArray<TArray<int16>>> UpperArm1, UpperArm2, UpperArm3, UpperArm4, UpperArm5, UpperArm6;
+	TArray<TArray<int16>> LowerArm11, LowerArm12, LowerArm13;
+	TArray<TArray<int16>> LowerArm21, LowerArm22, LowerArm23;
+	TArray<TArray<int16>> LowerArm31, LowerArm32, LowerArm33;
+	TArray<TArray<int16>> LowerArm41, LowerArm42, LowerArm43;
+	TArray<TArray<int16>> LowerArm51, LowerArm52, LowerArm53;
+	TArray<TArray<int16>> LowerArm61, LowerArm62, LowerArm63;
 
-	TArray<uint16> WristScore111 = { 1,2 };
-	TArray<uint16> WristScore112 = { 2,2 };
-	TArray<uint16> WristScore113 = { 2,3 };
-	TArray<uint16> WristScore114 = { 3,3 };
-	TArray<uint16> WristScore121 = { 2,2 };
-	TArray<uint16> WristScore122 = { 2,2 };
-	TArray<uint16> WristScore123 = { 3,3 };
-	TArray<uint16> WristScore124 = { 3,3 };
-	TArray<uint16> WristScore131 = { 2,3 };
-	TArray<uint16> WristScore132 = { 3,3 };
-	TArray<uint16> WristScore133 = { 3,3 };
-	TArray<uint16> WristScore134 = { 4,4 };
-	TArray<uint16> WristScore211 = { 2,3 };
-	TArray<uint16> WristScore212 = { 3,3 };
-	TArray<uint16> WristScore213 = { 3,4 };
-	TArray<uint16> WristScore214 = { 4,4 };
-	TArray<uint16> WristScore221 = { 3,3 };
-	TArray<uint16> WristScore222 = { 3,3 };
-	TArray<uint16> WristScore223 = { 3,4 };
-	TArray<uint16> WristScore224 = { 4,4 };
-	TArray<uint16> WristScore231 = { 3,4 };
-	TArray<uint16> WristScore232 = { 4,4 };
-	TArray<uint16> WristScore233 = { 4,4 };
-	TArray<uint16> WristScore234 = { 5,5 };
-	TArray<uint16> WristScore311 = { 3,3 };
-	TArray<uint16> WristScore312 = { 4,4 };
-	TArray<uint16> WristScore313 = { 4,4 };
-	TArray<uint16> WristScore314 = { 5,5 };
-	TArray<uint16> WristScore321 = { 3,4 };
-	TArray<uint16> WristScore322 = { 4,4 };
-	TArray<uint16> WristScore323 = { 4,4 };
-	TArray<uint16> WristScore324 = { 5,5 };
-	TArray<uint16> WristScore331 = { 4,4 };
-	TArray<uint16> WristScore332 = { 4,4 };
-	TArray<uint16> WristScore333 = { 4,5 };
-	TArray<uint16> WristScore334 = { 5,5 };
-	TArray<uint16> WristScore411 = { 4,4 };
-	TArray<uint16> WristScore412 = { 4,4 };
-	TArray<uint16> WristScore413 = { 4,5 };
-	TArray<uint16> WristScore414 = { 5,5 };
-	TArray<uint16> WristScore421 = { 4,4 };
-	TArray<uint16> WristScore422 = { 4,4 };
-	TArray<uint16> WristScore423 = { 4,5 };
-	TArray<uint16> WristScore424 = { 5,5 };
-	TArray<uint16> WristScore431 = { 4,4 };
-	TArray<uint16> WristScore432 = { 4,5 };
-	TArray<uint16> WristScore433 = { 5,5 };
-	TArray<uint16> WristScore434 = { 6,6 };
-	TArray<uint16> WristScore511 = { 5,5 };
-	TArray<uint16> WristScore512 = { 5,5 };
-	TArray<uint16> WristScore513 = { 5,6 };
-	TArray<uint16> WristScore514 = { 6,7 };
-	TArray<uint16> WristScore521 = { 5,6 };
-	TArray<uint16> WristScore522 = { 6,6 };
-	TArray<uint16> WristScore523 = { 6,7 };
-	TArray<uint16> WristScore524 = { 7,7 };
-	TArray<uint16> WristScore531 = { 6,6 };
-	TArray<uint16> WristScore532 = { 6,7 };
-	TArray<uint16> WristScore533 = { 7,7 };
-	TArray<uint16> WristScore534 = { 7,8 };
-	TArray<uint16> WristScore611 = { 7,7 };
-	TArray<uint16> WristScore612 = { 7,7 };
-	TArray<uint16> WristScore613 = { 7,8 };
-	TArray<uint16> WristScore614 = { 8,9 };
-	TArray<uint16> WristScore621 = { 8,8 };
-	TArray<uint16> WristScore622 = { 8,8 };
-	TArray<uint16> WristScore623 = { 8,9 };
-	TArray<uint16> WristScore624 = { 9,9 };
-	TArray<uint16> WristScore631 = { 9,9 };
-	TArray<uint16> WristScore632 = { 9,9 };
-	TArray<uint16> WristScore633 = { 9,9 };
-	TArray<uint16> WristScore634 = { 9,9 };
+	TArray<int16> WristScore111 = { 1,2 };
+	TArray<int16> WristScore112 = { 2,2 };
+	TArray<int16> WristScore113 = { 2,3 };
+	TArray<int16> WristScore114 = { 3,3 };
+	TArray<int16> WristScore121 = { 2,2 };
+	TArray<int16> WristScore122 = { 2,2 };
+	TArray<int16> WristScore123 = { 3,3 };
+	TArray<int16> WristScore124 = { 3,3 };
+	TArray<int16> WristScore131 = { 2,3 };
+	TArray<int16> WristScore132 = { 3,3 };
+	TArray<int16> WristScore133 = { 3,3 };
+	TArray<int16> WristScore134 = { 4,4 };
+	TArray<int16> WristScore211 = { 2,3 };
+	TArray<int16> WristScore212 = { 3,3 };
+	TArray<int16> WristScore213 = { 3,4 };
+	TArray<int16> WristScore214 = { 4,4 };
+	TArray<int16> WristScore221 = { 3,3 };
+	TArray<int16> WristScore222 = { 3,3 };
+	TArray<int16> WristScore223 = { 3,4 };
+	TArray<int16> WristScore224 = { 4,4 };
+	TArray<int16> WristScore231 = { 3,4 };
+	TArray<int16> WristScore232 = { 4,4 };
+	TArray<int16> WristScore233 = { 4,4 };
+	TArray<int16> WristScore234 = { 5,5 };
+	TArray<int16> WristScore311 = { 3,3 };
+	TArray<int16> WristScore312 = { 4,4 };
+	TArray<int16> WristScore313 = { 4,4 };
+	TArray<int16> WristScore314 = { 5,5 };
+	TArray<int16> WristScore321 = { 3,4 };
+	TArray<int16> WristScore322 = { 4,4 };
+	TArray<int16> WristScore323 = { 4,4 };
+	TArray<int16> WristScore324 = { 5,5 };
+	TArray<int16> WristScore331 = { 4,4 };
+	TArray<int16> WristScore332 = { 4,4 };
+	TArray<int16> WristScore333 = { 4,5 };
+	TArray<int16> WristScore334 = { 5,5 };
+	TArray<int16> WristScore411 = { 4,4 };
+	TArray<int16> WristScore412 = { 4,4 };
+	TArray<int16> WristScore413 = { 4,5 };
+	TArray<int16> WristScore414 = { 5,5 };
+	TArray<int16> WristScore421 = { 4,4 };
+	TArray<int16> WristScore422 = { 4,4 };
+	TArray<int16> WristScore423 = { 4,5 };
+	TArray<int16> WristScore424 = { 5,5 };
+	TArray<int16> WristScore431 = { 4,4 };
+	TArray<int16> WristScore432 = { 4,5 };
+	TArray<int16> WristScore433 = { 5,5 };
+	TArray<int16> WristScore434 = { 6,6 };
+	TArray<int16> WristScore511 = { 5,5 };
+	TArray<int16> WristScore512 = { 5,5 };
+	TArray<int16> WristScore513 = { 5,6 };
+	TArray<int16> WristScore514 = { 6,7 };
+	TArray<int16> WristScore521 = { 5,6 };
+	TArray<int16> WristScore522 = { 6,6 };
+	TArray<int16> WristScore523 = { 6,7 };
+	TArray<int16> WristScore524 = { 7,7 };
+	TArray<int16> WristScore531 = { 6,6 };
+	TArray<int16> WristScore532 = { 6,7 };
+	TArray<int16> WristScore533 = { 7,7 };
+	TArray<int16> WristScore534 = { 7,8 };
+	TArray<int16> WristScore611 = { 7,7 };
+	TArray<int16> WristScore612 = { 7,7 };
+	TArray<int16> WristScore613 = { 7,8 };
+	TArray<int16> WristScore614 = { 8,9 };
+	TArray<int16> WristScore621 = { 8,8 };
+	TArray<int16> WristScore622 = { 8,8 };
+	TArray<int16> WristScore623 = { 8,9 };
+	TArray<int16> WristScore624 = { 9,9 };
+	TArray<int16> WristScore631 = { 9,9 };
+	TArray<int16> WristScore632 = { 9,9 };
+	TArray<int16> WristScore633 = { 9,9 };
+	TArray<int16> WristScore634 = { 9,9 };
 
 	LowerArm11.Add(WristScore111);
 	LowerArm11.Add(WristScore112);
@@ -211,33 +212,106 @@ RULA::RULA()
 
 
 	//Table B
-	TArray<TArray<uint16>> NeckPosition1;
-	TArray<TArray<uint16>> NeckPosition2;
-	TArray<TArray<uint16>> NeckPosition3;
-	TArray<TArray<uint16>> NeckPosition4;
-	TArray<TArray<uint16>> NeckPosition5;
-	TArray<TArray<uint16>> NeckPosition6;
+	TArray<TArray<int16>> NeckPosition1;
+	TArray<TArray<int16>> NeckPosition2;
+	TArray<TArray<int16>> NeckPosition3;
+	TArray<TArray<int16>> NeckPosition4;
+	TArray<TArray<int16>> NeckPosition5;
+	TArray<TArray<int16>> NeckPosition6;
 
-	TArray<uint16> TrunkPosition11;
-	TArray<uint16> TrunkPosition12;
-	TArray<uint16> TrunkPosition13;
-	TArray<uint16> TrunkPosition14;
-	TArray<uint16> TrunkPosition15;
-	TArray<uint16> TrunkPosition16;
+	TArray<int16> TrunkPosition11 = { 1,3 };
+	TArray<int16> TrunkPosition12 = { 2,3 };
+	TArray<int16> TrunkPosition13 = { 3,4 };
+	TArray<int16> TrunkPosition14 = { 5,5 };
+	TArray<int16> TrunkPosition15 = { 6,6 };
+	TArray<int16> TrunkPosition16 = { 7,7 };
 
+	TArray<int16> TrunkPosition21 = { 2,3 };
+	TArray<int16> TrunkPosition22 = { 2,3 };
+	TArray<int16> TrunkPosition23 = { 4,5 };
+	TArray<int16> TrunkPosition24 = { 5,5 };
+	TArray<int16> TrunkPosition25 = { 6,7 };
+	TArray<int16> TrunkPosition26 = { 7,7 };
 
+	TArray<int16> TrunkPosition31 = { 3,3 };
+	TArray<int16> TrunkPosition32 = { 3,4 };
+	TArray<int16> TrunkPosition33 = { 4,5 };
+	TArray<int16> TrunkPosition34 = { 5,6 };
+	TArray<int16> TrunkPosition35 = { 6,7 };
+	TArray<int16> TrunkPosition36 = { 7,7 };
 
+	TArray<int16> TrunkPosition41 = { 5,5 };
+	TArray<int16> TrunkPosition42 = { 5,6 };
+	TArray<int16> TrunkPosition43 = { 6,7 };
+	TArray<int16> TrunkPosition44 = { 7,7 };
+	TArray<int16> TrunkPosition45 = { 7,7 };
+	TArray<int16> TrunkPosition46 = { 8,8 };
 
+	TArray<int16> TrunkPosition51 = { 7,7 };
+	TArray<int16> TrunkPosition52 = { 7,7 };
+	TArray<int16> TrunkPosition53 = { 7,8 };
+	TArray<int16> TrunkPosition54 = { 8,8 };
+	TArray<int16> TrunkPosition55 = { 8,8 };
+	TArray<int16> TrunkPosition56 = { 8,8 };
+
+	TArray<int16> TrunkPosition61 = { 8,8 };
+	TArray<int16> TrunkPosition62 = { 8,8 };
+	TArray<int16> TrunkPosition63 = { 8,8 };
+	TArray<int16> TrunkPosition64 = { 8,9 };
+	TArray<int16> TrunkPosition65 = { 9,9 };
+	TArray<int16> TrunkPosition66 = { 9,9 };
+
+	NeckPosition1.Add(TrunkPosition11);
+	NeckPosition1.Add(TrunkPosition12);
+	NeckPosition1.Add(TrunkPosition13);
+	NeckPosition1.Add(TrunkPosition14);
+	NeckPosition1.Add(TrunkPosition15);
+	NeckPosition1.Add(TrunkPosition16);
+
+	NeckPosition2.Add(TrunkPosition21);
+	NeckPosition2.Add(TrunkPosition22);
+	NeckPosition2.Add(TrunkPosition23);
+	NeckPosition2.Add(TrunkPosition24);
+	NeckPosition2.Add(TrunkPosition25);
+	NeckPosition2.Add(TrunkPosition26);
+
+	NeckPosition3.Add(TrunkPosition21);
+	NeckPosition3.Add(TrunkPosition22);
+	NeckPosition3.Add(TrunkPosition23);
+	NeckPosition3.Add(TrunkPosition24);
+	NeckPosition3.Add(TrunkPosition25);
+	NeckPosition3.Add(TrunkPosition26);
+
+	NeckPosition4.Add(TrunkPosition41);
+	NeckPosition4.Add(TrunkPosition42);
+	NeckPosition4.Add(TrunkPosition43);
+	NeckPosition4.Add(TrunkPosition44);
+	NeckPosition4.Add(TrunkPosition45);
+	NeckPosition4.Add(TrunkPosition46);
+
+	NeckPosition5.Add(TrunkPosition51);
+	NeckPosition5.Add(TrunkPosition52);
+	NeckPosition5.Add(TrunkPosition53);
+	NeckPosition5.Add(TrunkPosition54);
+	NeckPosition5.Add(TrunkPosition55);
+	NeckPosition5.Add(TrunkPosition56);
+
+	NeckPosition6.Add(TrunkPosition61);
+	NeckPosition6.Add(TrunkPosition62);
+	NeckPosition6.Add(TrunkPosition63);
+	NeckPosition6.Add(TrunkPosition64);
+	NeckPosition6.Add(TrunkPosition65);
+	NeckPosition6.Add(TrunkPosition66);
 
 	//Table C
-	TArray<uint16> WristArmScore1 = { 1,2,3,3,4,5,5 };
-	TArray<uint16> WristArmScore2 = { 2,2,3,4,4,5,5 };
-	TArray<uint16> WristArmScore3 = { 3,3,3,4,4,5,6 };
-	TArray<uint16> WristArmScore4 = { 3,3,3,4,5,6,6 };
-	TArray<uint16> WristArmScore5 = { 4,4,4,5,6,7,7 };
-	TArray<uint16> WristArmScore6 = { 4,4,5,6,6,7,7 };
-	TArray<uint16> WristArmScore7 = { 5,5,6,6,7,7,7 };
-	TArray<uint16> WristArmScore8 = { 5,5,6,7,7,7,7 };
+	TArray<int16> WristArmScore1 = { 1,2,3,3,4,5,5 };
+	TArray<int16> WristArmScore2 = { 2,2,3,4,4,5,5 };
+	TArray<int16> WristArmScore3 = { 3,3,3,4,4,5,6 };
+	TArray<int16> WristArmScore4 = { 3,3,3,4,5,6,6 };
+	TArray<int16> WristArmScore5 = { 4,4,4,5,6,7,7 };
+	TArray<int16> WristArmScore6 = { 4,4,5,6,6,7,7 };
+	TArray<int16> WristArmScore7 = { 5,5,6,6,7,7,7 };
+	TArray<int16> WristArmScore8 = { 5,5,6,7,7,7,7 };
 
 	TableC.Add(WristArmScore1);
 	TableC.Add(WristArmScore2);
@@ -252,4 +326,173 @@ RULA::RULA()
 
 RULA::~RULA()
 {
+}
+
+void RULA::SnapshotPose()
+{
+
+	AActor* BodyActor = Skeleton->GetOwner();
+	/*************************************
+		
+		Table A
+		Step 1 Upper Arm Position 
+
+	*************************************/
+
+	int16 UpperArmPositionScore=0;
+
+	FVector LeftShoulderLoc = Skeleton->GetSocketLocation(FName(TEXT("upperarm_l")));
+	FVector RightShoulderLoc = Skeleton->GetSocketLocation(FName(TEXT("upperarm_r")));
+	FVector LeftElbowLoc = Skeleton->GetSocketLocation(FName(TEXT("lowerarm_l")));
+	FVector RightElbowLoc = Skeleton->GetSocketLocation(FName(TEXT("lowerarm_r")));
+
+	FVector LeftShoulder2Elbow = LeftElbowLoc - LeftShoulderLoc;
+	FVector RightShoulder2Elbow = RightElbowLoc - RightShoulderLoc;
+	FVector LeftShoulder2ElbowProject2Side = FVector::VectorPlaneProject(LeftShoulder2Elbow, BodyActor->GetActorRightVector()).GetSafeNormal();
+	FVector RightShoulder2ElbowProject2Side = FVector::VectorPlaneProject(RightShoulder2Elbow, BodyActor->GetActorRightVector()).GetSafeNormal();
+		
+	float LeftUpperArmAngle = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(LeftShoulder2ElbowProject2Side, BodyActor->GetActorUpVector())));
+	float RightUpperArmAngle = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(RightShoulder2ElbowProject2Side, BodyActor->GetActorUpVector())));
+
+	float AverageForarmAngle = (LeftUpperArmAngle + RightUpperArmAngle)*0.5f;
+	if (FMath::Abs(AverageForarmAngle) < 20)
+		UpperArmPositionScore += 1;
+	else if (FMath::Abs(AverageForarmAngle) < 45)
+		UpperArmPositionScore += 2;
+	else if (FMath::Abs(AverageForarmAngle) < 90)
+		UpperArmPositionScore += 3;
+	else 
+		UpperArmPositionScore += 4;
+
+	/*************************************
+
+		Step 2 Lower Arm Position
+
+	*************************************/
+
+	int16 LowerArmPositionScore = 0;
+
+	FVector LeftHandLoc = Skeleton->GetSocketLocation(FName(TEXT("hand_l")));
+	FVector RightHandLoc = Skeleton->GetSocketLocation(FName(TEXT("hand_r")));
+
+	FVector LeftElbow2Hand = LeftHandLoc - LeftElbowLoc;
+	FVector RightElbow2Hand = RightHandLoc - RightElbowLoc;
+
+	float LeftLowerArmAngle = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(LeftShoulder2Elbow,LeftElbow2Hand)));
+	float RightLowerArmAngle = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(RightShoulder2Elbow, RightElbow2Hand)));
+
+	float AverageLowerArmAngle = (LeftLowerArmAngle + RightLowerArmAngle)*0.5f;
+	if (FMath::Abs(AverageLowerArmAngle) < 60)
+		LowerArmPositionScore += 2;
+	else if (FMath::Abs(AverageLowerArmAngle) < 100)
+		LowerArmPositionScore += 1;
+	else
+		LowerArmPositionScore += 2;
+
+	if (bLowerArmAdjustments)
+		LowerArmPositionScore += 1;
+
+	/*************************************
+
+		Step 3 Wrist Position
+
+	*************************************/
+
+	int WraistPositionScore = 0;
+	FVector RightPalmLoc = Skeleton->GetSocketLocation(FName(TEXT("middle_01_r")));
+	FVector LeftPalmLoc = Skeleton->GetSocketLocation(FName(TEXT("middle_01_l")));
+
+	FVector RightPalmVec = RightPalmLoc - RightHandLoc;
+	FVector LeftPalmVec = LeftPalmLoc - LeftHandLoc;
+
+	float RightPalmAngle = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(RightPalmVec, RightElbow2Hand)));
+	float LeftPalmAngle = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(LeftPalmVec, LeftElbow2Hand)));
+
+	float AveragePalmAngle = (RightPalmAngle + LeftPalmAngle)*0.5f;
+
+	if (FMath::Abs(AveragePalmAngle) < 3)
+		WraistPositionScore += 1;
+	else if(FMath::Abs(AveragePalmAngle) < 15)
+		WraistPositionScore += 2;
+	else 
+		WraistPositionScore += 3;
+
+	/*************************************
+
+		Step 4 Wrist Twist
+
+	*************************************/
+
+	int16 WristTwistScore = 0;
+	if (bWristTwistMidRange)
+		WristTwistScore += 1;
+	if (bWristNearEndRange)
+		WristTwistScore += 2;
+
+	/*************************************
+
+		Step 5 Wrist Position
+
+	*************************************/
+
+	UpperArmPositionScore = FMath::Max<int16>(1, UpperArmPositionScore);
+	LowerArmPositionScore = FMath::Max<int16>(1, LowerArmPositionScore);
+	WraistPositionScore = FMath::Clamp<int16>(WristTwistScore, 1, 4);
+	WristTwistScore = FMath::Clamp<int16>(WristTwistScore, 1, 2);
+	int16 TableAScore = TableA[UpperArmPositionScore - 1][LowerArmPositionScore - 1][WraistPositionScore - 1][WristTwistScore - 1];
+
+	/*************************************
+
+		Step 6 Add Muscle Use Score
+
+	*************************************/
+	int16 WristMuscleUseScore = 0;
+	if (bWristMuscleUse)
+		WristMuscleUseScore += 1;
+
+
+	/*************************************
+
+		Step 7 Add ForceLoad Score
+
+	*************************************/
+
+	int16 WristForceScore = 0;
+
+	switch (WristLoad)
+	{
+	case ELoadType_RULA::Minimum:
+		WristForceScore += 0;
+		break;
+	case ELoadType_RULA::Light:
+		WristForceScore += 1;
+		break;
+	case ELoadType_RULA::Medium:
+		WristForceScore += 2;
+		break;
+	case ELoadType_RULA::Heavy:
+		WristForceScore += 3;
+		break;
+	default:
+		break;
+	}
+
+	/*************************************
+
+		Step 8 Add ForceLoad Score
+
+	*************************************/
+
+	int16 TableCRow = TableAScore + WristMuscleUseScore + WristForceScore;
+
+
+	
+	/*************************************
+
+		Step 9 Neck Position
+
+	*************************************/
+
+
+
 }

@@ -28,7 +28,7 @@ public:
 	TSharedPtr<SCheckBox> ActivityScore3;
 
 	//Êä³ö¿Ø¼þ
-	TSharedPtr<STextBlock> RI;
+
 	TSharedPtr<STextBlock> REBAScore;
 
 

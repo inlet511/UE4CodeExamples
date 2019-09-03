@@ -4,50 +4,50 @@
 
 #include "CoreMinimal.h"
 
-UENUM()
-enum class ENeckAdjustment
-{
-	SideBending,
-	Twisted
-};
+//UENUM()
+//enum class ENeckAdjustment
+//{
+//	SideBending,
+//	Twisted
+//};
+//
+//UENUM()
+//enum class ETrunkAdjustment
+//{
+//	Twisted,
+//	SideBending
+//};
+//
+//UENUM()
+//enum class ELegPos_REBA :uint8
+//{
+//	Bilateral,	
+//	OneLegRaised
+//};
+//
+//UENUM()
+//enum class ELegAdjustment :uint8
+//{
+//	Normal,		//	Straight
+//	MinorBend,	//	30 ~ 60
+//	MajorBend	//	60+
+//};
 
-UENUM()
-enum class ETrunkAdjustment
-{
-	Twisted,
-	SideBending
-};
+//UENUM()
+//enum class ELoadType_REBA :uint8
+//{
+//	Minimum,	//	< 11 lbs
+//	Medium,		//	11 - 22 lbs
+//	Maximum		//	> 22 lbs
+//};
 
-UENUM()
-enum class ELegPos_REBA :uint8
-{
-	Bilateral,	
-	OneLegRaised
-};
-
-UENUM()
-enum class ELegAdjustment :uint8
-{
-	Normal,		//	Straight
-	MinorBend,	//	30 ~ 60
-	MajorBend	//	60+
-};
-
-UENUM()
-enum class ELoadType_REBA :uint8
-{
-	Minimum,	//	< 11 lbs
-	Medium,		//	11 - 22 lbs
-	Maximum		//	> 22 lbs
-};
-
-UENUM()
-enum class EWristAdjustment :uint8
-{
-	Normal,
-	BendFromMidline,
-	Twisted
-};
+//UENUM()
+//enum class EWristAdjustment :uint8
+//{
+//	Normal,
+//	BendFromMidline,
+//	Twisted
+//};
 
 UENUM()
 enum class ECoupling_REBA :uint8
@@ -76,7 +76,7 @@ public:
 	*/
 	float NeckPosition;
 
-	ENeckAdjustment NeckAdjustment;
+	//ENeckAdjustment NeckAdjustment;
 
 	/*
 		Trunk Angle(Forward)
@@ -88,13 +88,14 @@ public:
 	*/
 	float TrunkPosition;
 
-	ETrunkAdjustment TrunkAdjustment;
+	//ETrunkAdjustment TrunkAdjustment;
 
-	ELegPos_REBA LegPos;
+	//ELegPos_REBA LegPos;
 
-	ELegAdjustment LegAdjustment;
+	//ELegAdjustment LegAdjustment;
 
-	ELoadType_REBA LoadType;
+	//ELoadType_REBA LoadType;
+	float Load;
 
 	// if there is shock force, rapid buildup of force, or sudden exertion is required.
 	bool bShockForce;
@@ -142,7 +143,7 @@ public:
 	*/
 	float WristPostion;
 
-	EWristAdjustment WristAdjustment;
+	//EWristAdjustment WristAdjustment;
 
 	ECoupling_REBA Coupling;
 
@@ -166,5 +167,7 @@ public:
 	TArray<TArray<TArray<uint16>>> TableB;
 
 	TArray<TArray<uint16>> TableC;
+
+	int16 REBAScore;
 
 };

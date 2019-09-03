@@ -147,12 +147,8 @@ void SREBAWidget::Construct(const FArguments& InArgs)
 				SNew(STextBlock)
 				.Text(LOCTEXT("Result", "结果"))
 			]
+
 		+ SGridPanel::Slot(0, 8).HAlign(HAlign_Right).Padding(5)
-			[
-				SNew(STextBlock)
-				.Text(LOCTEXT("RI", "风险指数(RI)"))
-			]
-		+ SGridPanel::Slot(0, 9).HAlign(HAlign_Right).Padding(5)
 			[
 				SNew(STextBlock)
 				.Text(LOCTEXT("REBAScore", "REBA分数"))
@@ -208,22 +204,23 @@ void SREBAWidget::Construct(const FArguments& InArgs)
 				]
 				+ SVerticalBox::Slot().Padding(0)
 				[
-					SAssignNew(ActivityScore2,SCheckBox)
+					SAssignNew(ActivityScore3,SCheckBox)
 					[
 						SNew(STextBlock)
 						.Text(LOCTEXT("ActiveScore3", "是否有会导致姿势大范围变化的动作"))
 					]
 				]
 			]
+
 		+ SGridPanel::Slot(1, 8).HAlign(HAlign_Left).Padding(5)
 			[
-				SAssignNew(RI,STextBlock)
-				.Text(LOCTEXT("RI_Value", "2.0"))
+				SAssignNew(REBAScore,STextBlock)
+				.Text(LOCTEXT("REBAScore_Value", "0.00"))
 			]
 		+ SGridPanel::Slot(1, 9).HAlign(HAlign_Left).Padding(5)
 			[
-				SAssignNew(REBAScore,STextBlock)
-				.Text(LOCTEXT("REBAScore_Value", "9.00"))
+				SNew(STextBlock)
+				.Text(LOCTEXT("Instructions", "1 = 可以忽略的风险 \n 2-3 = 低风险 \n 4-7 = 中等风险 \n 8-10 = 高风险 \n 11+ = 极高的风险"))
 			]
 
 	];
@@ -246,6 +243,12 @@ FReply SREBAWidget::Capture()
 			if (skeletalMeshComp)
 			{
 				EditingREBA->Skeleton = skeletalMeshComp;
+				EditingREBA->Load = FCString::Atof(*(Weight->GetText()).ToString());
+				EditingREBA->bShockForce = ShockForce->IsChecked() ? true : false;
+				EditingREBA->bActivityScoreA = ActivityScore1->IsChecked() ? true : false;
+				EditingREBA->bActivityScoreB = ActivityScore2->IsChecked() ? true : false;
+				EditingREBA->bActivityScoreC = ActivityScore3->IsChecked() ? true : false;
+
 				EditingREBA->SnapshotPose();
 
 				return FReply::Handled();
@@ -259,6 +262,7 @@ FReply SREBAWidget::Capture()
 
 FReply SREBAWidget::Evaluate()
 {
+	REBAScore->SetText(FText::FromString(FString::SanitizeFloat(EditingREBA->REBAScore)));
 	return FReply::Handled();
 }
 

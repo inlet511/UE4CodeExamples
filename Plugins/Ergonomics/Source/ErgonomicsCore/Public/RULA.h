@@ -13,12 +13,12 @@ enum class ELoadType_RULA:uint8
 	Heavy		// >22 lbs or repeated or shocks
 };
 
-UENUM()
-enum class ELegPos_RULA :uint8
-{
-	Bilateral,	
-	OneLegRaised
-};
+//UENUM()
+//enum class ELegPos_RULA :uint8
+//{
+//	Bilateral,	
+//	OneLegRaised
+//};
 
 
 /**
@@ -124,11 +124,23 @@ public:
 
 	bool bTrunkSideBending;
 
-	ELegPos_RULA LegPos;
+	//ELegPos_RULA LegPos;
 
 	// posture is mainly static (i.e. held > 1 minute), or if action repeated occurs 4X per minute or more.
 	bool bTrunkMuscleUse;
 
 	// Neck, Trunk, and Legs
 	ELoadType_RULA TrunkLoad;
+
+	class USkeletalMeshComponent* Skeleton;
+
+	
+	TArray<TArray<TArray<TArray<uint16>>>> TableA;
+
+	TArray<TArray<TArray<uint16>>> TableB;
+
+	TArray<TArray<uint16>> TableC;
+
+	
+
 };

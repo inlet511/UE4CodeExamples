@@ -6,6 +6,8 @@
 
 NIOSH::NIOSH()
 {
+	Coupling = ECoupling_NIOSH::Good;
+	Duration = EDuration_NIOSH::Low;
 }
 
 NIOSH::~NIOSH()

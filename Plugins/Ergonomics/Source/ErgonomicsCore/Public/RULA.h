@@ -132,14 +132,16 @@ public:
 	// Neck, Trunk, and Legs
 	ELoadType_RULA TrunkLoad;
 
+	int16 RULAScore;
+
 	class USkeletalMeshComponent* Skeleton;
 
 	
-	TArray<TArray<TArray<TArray<uint16>>>> TableA;
+	TArray<TArray<TArray<TArray<int16>>>> TableA;
 
-	TArray<TArray<TArray<uint16>>> TableB;
+	TArray<TArray<TArray<int16>>> TableB;
 
-	TArray<TArray<uint16>> TableC;
+	TArray<TArray<int16>> TableC;
 
 	void SnapshotPose();
 

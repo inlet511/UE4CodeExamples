@@ -38,6 +38,7 @@ public:
 
 	//Êä³ö¿Ø¼þ
 	TSharedPtr<STextBlock> RI;
+	TSharedPtr<STextBlock> AdjustedWeightLimit;
 
 private:
 	void InitializeDropDownLists();

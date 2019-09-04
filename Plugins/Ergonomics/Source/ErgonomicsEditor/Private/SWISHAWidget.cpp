@@ -50,7 +50,7 @@ void SWISHAWidget::Construct(const FArguments& InArgs)
 		+ SGridPanel::Slot(0, 2).HAlign(HAlign_Right).Padding(5)
 		[
 			SNew(STextBlock)
-			.Text(LOCTEXT("ActuralWeight_Label", "实际重量"))
+			.Text(LOCTEXT("ActuralWeight_Label", "实际重量(kg)"))
 		]
 
 		+ SGridPanel::Slot(0, 3).HAlign(HAlign_Right).Padding(5)
@@ -103,6 +103,11 @@ void SWISHAWidget::Construct(const FArguments& InArgs)
 			SNew(STextBlock)
 			.Text(LOCTEXT("RI", "风险指数(RI)"))
 		]
+		+ SGridPanel::Slot(0, 11).HAlign(HAlign_Right).Padding(5)
+			[
+				SNew(STextBlock)
+				.Text(LOCTEXT("AdjustedWeightLimit", "重量限制(kg)"))
+			]
 
 
 		//Column 2
@@ -197,8 +202,13 @@ void SWISHAWidget::Construct(const FArguments& InArgs)
 		+ SGridPanel::Slot(1, 10).HAlign(HAlign_Left).Padding(5)
 		[
 			SAssignNew(RI,STextBlock)
-			.Text(LOCTEXT("RI_Value", "2.0"))
+			.Text(LOCTEXT("RI_Value", "0.0"))
 		]
+		+ SGridPanel::Slot(1, 11).HAlign(HAlign_Left).Padding(5)
+			[
+				SAssignNew(AdjustedWeightLimit, STextBlock)
+				.Text(LOCTEXT("AdjustedWeightLimit_Value", "0.0"))
+			]
 	];
 
 }
@@ -223,6 +233,8 @@ void SWISHAWidget::InitializeDropDownLists()
 	FrequencyList.Add(MakeShareable(new FString(TEXT("1分钟2~3次"))));
 	FrequencyList.Add(MakeShareable(new FString(TEXT("1分钟4~5次"))));
 	FrequencyList.Add(MakeShareable(new FString(TEXT("1分钟6~7次"))));
+	FrequencyList.Add(MakeShareable(new FString(TEXT("1分钟8~9次"))));
+	FrequencyList.Add(MakeShareable(new FString(TEXT("1分钟10次以上"))));
 	
 
 	DurationList.Empty();
@@ -329,9 +341,13 @@ FText SWISHAWidget::GetCurrentFrequencyText() const
 	case EFrequency::Medium:
 		return FText::FromString(TEXT("1分钟2~3次"));
 	case EFrequency::High:
-		return FText::FromString(TEXT("1分钟4~5次"));
-	case EFrequency::Maximum:
+		return FText::FromString(TEXT("1分钟4~5次"));		
+	case EFrequency::VeryHigh:
 		return FText::FromString(TEXT("1分钟6~7次"));
+	case EFrequency::Extra:
+		return FText::FromString(TEXT("1分钟8~9次"));
+	case EFrequency::Maximum:
+		return FText::FromString(TEXT("1分钟10次以上"));
 	default:
 			return FText::FromString(TEXT("Null"));
 	}
@@ -356,6 +372,14 @@ void SWISHAWidget::HandleFrequencyChanged(TSharedPtr<FString> Item,ESelectInfo::
 		EditingWISHA->CurrentFrequency = EFrequency::High;
 	}
 	else if (*Item == TEXT("1分钟6~7次"))
+	{
+		EditingWISHA->CurrentFrequency = EFrequency::VeryHigh;
+	}
+	else if (*Item == TEXT("1分钟8~9次"))
+	{
+		EditingWISHA->CurrentFrequency = EFrequency::Extra;
+	}
+	else if (*Item == TEXT("1分钟10次以上"))
 	{
 		EditingWISHA->CurrentFrequency = EFrequency::Maximum;
 	}
@@ -423,7 +447,10 @@ void SWISHAWidget::HandleTwistChanged(TSharedPtr<FString> Item,ESelectInfo::Type
 
 FReply SWISHAWidget::Evaluate()
 {
-
+	EditingWISHA->ActuralWeight = FCString::Atof(*(ActualWeight->GetText()).ToString());
+	EditingWISHA->Evaluate();
+	RI->SetText(FText::FromString(FString::SanitizeFloat(EditingWISHA->RI)));
+	AdjustedWeightLimit->SetText(FText::FromString(FString::SanitizeFloat(EditingWISHA->AdjustedWeightLimit)));
 	return FReply::Handled();
 }
 

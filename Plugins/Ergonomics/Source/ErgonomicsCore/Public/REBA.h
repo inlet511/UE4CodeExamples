@@ -161,12 +161,12 @@ public:
 	void SnapshotPose();
 
 	// Table A, Neck, Trunk Pose, Legs
-	TArray<TArray<TArray<uint16>>> TableA;
+	TArray<TArray<TArray<int16>>> TableA;
 
 	// Table B, UpperArm, LowerArm, Wrist
-	TArray<TArray<TArray<uint16>>> TableB;
+	TArray<TArray<TArray<int16>>> TableB;
 
-	TArray<TArray<uint16>> TableC;
+	TArray<TArray<int16>> TableC;
 
 	int16 REBAScore;
 

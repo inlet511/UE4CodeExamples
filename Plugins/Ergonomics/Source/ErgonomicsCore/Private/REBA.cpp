@@ -11,6 +11,8 @@
 
 REBA::REBA()
 {
+	Coupling = ECoupling_REBA::Good;
+
 
 // Table A
 	TArray<TArray<int16>> Neck1,Neck2,Neck3;
@@ -147,17 +149,18 @@ void REBA::SnapshotPose()
 	float NeckRotYaw = NeckTrans.GetRotation().Rotator().Yaw + 15.3f;
 	float NeckRotRoll = NeckTrans.GetRotation().Rotator().Roll;
 
+	int16 NeckPositionScore = 0;
+	if (NeckRotYaw > 0 && NeckRotYaw <= 20)
+		NeckPositionScore += 1;
+	else if (NeckRotYaw > 20 || NeckRotYaw < 0)
+		NeckPositionScore += 2;
+
 	/*************************************
 
 		Step 1a Adjust
 
 	*************************************/
 
-	int16 NeckPositionScore = 0;
-	if(NeckRotYaw>0 && NeckRotYaw<=20)
-		NeckPositionScore+=1;
-	else if(NeckRotYaw > 20 || NeckRotYaw<0)
-		NeckPositionScore += 2;
 	
 	if (FMath::Abs(NeckRotRoll) > 5)
 		NeckPositionScore += 1;

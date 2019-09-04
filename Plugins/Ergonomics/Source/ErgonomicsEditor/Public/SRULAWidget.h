@@ -22,8 +22,8 @@ public:
 
 	//ÊäÈë¿Ø¼ş
 	TSharedPtr<SCheckBox> LowerArmAdjust;
-	TSharedPtr<SCheckBox> ArmBend1;
-	TSharedPtr<SCheckBox> ArmBend2;
+	TSharedPtr<SCheckBox> WristTwistMidRange;
+	TSharedPtr<SCheckBox> WristNearEndRange;
 	TSharedPtr<SCheckBox> WristMuscle;
 	TSharedPtr<SCheckBox> TrunkMuscle;
 

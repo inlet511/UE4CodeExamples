@@ -211,7 +211,7 @@ TSharedRef<SWidget> FErgonomicsEditorModule::GenerateErgonomicsToolBarMenu(TShar
 		MenuBuilder.AddMenuEntry(FErgonomicsEditorCommands::Get().OpenREBAWindow);
 		MenuBuilder.AddMenuEntry(FErgonomicsEditorCommands::Get().OpenRULAWindow);
 		MenuBuilder.AddMenuEntry(FErgonomicsEditorCommands::Get().OpenWISHAWindow);
-		MenuBuilder.AddMenuEntry(FErgonomicsEditorCommands::Get().OpenSnookWindow);
+		//MenuBuilder.AddMenuEntry(FErgonomicsEditorCommands::Get().OpenSnookWindow);
 	}
 	MenuBuilder.EndSection();
 	return MenuBuilder.MakeWidget();

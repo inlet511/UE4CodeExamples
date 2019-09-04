@@ -6,6 +6,8 @@
 
 RULA::RULA()
 {
+	WristLoad = ELoadType_RULA::Minimum;
+	TrunkLoad = ELoadType_RULA::Minimum;
 
 	//Table A
 	TArray<TArray<TArray<int16>>> UpperArm1, UpperArm2, UpperArm3, UpperArm4, UpperArm5, UpperArm6;
@@ -302,6 +304,13 @@ RULA::RULA()
 	NeckPosition6.Add(TrunkPosition64);
 	NeckPosition6.Add(TrunkPosition65);
 	NeckPosition6.Add(TrunkPosition66);
+	
+	TableB.Add(NeckPosition1);
+	TableB.Add(NeckPosition2);
+	TableB.Add(NeckPosition3);
+	TableB.Add(NeckPosition4);
+	TableB.Add(NeckPosition5);
+	TableB.Add(NeckPosition6);
 
 	//Table C
 	TArray<int16> WristArmScore1 = { 1,2,3,3,4,5,5 };
@@ -494,5 +503,140 @@ void RULA::SnapshotPose()
 	*************************************/
 
 
+	FTransform NeckTrans = Skeleton->GetSocketTransform(FName(TEXT("head")), ERelativeTransformSpace::RTS_ParentBoneSpace);
 
+	//在head bone 中，parent space中，左右摇头用Roll表示，  左右Bend 用 Pitch 表示， 前后点头用Yaw表示...
+	float NeckRotPitch = NeckTrans.GetRotation().Rotator().Pitch;
+	float NeckRotYaw = NeckTrans.GetRotation().Rotator().Yaw + 15.3f;
+	float NeckRotRoll = NeckTrans.GetRotation().Rotator().Roll;
+
+	int16 NeckPositionScore = 0;
+	if (NeckRotYaw > 0) {
+		if (NeckRotYaw <= 10)
+			NeckPositionScore += 1;
+		else if (NeckRotYaw <= 20)
+			NeckPositionScore += 2;
+		else 
+			NeckPositionScore += 3;
+	}
+	else
+	{
+		NeckPositionScore += 4;
+	}
+
+
+	if (FMath::Abs(NeckRotRoll) > 5)
+		NeckPositionScore += 1;
+	if (FMath::Abs(NeckRotPitch) > 5)
+		NeckPositionScore += 1;
+
+	/*************************************
+
+		Step 10 Trunk Position
+
+	*************************************/
+
+	int16 TrunkPositionScore = 0;
+	FVector TrunkDir = (Skeleton->GetSocketLocation(FName(TEXT("neck_01"))) - Skeleton->GetSocketLocation(FName(TEXT("pelvis")))).GetSafeNormal();
+
+	//躯干向量投影到平面上的向量
+	FVector TrunkDirProject2Side = FVector::VectorPlaneProject(TrunkDir, BodyActor->GetActorRightVector()).GetSafeNormal();
+
+	FVector BodyUpDir = (BodyActor->GetActorUpVector()).GetSafeNormal();
+	FVector CrossProductResult = FVector::CrossProduct(TrunkDirProject2Side, BodyUpDir);
+
+	float PitchAngle = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(TrunkDirProject2Side, BodyUpDir)));
+	float PitchSign = FVector::DotProduct(CrossProductResult, BodyActor->GetActorRightVector()) >= 0 ? 1 : -1;
+
+	//根据正常站姿调整,并调整符号
+	float Angle_Adjust = -1.0f * (PitchAngle * PitchSign - 4.62f);
+
+	if (Angle_Adjust > -3.0f && Angle_Adjust < 3.0f)
+		TrunkPositionScore += 1;
+	else if (Angle_Adjust > 0 && Angle_Adjust < 20.0f)
+		TrunkPositionScore += 2;
+	else if (Angle_Adjust >= 20.0f && Angle_Adjust <= 60.0f)
+		TrunkPositionScore += 3;
+	else if (Angle_Adjust > 60.0f)
+		TrunkPositionScore += 4;
+
+	//SideBending
+	FVector TrunkDirProject2Front = FVector::VectorPlaneProject(TrunkDir, BodyActor->GetActorForwardVector()).GetSafeNormal();
+	float RollAngle = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(TrunkDirProject2Front, BodyUpDir)));
+	if (FMath::Abs(RollAngle) > 5)
+		TrunkPositionScore += 1;
+
+	//Twisting
+	FTransform HeadTrans = Skeleton->GetSocketTransform(FName(TEXT("head")), ERelativeTransformSpace::RTS_ParentBoneSpace);
+	FRotator HeadRot = HeadTrans.Rotator();
+	if (FMath::Abs(HeadRot.Roll) > 10)
+		TrunkPositionScore += 1;
+
+	/*************************************
+
+		Step 11 Legs
+
+	*************************************/
+
+	// TODO
+
+	/*************************************
+
+		Step 12 Posture Score in Table B
+
+	*************************************/
+
+	NeckPositionScore = FMath::Max<int16>(NeckPositionScore, 1);
+	TrunkPositionScore = FMath::Max<int16>(TrunkPositionScore, 1);
+
+	int16 TableBScore = TableB[NeckPositionScore - 1][TrunkPositionScore - 1][1];
+
+	/*************************************
+
+		Step 13 Add Trunk Muscle Use Score
+
+	*************************************/
+
+	int16 TrunkMuscleUseScore = 0;
+	if (bTrunkMuscleUse)
+		TrunkMuscleUseScore += 1;
+
+
+	/*************************************
+
+		Step 14 Add Trunk Force/Load Score
+
+	*************************************/
+
+	int16 TrunkForceScore = 0;
+
+	switch (TrunkLoad)
+	{
+	case ELoadType_RULA::Minimum:
+		TrunkForceScore += 0;
+		break;
+	case ELoadType_RULA::Light:
+		TrunkForceScore += 1;
+		break;
+	case ELoadType_RULA::Medium:
+		TrunkForceScore += 2;
+		break;
+	case ELoadType_RULA::Heavy:
+		TrunkForceScore += 3;
+		break;
+	default:
+		break;
+	}
+
+	/*************************************
+
+		Step 15 Find Column in Table C
+
+	*************************************/
+	int16 TableCColumn = TableBScore + TrunkMuscleUseScore + TrunkForceScore;
+	TableCColumn = FMath::Clamp<int16>(TableCColumn, 1, 7);
+
+	TableCRow = FMath::Clamp<int16>(TableCRow, 1, 8);
+
+	RULAScore = TableC[TableCRow - 1][TableCColumn - 1];
 }

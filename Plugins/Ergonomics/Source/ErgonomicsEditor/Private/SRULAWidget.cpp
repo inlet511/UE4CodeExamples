@@ -98,12 +98,8 @@ void SRULAWidget::Construct(const FArguments& InArgs)
 			SNew(STextBlock)
 			.Text(LOCTEXT("Result", "结果"))
 		]
+
 	+ SGridPanel::Slot(0, 10).HAlign(HAlign_Right).Padding(5)
-		[
-			SNew(STextBlock)
-			.Text(LOCTEXT("RI", "风险指数(RI)"))
-		]
-	+ SGridPanel::Slot(0, 11).HAlign(HAlign_Right).Padding(5)
 		[
 			SNew(STextBlock)
 			.Text(LOCTEXT("RULAScore", "RULA分数"))
@@ -127,7 +123,7 @@ void SRULAWidget::Construct(const FArguments& InArgs)
 			SNew(SVerticalBox)
 			+SVerticalBox::Slot()
 			[
-				SAssignNew(ArmBend1,SCheckBox)
+				SAssignNew(WristTwistMidRange,SCheckBox)
 				[
 					SNew(STextBlock)
 					.Text(LOCTEXT("WristTwist1", "手腕是否在中距离上有扭曲"))
@@ -135,7 +131,7 @@ void SRULAWidget::Construct(const FArguments& InArgs)
 			]
 		+ SVerticalBox::Slot()
 			[
-				SAssignNew(ArmBend2,SCheckBox)
+				SAssignNew(WristNearEndRange,SCheckBox)
 				[
 					SNew(STextBlock)
 					.Text(LOCTEXT("WristTwist2", "手腕是否伸展到或接近极限距离"))
@@ -180,15 +176,16 @@ void SRULAWidget::Construct(const FArguments& InArgs)
 					.Text(this,&SRULAWidget::GetCurrentTrunkLoadText)
 				]
 		]
+
 	+ SGridPanel::Slot(1, 10).HAlign(HAlign_Left).Padding(5)
 		[
-			SAssignNew(RI,STextBlock)
-			.Text(LOCTEXT("RI_Value", "2.0"))
+			SAssignNew(RULAScore,STextBlock)
+			.Text(LOCTEXT("RULAScore_Value", "0.00"))
 		]
 	+ SGridPanel::Slot(1, 11).HAlign(HAlign_Left).Padding(5)
 		[
-			SAssignNew(RULAScore,STextBlock)
-			.Text(LOCTEXT("RULAScore_Value", "9.00"))
+			SNew(STextBlock)
+			.Text(LOCTEXT("Instructions", "1-2 = 可以忽略的风险 \n 3-4 = 低风险 \n 4-7 = 中等风险 \n 7 = 高风险"))
 		]
 	];
 
@@ -212,6 +209,13 @@ FReply SRULAWidget::CapturePose()
 			{
 				EditingRULA->Skeleton = skeletalMeshComp;
 
+				EditingRULA->bLowerArmAdjustments = LowerArmAdjust->IsChecked() ? true : false;
+				EditingRULA->bWristTwistMidRange = WristTwistMidRange->IsChecked() ? true : false;
+				EditingRULA->bWristNearEndRange = WristNearEndRange->IsChecked() ? true : false;
+				EditingRULA->bWristMuscleUse = WristMuscle->IsChecked() ? true : false;
+				EditingRULA->bTrunkMuscleUse = TrunkMuscle->IsChecked() ? true : false;
+
+
 				EditingRULA->SnapshotPose();
 
 				return FReply::Handled();
@@ -226,7 +230,7 @@ FReply SRULAWidget::CapturePose()
 
 FReply SRULAWidget::Evaluate()
 {
-
+	RULAScore->SetText(FText::FromString(FString::SanitizeFloat(EditingRULA->RULAScore)));
 	return FReply::Handled();
 }
 

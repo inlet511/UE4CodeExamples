@@ -28,7 +28,10 @@ enum class EFrequency:uint8
 	Low,    // 1 lift every minute
 	Medium, // 2-3 lifts every minute
 	High,   // 4-5 lifts every minute
-	Maximum,// 6-7 lifts every minute
+	VeryHigh,// 6-7 lifts every minute
+	Extra,	// 8-9 lifts every minute
+	Maximum // 10+
+
 };
 
 UENUM()
@@ -56,10 +59,18 @@ public:
 	WISHA();
 	~WISHA();
 
+	float ActuralWeight;
+	float UnadjustedWeightLimit;
+	float AdjustedWeightLimit;
+	float LimitReductionModifier;
+	float WeightLimit;
+	float RI;
+
 	EVerticalHandPos CurrentVerticalHandPos;
 	EHorizontalHandPos CurrentHorizontalHandPos;
 	EFrequency CurrentFrequency;
 	EDuration CurrentDuration;
 	ETwist CurrentTwist;
 	
+	void Evaluate();
 };
